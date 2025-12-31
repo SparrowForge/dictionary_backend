@@ -79,7 +79,7 @@ export class User {
 
   @ApiProperty({ description: 'User role ID', example: 1, })
   @Column({ nullable: true })
-  roleId: number;
+  roleId: string;
 
   @ApiProperty({ description: 'User status', example: 'active', enum: Status, })
   @Column({ type: 'enum', enum: Status, nullable: false, default: Status.ACTIVE, })

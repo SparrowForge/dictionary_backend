@@ -12,12 +12,9 @@ import { Status } from '../../common/enums';
 
 @Entity('dc_roles')
 export class Role {
-  @ApiProperty({
-    description: 'Role ID',
-    example: 1,
-  })
-  @PrimaryGeneratedColumn()
-  id: number;
+  @ApiProperty({ description: 'Role ID', example: '', })
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @ApiProperty({
     description: 'Role name',

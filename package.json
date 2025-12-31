@@ -17,9 +17,14 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migration:generate": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d src/config/data-source.ts src/migrations/role-pk-up",
+    "migration:run": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/config/data-source.ts",
+    "migration:revert": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/config/data-source.ts",
+    "migration:show": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:show -d src/config/data-source.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.958.0",
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
@@ -71,6 +76,7 @@
     "@types/sharp": "^0.32.0",
     "@types/supertest": "^6.0.2",
     "@types/uuid": "^11.0.0",
+    "cross-env": "^10.1.0",
     "dotenv-cli": "^9.0.0",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",

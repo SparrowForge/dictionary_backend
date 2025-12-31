@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 
 import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 import { PaginationDto } from '../common/dto/pagination.dto';
@@ -18,7 +18,7 @@ export class RolesService {
   constructor(
     @InjectRepository(Role)
     private roleRepository: Repository<Role>,
-  ) {}
+  ) { }
 
   async create(createRoleDto: CreateRoleDto) {
     // Check if role name already exists
@@ -44,7 +44,7 @@ export class RolesService {
       .createQueryBuilder('role')
       .where('role.deletedAt IS NULL');
 
-    const [items, total] = await queryBuilder
+    const [items] = await queryBuilder
       .orderBy('role.createdAt', 'DESC')
       .getManyAndCount();
 
@@ -106,7 +106,7 @@ export class RolesService {
     };
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const role = await this.roleRepository.findOne({
       where: { id },
       withDeleted: false, // Only get non-deleted roles
@@ -119,7 +119,7 @@ export class RolesService {
     return role;
   }
 
-  async update(id: number, updateRoleDto: UpdateRoleDto) {
+  async update(id: string, updateRoleDto: UpdateRoleDto) {
     const role = await this.findOne(id);
 
     // If name is being updated, check for duplicates
@@ -127,7 +127,7 @@ export class RolesService {
       const existingRole = await this.roleRepository.findOne({
         where: {
           name: updateRoleDto.name,
-          id: { $ne: id } as any, // Exclude current role
+          id: Not(id), // Exclude current role
         },
         withDeleted: false,
       });
@@ -143,7 +143,7 @@ export class RolesService {
     return this.findOne(id);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const role = await this.findOne(id);
     if (!role) {
       throw new NotFoundException(`Role with ID ${id} not found`);
@@ -152,7 +152,7 @@ export class RolesService {
   }
 
   // Method to permanently delete a role (for admin purposes)
-  async permanentRemove(id: number) {
+  async permanentRemove(id: string) {
     const role = await this.findOne(id);
     if (!role) {
       throw new NotFoundException(`Role with ID ${id} not found`);
@@ -161,7 +161,7 @@ export class RolesService {
   }
 
   // Method to restore a soft-deleted role
-  async restore(id: number) {
+  async restore(id: string) {
     const role = await this.roleRepository.findOne({
       where: { id },
       withDeleted: true, // Include soft-deleted roles

@@ -32,7 +32,7 @@ import { RolesService } from './roles.service';
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
 export class RolesController {
-  constructor(private readonly rolesService: RolesService) {}
+  constructor(private readonly rolesService: RolesService) { }
 
   @Post()
   @ApiOperation({
@@ -163,7 +163,7 @@ export class RolesController {
     status: 401,
     description: 'Unauthorized - Authentication required',
   })
-  async findOne(@Param('id', ParseIntPipe) id: number) {
+  async findOne(@Param('id', ParseIntPipe) id: string) {
     const role = await this.rolesService.findOne(id);
     return new BaseResponseDto(role, 'Role retrieved successfully');
   }
@@ -199,7 +199,7 @@ export class RolesController {
     description: 'Unauthorized - Authentication required',
   })
   async update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) id: string,
     @Body() updateRoleDto: UpdateRoleDto,
   ) {
     const role = await this.rolesService.update(id, updateRoleDto);
@@ -231,7 +231,7 @@ export class RolesController {
     status: 401,
     description: 'Unauthorized - Authentication required',
   })
-  async remove(@Param('id', ParseIntPipe) id: number) {
+  async remove(@Param('id', ParseIntPipe) id: string) {
     await this.rolesService.remove(id);
     return new BaseResponseDto(null, 'Role soft deleted successfully');
   }
@@ -261,7 +261,7 @@ export class RolesController {
     status: 401,
     description: 'Unauthorized - Authentication required',
   })
-  async permanentRemove(@Param('id', ParseIntPipe) id: number) {
+  async permanentRemove(@Param('id', ParseIntPipe) id: string) {
     await this.rolesService.permanentRemove(id);
     return new BaseResponseDto(null, 'Role permanently deleted successfully');
   }
@@ -295,7 +295,7 @@ export class RolesController {
     status: 401,
     description: 'Unauthorized - Authentication required',
   })
-  async restore(@Param('id', ParseIntPipe) id: number) {
+  async restore(@Param('id', ParseIntPipe) id: string) {
     await this.rolesService.restore(id);
     return new BaseResponseDto(null, 'Role restored successfully');
   }

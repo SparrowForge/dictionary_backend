@@ -54,9 +54,9 @@ export class UpdateUserOtherInfoDto {
   date_of_birth?: Date;
 
   @ApiProperty({ description: 'User role ID', example: 1, })
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  roleId?: number;
+  roleId?: string;
 
   @ApiProperty({ description: 'User status', example: 'active', enum: Status, })
   @IsEnum(Status, { message: 'status must be either active or inactive' })
