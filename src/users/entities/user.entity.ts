@@ -14,7 +14,7 @@ import {
 } from 'typeorm';
 
 
-@Entity('sc_users')
+@Entity('dc_users')
 export class User {
   @ApiProperty({ description: 'User ID' })
   @PrimaryGeneratedColumn('uuid')

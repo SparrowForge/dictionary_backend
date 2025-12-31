@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('sc_audit_logs')
+@Entity('dc_audit_logs')
 @Index(['userId', 'timestamp'])
 @Index(['resource', 'resourceId'])
 @Index(['action', 'timestamp'])

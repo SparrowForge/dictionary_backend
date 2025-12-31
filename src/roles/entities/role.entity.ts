@@ -10,7 +10,7 @@ import {
 
 import { Status } from '../../common/enums';
 
-@Entity('sc_roles')
+@Entity('dc_roles')
 export class Role {
   @ApiProperty({
     description: 'Role ID',

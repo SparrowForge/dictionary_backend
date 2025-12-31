@@ -1,14 +1,54 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ValidationPipe } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { join } from 'path';
 import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 
+import { AppModule } from './app.module';
+import { JwtAuthOrPublicGuard } from './common/guards/jwt-auth-or-public.guard';
+import * as express from 'express';
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  console.log('🚀 Starting Dictionary API server...');
+  console.log('📂 Environment:', process.env.NODE_ENV);
+
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.enableCors({
+    origin: '*',
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: '*',
+    exposedHeaders: ['Content-Type', 'Authorization', 'x-request-id'],
+    credentials: false,
+  });
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+
+  // Register global guard for JWT or public
+  const reflector = app.get(Reflector);
+  app.useGlobalGuards(new JwtAuthOrPublicGuard(reflector));
+
+  // Serve uploaded files statically
+  const uploadBaseDir =
+    process.env.UPLOAD_BASE_DIR || join(__dirname, '..', 'uploads');
+  app.useStaticAssets(uploadBaseDir, {
+    prefix: '/uploads/',
+    setHeaders: (res: import('express').Response, path: string) => {
+      res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 year cache
+    },
+  });
+
 
   const config = new DocumentBuilder()
     .setTitle('Dictionary API')
-    .setDescription('Blue Atlantic API documentation')
+    .setDescription('Dictionary API documentation')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
@@ -23,7 +63,7 @@ async function bootstrap() {
 
   SwaggerModule.setup('api/docs', app, document, {
     customCss: darkCss.toString(),
-    customSiteTitle: 'Blue Atlantic API Documentation',
+    customSiteTitle: 'Dictionary API Documentation',
     swaggerOptions: {
       tagsSorter: 'alpha',
       operationsSorter: 'alpha',
@@ -36,7 +76,16 @@ async function bootstrap() {
     customfavIcon: '/favicon.ico',
   });
 
-  console.log('App listining to port:', process.env.PORT ?? 3000);
-  await app.listen(process.env.PORT ?? 3000);
+
+  app.use(
+    '/api/v1/stripe-payment-public/webhook',
+    express.raw({ type: 'application/json' }),
+  );
+  app.use(
+    '/api/v1/stripe-payment-public/webhook-thin',
+    express.raw({ type: 'application/json' }),
+  );
+
+  await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
 }
-bootstrap();
+void bootstrap();

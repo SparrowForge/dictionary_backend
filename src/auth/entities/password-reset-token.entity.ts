@@ -8,7 +8,7 @@ import {
 
 import { User } from '../../users/entities/user.entity';
 
-@Entity('sc_password_reset_tokens')
+@Entity('dc_password_reset_tokens')
 export class PasswordResetToken {
   @PrimaryGeneratedColumn()
   id: number;
