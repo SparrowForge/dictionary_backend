@@ -1,0 +1,169 @@
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcryptjs';
+import { Repository } from 'typeorm';
+
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { FilterUserDto } from './dto/filter-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
+import { UpdateUserOtherInfoDto } from './dto/update-user-other-info.dto';
+
+@Injectable()
+export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) { }
+
+  async create(createUserDto: CreateUserDto) {
+    // Hash the password before saving
+    const existingUser = await this.findByEmailOrUserName(createUserDto.email);
+    if (existingUser) {
+      throw new BadRequestException('Email already exists');
+    }
+    const existingUserByUserName = await this.findByEmailOrUserName(createUserDto.user_name);
+    if (existingUserByUserName) {
+      throw new BadRequestException('Username already exists');
+    }
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+
+    // Create user DTO with hashed password
+    const userWithHashedPassword = {
+      ...createUserDto,
+      password: hashedPassword,
+    };
+
+    const user = this.userRepository.create(userWithHashedPassword);
+    return this.userRepository.save(user);
+  }
+
+  async findAll(
+    paginationDto: PaginationDto,
+    filters?: Partial<FilterUserDto>,
+  ): Promise<PaginatedResponseDto<User>> {
+    const { page = 1, limit = 1000000000000 } = paginationDto;
+    const skip = (page - 1) * limit;
+
+    const queryBuilder = this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'role')
+      .leftJoinAndSelect('user.countries', 'country')
+      .skip(skip)
+      .take(limit)
+      .orderBy('user.createdAt', 'DESC')
+      .where('user.deletedAt IS NULL');
+
+    // Apply filter if phone no avl
+    if (filters?.phone_no) {
+      queryBuilder.andWhere('user.phone_no = :phone_no', {
+        phone_no: filters.phone_no,
+      });
+    }
+
+    // Apply status filter if provided
+    if (filters?.status) {
+      queryBuilder.andWhere('user.status = :status', {
+        status: filters.status,
+      });
+    }
+
+    // Apply role filter if provided
+    if (filters?.roleId) {
+      queryBuilder.andWhere('user.roleId = :roleId', {
+        roleId: filters.roleId,
+      });
+    }
+
+    // Apply department filter if provided
+    if (filters?.department) {
+      queryBuilder.andWhere('user.department = :department', {
+        department: filters.department,
+      });
+    }
+
+    // Apply search filter if provided
+    if (filters?.search) {
+      queryBuilder.andWhere(
+        '(user.fullName ILIKE :search OR user.email ILIKE :search)',
+        { search: `%${filters.search}%` },
+      );
+    }
+
+    const [items, total] = await queryBuilder.getManyAndCount();
+
+    const totalPages = Math.ceil(total / limit);
+    const hasNextPage = page < totalPages;
+    const hasPreviousPage = page > 1;
+
+    // items.forEach(item => {
+    //   item.country: { id: item.country_id, name: item?.countries?.name }
+    // });
+
+    return {
+      items,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages,
+        hasNextPage,
+        hasPreviousPage,
+      },
+    };
+  }
+
+  findOne(id: string) {
+    return this.userRepository.findOne({
+      where: { id },
+      relations: ['role'],
+      withDeleted: false, // Only get non-deleted users
+    });
+  }
+
+  findByEmailOrUserName(email: string) {
+    return this.userRepository
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .where('user.email = :email or user.user_name = :email', { email })
+      .andWhere('user.deletedAt IS NULL') // Only get non-deleted users
+      .leftJoinAndSelect('user.role', 'role')
+      .getOne();
+  }
+
+  update(id: string, updateUserDto: UpdateUserDto) {
+    return this.userRepository.update(id, updateUserDto);
+  }
+
+  updateOtherInfo(id: string, updateUserDto: UpdateUserOtherInfoDto) {
+    return this.userRepository.update(id, updateUserDto);
+  }
+
+  remove(id: string) {
+    return this.userRepository.softDelete(id);
+  }
+
+  // Method to permanently delete a user (for admin purposes)
+  permanentRemove(id: string) {
+    return this.userRepository.delete(id);
+  }
+
+  // Method to restore a soft-deleted user
+  restore(id: string) {
+    return this.userRepository.restore(id);
+  }
+
+  getRoles(userId: string) {
+    return this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['roles'],
+    });
+  }
+
+  async updatePassword(id: string, newPassword: string): Promise<void> {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await this.userRepository.update(id, { password: hashedPassword });
+  }
+}

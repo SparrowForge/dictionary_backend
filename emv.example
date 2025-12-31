@@ -1,0 +1,44 @@
+DB_PASSWORD=RE3qnep2yiBP
+DB_USERNAME=mamun166036
+DB_HOST=ep-wandering-moon-193529-pooler.ap-southeast-1.aws.neon.tech
+DB_PORT=5432
+DB_NAME=neondb
+DB_SSL_ENABLED=true
+
+# Application Configuration
+PORT=3000
+# NODE_ENV=production
+NODE_ENV=development
+
+#STOP_LIGHT
+STOP_LIGHT_BASE_URL=https://api.ypf.customers.sigma-ventures.cloud/client/v1
+STOP_LIGHT_SANDBOX_URL=https://bqsyp740n4.execute-api.ap-southeast-1.amazonaws.com/client/v1
+STOP_LIGHT_CLIENT_KEY=77b1f8385c2b4d278492541bbc1caa89137297468fc44505abf9cbdf029748d3
+
+STOP_LIGHT_COUPON_VALIDATION_URL=https://affiliates.production.quant-technology.team/api/v1/coupons/validate
+STOP_LIGHT_COUPON_API_TOKEN=eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJzdWIiOiAic2VydmljZSIsICJqdGkiOiAic3RfMTQwNDZjNmMtYzg3NS00MjZmLThiNTktZmVjMTg2ODM4MmNjIiwgInRlbmFudElkIjogIjY1ZGFkOGE3LWM4MTEtNGQ1Ni04MTc0LTI5YTUwOWEwNDc0MCIsICJzY29wZSI6IFsib3JkZXJzOmNyZWF0ZSIsICJvcmRlcnM6cmVhZCIsICJjb3Vwb25zOnZhbGlkYXRlIl0sICJ0eXBlIjogInNlcnZpY2UiLCAiaXNzIjogImFmZmlsaWF0ZS1wbGF0Zm9ybSIsICJpYXQiOiAxNzY0Njc5MjQ4LCAiZXhwIjogMTc5NjIxNTI0OH0.iWWPYdJJXz0lAJs-N7FH_rChMRvXGHUEY0DLEFaaEvY
+#STRIPE
+STRIPE_WEBHOOK_SECRET=whsec_kaCT9RyevwFcbBYb1Gldcjgbq6VcyDFx
+# STRIPE_WEBHOOK_SECRET=whsec_77cc3adf2288f7fe2c44a0493378ac77d591e4cfdf7e8e966b380683262fcb83
+
+
+JWT_SECRET=bf2b4d278492541f83f029748
+
+#STRIPE
+STRIPE_PUBLIC_KEY=pk_test_51SSFviGlLim8Ur3asdfOwSYgRl8I8UqQiePy5BTbKFaZ7klTCIIpBNwNNr2i0h6NcHYgKEi12FxfYECUY0DRu5Jp00KCZ5dwWB
+STRIPE_SECRET_KEY=sk_test_51SSFviGlLim8Ur3aSXpRgViQfYl36REMpAXfLQFfLPnfHKSO7jooDxLrj95TWVyCUtwei6GOTvVCAAV7R4Zi7vE000KUVOy2kT
+
+FRONTEND_URL=http://localhost:3000
+
+#Exchangerate
+EXCHANGERATE_BASE_URL=https://v6.exchangerate-api.com/v6/335d0e4da73357f7c2df5da3
+
+
+# Email Configuration
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=help@soloclash.com
+SMTP_PASS=shxe rugg dtas cdev  # Replace with the generated app password
+FROM_EMAIL=help@soloclash.com
+FROM_NAME=Solo Clash Team
