@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { AuditInterceptorProvider } from './common/providers/audit-interceptor.provider';
+import { AuditModule } from './audits/audits.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { AuditInterceptorProvider } from './common/providers/audit-interceptor.p
     TypeOrmModule.forRootAsync({
       useClass: AppService,
     }),
+    AuditModule,
+    AuthModule,
     CommandModule,
     UsersModule,],
   controllers: [AppController],

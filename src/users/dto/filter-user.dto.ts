@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 
 import { PaginationDto } from '../../common/dto/pagination.dto';
 import { Status } from '../../common/enums';
+import { Roles } from 'src/common/enums/role.enum';
 
 export class FilterUserDto extends PaginationDto {
 
@@ -17,11 +17,10 @@ export class FilterUserDto extends PaginationDto {
   @IsEnum(Status, { message: 'status must be either active or inactive' })
   status: Status;
 
-  @ApiProperty({ description: 'Filter by role ID', required: false, })
+  @ApiProperty({ description: 'User Roles', example: 'STUDENT', enum: Roles, required: false, })
+  @IsEnum(Roles, { message: 'Roles must be either ADMIN, TEACHER or STUDENT' })
   @IsOptional()
-  @Type(() => Number)
-  @IsNumber()
-  roleId?: number;
+  role: Roles;
 
   @ApiProperty({ description: 'Filter by department', required: false, })
   @IsOptional()

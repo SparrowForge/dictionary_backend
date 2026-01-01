@@ -39,14 +39,14 @@ export class AuthService {
     if (existingUser) {
       throw new BadRequestException('Email already exists');
     }
-    const existingUserByUserName = await this.usersService.findByEmailOrUserName(createUserDto.user_name);
+    const existingUserByUserName = await this.usersService.findByEmailOrUserName(createUserDto.name);
     if (existingUserByUserName) {
       throw new BadRequestException('Username already exists');
     }
     const user = await this.usersService.create(createUserDto);
     const { password, ...result } = user;
 
-    await this.emailService.sendWelcomeEmail(user.email, user.first_name ?? user.last_name ?? '');
+    await this.emailService.sendWelcomeEmail(user.email, user.name);
 
     return new BaseResponseDto(result, 'User registered successfully');
   }

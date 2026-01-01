@@ -56,9 +56,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
 
   const theme = new SwaggerTheme();
-  const darkCss = theme.getBuffer(SwaggerThemeNameEnum.DARK);
+  const darkCss = theme.getBuffer(SwaggerThemeNameEnum.CLASSIC);
 
-  console.log('🎨 Swagger theme loaded:', SwaggerThemeNameEnum.DARK);
+  console.log('🎨 Swagger theme loaded:', SwaggerThemeNameEnum.CLASSIC);
   console.log('📏 CSS length:', darkCss.length);
 
   SwaggerModule.setup('api/docs', app, document, {

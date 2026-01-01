@@ -9,7 +9,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { FilterUserDto } from './dto/filter-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { UpdateUserOtherInfoDto } from './dto/update-user-other-info.dto';
 
 @Injectable()
 export class UsersService {
@@ -24,7 +23,7 @@ export class UsersService {
     if (existingUser) {
       throw new BadRequestException('Email already exists');
     }
-    const existingUserByUserName = await this.findByEmailOrUserName(createUserDto.user_name);
+    const existingUserByUserName = await this.findByEmailOrUserName(createUserDto.name);
     if (existingUserByUserName) {
       throw new BadRequestException('Username already exists');
     }
@@ -49,7 +48,6 @@ export class UsersService {
 
     const queryBuilder = this.userRepository
       .createQueryBuilder('user')
-      .leftJoinAndSelect('user.role', 'role')
       .leftJoinAndSelect('user.countries', 'country')
       .skip(skip)
       .take(limit)
@@ -71,9 +69,9 @@ export class UsersService {
     }
 
     // Apply role filter if provided
-    if (filters?.roleId) {
-      queryBuilder.andWhere('user.roleId = :roleId', {
-        roleId: filters.roleId,
+    if (filters?.role) {
+      queryBuilder.andWhere('user.role = :role', {
+        role: filters.role,
       });
     }
 
@@ -118,7 +116,6 @@ export class UsersService {
   findOne(id: string) {
     return this.userRepository.findOne({
       where: { id },
-      relations: ['role'],
       withDeleted: false, // Only get non-deleted users
     });
   }
@@ -129,15 +126,10 @@ export class UsersService {
       .addSelect('user.password')
       .where('user.email = :email or user.user_name = :email', { email })
       .andWhere('user.deletedAt IS NULL') // Only get non-deleted users
-      .leftJoinAndSelect('user.role', 'role')
       .getOne();
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
-    return this.userRepository.update(id, updateUserDto);
-  }
-
-  updateOtherInfo(id: string, updateUserDto: UpdateUserOtherInfoDto) {
     return this.userRepository.update(id, updateUserDto);
   }
 
@@ -158,7 +150,7 @@ export class UsersService {
   getRoles(userId: string) {
     return this.userRepository.findOne({
       where: { id: userId },
-      relations: ['roles'],
+      select: ['id', 'role'],
     });
   }
 

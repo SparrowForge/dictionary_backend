@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { RefreshToken } from './auth/entities/refresh-token.entity';
 import { PasswordResetToken } from './auth/entities/password-reset-token.entity';
-import { Role } from './roles/entities/role.entity';
 import { User } from './users/entities/user.entity';
 import { AuditLog } from './audits/entities/audit.entity';
 
@@ -26,7 +25,6 @@ export class AppService implements TypeOrmOptionsFactory {
         AuditLog,
         RefreshToken,
         PasswordResetToken,
-        Role,
         User,
         File,
       ],

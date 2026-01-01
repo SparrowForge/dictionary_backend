@@ -25,7 +25,6 @@ import { FilterUserDto } from './dto/filter-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
-import { UpdateUserOtherInfoDto } from './dto/update-user-other-info.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTags('Users')
@@ -110,17 +109,6 @@ export class UsersController {
   @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required', })
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto,) {
     const user = await this.usersService.update(id, updateUserDto);
-    return new BaseResponseDto(user, 'User updated successfully');
-  }
-
-  @Patch('other-info/:id')
-  @ApiOperation({ summary: 'Update a user by id', description: 'Updates an existing user with the provided information. Only active users can be updated. Requires authentication.', })
-  @ApiParam({ name: 'id', description: 'User ID (uuid)', example: '45e16f14-b27f-4d20-99df-c1d5535ff9e3', type: 'number', })
-  @ApiResponse({ status: 200, description: 'User updated successfully', type: BaseResponseDto<User>, })
-  @ApiResponse({ status: 404, description: 'User not found', })
-  @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required', })
-  async updateOtherInfo(@Param('id') id: string, @Body() updateUserDto: UpdateUserOtherInfoDto,) {
-    const user = await this.usersService.updateOtherInfo(id, updateUserDto);
     return new BaseResponseDto(user, 'User updated successfully');
   }
 
