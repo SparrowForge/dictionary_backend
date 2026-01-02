@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { AuditInterceptorProvider } from './common/providers/audit-interceptor.provider';
 import { AuditModule } from './audits/audits.module';
 import { AuthModule } from './auth/auth.module';
+import { TeacherModule } from './teacher/teacher.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { AuthModule } from './auth/auth.module';
     AuditModule,
     AuthModule,
     CommandModule,
-    UsersModule,],
+    UsersModule,
+    TeacherModule,],
   controllers: [AppController],
   providers: [AppService, AuditInterceptorProvider],
 })

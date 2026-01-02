@@ -124,8 +124,8 @@ export class UsersService {
     return this.userRepository
       .createQueryBuilder('user')
       .addSelect('user.password')
-      .where('user.email = :email or user.user_name = :email', { email })
-      .andWhere('user.deletedAt IS NULL') // Only get non-deleted users
+      .where('user.email = :email', { email })
+      // .andWhere('user.deletedAt IS NULL') // Only get non-deleted users
       .getOne();
   }
 
