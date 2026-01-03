@@ -6,6 +6,7 @@ import { PasswordResetToken } from './auth/entities/password-reset-token.entity'
 import { User } from './users/entities/user.entity';
 import { AuditLog } from './audits/entities/audit.entity';
 import { Teacher } from './teacher/entities/teacher.entity';
+import { Classes } from './classes/entities/classes.entity';
 
 @Injectable()
 
@@ -28,7 +29,8 @@ export class AppService implements TypeOrmOptionsFactory {
         PasswordResetToken,
         User,
         File,
-        Teacher
+        Teacher,
+        Classes
       ],
       synchronize: false, // Never use synchronize in production
       logging: isDevelopment,

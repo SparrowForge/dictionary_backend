@@ -12,6 +12,7 @@ import { TeacherModule } from './teacher/teacher.module';
 import { RolesGuard } from './common/guards/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
+import { ClassesModule } from './classes/classes.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
     AuthModule,
     CommandModule,
     UsersModule,
-    TeacherModule,],
+    TeacherModule,
+    ClassesModule,],
   controllers: [AppController],
   providers: [AppService, AuditInterceptorProvider,
     {
