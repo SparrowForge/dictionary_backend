@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 
 import { Status } from '../../common/enums';
-import { Roles } from 'src/common/enums/role.enum';
+import { RolesEnum } from 'src/common/enums/role.enum';
 
 export class CreateUserDto {
   @ApiProperty({ description: 'User email', example: 'admin@solocrest.com', })
@@ -36,11 +36,11 @@ export class CreateUserDto {
   @IsOptional()
   roleId?: string;
 
-  @ApiProperty({ description: 'User Roles', example: 'STUDENT', enum: Roles, })
-  @IsEnum(Roles, { message: 'Roles must be either ADMIN, TEACHER or STUDENT' })
+  @ApiProperty({ description: 'User Roles', example: 'STUDENT', enum: RolesEnum, })
+  @IsEnum(RolesEnum, { message: 'Roles must be either ADMIN, TEACHER or STUDENT' })
   @IsString()
   @IsNotEmpty()
-  role: Roles;
+  role: RolesEnum;
 
   @ApiProperty({ description: 'User status', example: 'active', enum: Status, })
   @IsEnum(Status, { message: 'status must be either active or inactive' })

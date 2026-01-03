@@ -17,4 +17,9 @@ export class UpdateTeacherDto extends PartialType(CreateTeacherDto) {
   @IsString()
   @IsOptional()
   designation: string;
+
+  @ApiProperty({ description: 'Created by user id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })
+  @IsString()
+  @IsOptional()
+  updated_by: string;
 }

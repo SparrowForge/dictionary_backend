@@ -68,6 +68,7 @@ export class AuthService {
     const accessToken = this.jwtService.sign({
       email: user.email,
       sub: user.id,
+      role: user.role
     });
     const refreshToken =
       await this.refreshTokenService.generateRefreshToken(user);

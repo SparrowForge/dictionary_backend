@@ -9,6 +9,9 @@ import { AuditInterceptorProvider } from './common/providers/audit-interceptor.p
 import { AuditModule } from './audits/audits.module';
 import { AuthModule } from './auth/auth.module';
 import { TeacherModule } from './teacher/teacher.module';
+import { RolesGuard } from './common/guards/roles.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -26,6 +29,15 @@ import { TeacherModule } from './teacher/teacher.module';
     UsersModule,
     TeacherModule,],
   controllers: [AppController],
-  providers: [AppService, AuditInterceptorProvider],
+  providers: [AppService, AuditInterceptorProvider,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule { }

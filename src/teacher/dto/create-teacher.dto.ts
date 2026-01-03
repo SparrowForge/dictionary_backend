@@ -11,4 +11,10 @@ export class CreateTeacherDto {
   @IsString()
   @IsOptional()
   designation: string;
+
+
+  @ApiProperty({ description: 'Created by user id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })
+  @IsString()
+  @IsOptional()
+  created_by: string;
 }

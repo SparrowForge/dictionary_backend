@@ -31,6 +31,8 @@ export class TeacherService {
         const queryBuilder = this.TeacherRepository
             .createQueryBuilder('Teacher')
             .leftJoinAndSelect('Teacher.user', 'user')
+            .leftJoinAndSelect('Teacher.created_by_user', 'created_by_user')
+            .leftJoinAndSelect('Teacher.updated_by_user', 'updated_by_user')
             .skip(skip)
             .take(limit)
             .orderBy('user.name', 'ASC')
@@ -85,6 +87,7 @@ export class TeacherService {
     findOne(id: string) {
         return this.TeacherRepository.findOne({
             where: { id },
+            relations: ['user', 'created_by_user', 'updated_by_user'],
             withDeleted: false, // Only get non-deleted Teachers
         });
     }

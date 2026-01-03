@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Status } from 'src/common/enums';
-import { Roles } from '../../common/enums/role.enum';
+import { RolesEnum } from '../../common/enums/role.enum';
 import {
   Column,
   CreateDateColumn,
@@ -17,8 +17,8 @@ export class User {
   id: string;
 
   @ApiProperty({ description: 'User role ID', example: 1, })
-  @Column({ type: 'enum', enum: Roles, nullable: false })
-  role: Roles;
+  @Column({ type: 'enum', enum: RolesEnum, nullable: false })
+  role: RolesEnum;
 
   @ApiProperty({ description: 'User name', example: 'johndoe' })
   @Column({ unique: false, nullable: false })

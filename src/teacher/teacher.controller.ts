@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { TeacherService } from './teacher.service';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BaseResponseDto } from 'src/common/dto/base-response.dto';
@@ -7,12 +7,14 @@ import { CreateTeacherDto } from './dto/create-teacher.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
 import { FilterTeacherDto } from './dto/filter-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
-import { AuthGuard } from '@nestjs/passport';
-
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { RolesEnum } from 'src/common/enums/role.enum';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import type AuthUser from 'src/auth/dto/auth-user';
 
 @ApiTags('Teachers')
 @ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'))
+@Roles(RolesEnum.ADMIN)
 @Controller('api/v1/teachers')
 export class TeacherController {
     constructor(private readonly teacherService: TeacherService) { }
@@ -24,7 +26,8 @@ export class TeacherController {
     @ApiResponse({ status: 201, description: 'Teacher created successfully', type: BaseResponseDto<Teacher>, })
     @ApiResponse({ status: 400, description: 'Bad request - validation error', })
     @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required', })
-    async create(@Body() createTeacherDto: CreateTeacherDto) {
+    async create(@CurrentUser() user: AuthUser, @Body() createTeacherDto: CreateTeacherDto) {
+        createTeacherDto.created_by = user.userId;
         const teacher = await this.teacherService.create(createTeacherDto);
         return new BaseResponseDto(teacher, 'Teacher created successfully');
     }
@@ -77,7 +80,8 @@ export class TeacherController {
     @ApiResponse({ status: 200, description: 'Teacher updated successfully', type: BaseResponseDto<Teacher>, })
     @ApiResponse({ status: 404, description: 'Teacher not found', })
     @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required', })
-    async update(@Param('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto,) {
+    async update(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto,) {
+        updateTeacherDto.updated_by = user.userId;
         const teacher = await this.teacherService.update(id, updateTeacherDto);
         return new BaseResponseDto(teacher, 'Teacher updated successfully');
     }
@@ -91,7 +95,7 @@ export class TeacherController {
     @ApiResponse({ status: 200, description: 'Teacher soft deleted successfully', type: BaseResponseDto<null>, })
     @ApiResponse({ status: 404, description: 'Teacher not found', })
     @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required', })
-    async remove(@Param('id') id: string) {
+    async remove(@CurrentUser() user: AuthUser, @Param('id') id: string) {
         await this.teacherService.remove(id);
         return new BaseResponseDto(null, 'Teacher soft deleted successfully');
     }
@@ -102,7 +106,7 @@ export class TeacherController {
     @ApiResponse({ status: 200, description: 'Teacher permanently deleted successfully', type: BaseResponseDto<null>, })
     @ApiResponse({ status: 404, description: 'Teacher not found', })
     @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required', })
-    async permanentRemove(@Param('id') id: string) {
+    async permanentRemove(@CurrentUser() user: AuthUser, @Param('id') id: string) {
         await this.teacherService.permanentRemove(id);
         return new BaseResponseDto(null, 'Teacher permanently deleted successfully');
     }
@@ -113,7 +117,7 @@ export class TeacherController {
     @ApiResponse({ status: 200, description: 'Teacher restored successfully', type: BaseResponseDto<null>, })
     @ApiResponse({ status: 404, description: 'Teacher not found', })
     @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required', })
-    async restore(@Param('id') id: string) {
+    async restore(@CurrentUser() user: AuthUser, @Param('id') id: string) {
         await this.teacherService.restore(id);
         return new BaseResponseDto(null, 'Teacher restored successfully');
     }
