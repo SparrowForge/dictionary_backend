@@ -48,9 +48,8 @@ export class UploadFileDto {
 
   @ApiProperty({
     description: 'ID of the user',
-    example: 123,
+    example: "123",
   })
-  @Transform(({ value }) => parseInt(value, 10))
-  @IsNumber()
-  uploadedBy: number;
+  @IsString()
+  uploadedBy: string;
 }

@@ -17,10 +17,8 @@ import {
   Query,
   Res,
   UploadedFile,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBadRequestResponse,
@@ -48,7 +46,6 @@ import { FilesService } from './files.service';
 
 @ApiTags('Files')
 @ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'))
 @Controller('api/v1/files')
 export class FilesController {
   private readonly logger = new Logger(FilesController.name);
@@ -125,8 +122,9 @@ export class FilesController {
         validators: [
           new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }), // 10MB
           new FileTypeValidator({
-            fileType: '.(jpg|jpeg|png|gif|pdf|doc|docx|mp4|mov|avi|quicktime)$',
-          }),
+            fileType: /image\/(png|jpeg|jpg|gif)|application\/pdf|video\/(mp4|quicktime)/,
+            fallbackToMimetype: true, // Crucial for resolving identical-type errors
+          })
         ],
       }),
     )
@@ -134,7 +132,7 @@ export class FilesController {
     @Body() uploadFileDto: UploadFileDto,
   ): Promise<FileResponseDto> {
     // const uploadedBy = 1;
-
+    console.log("file");
     return await this.filesService.uploadFile(file, uploadFileDto);
   }
 

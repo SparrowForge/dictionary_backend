@@ -14,6 +14,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { ClassesModule } from './classes/classes.module';
 import { StudentsModule } from './students/students.module';
+import { FilesModule } from './files/files.module';
+import { WordsModule } from './words/words.module';
 
 @Module({
   imports: [
@@ -31,9 +33,14 @@ import { StudentsModule } from './students/students.module';
     UsersModule,
     TeacherModule,
     ClassesModule,
-    StudentsModule,],
+    StudentsModule,
+    FilesModule,
+    WordsModule,
+  ],
   controllers: [AppController],
-  providers: [AppService, AuditInterceptorProvider,
+  providers: [
+    AppService,
+    AuditInterceptorProvider,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

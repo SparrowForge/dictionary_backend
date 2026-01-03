@@ -57,8 +57,7 @@ export class TeacherService {
             queryBuilder.andWhere(
                 '(eacher.designation ILIKE :designation', {
                 designation: `%${filters.designation}%`
-            },
-            );
+            });
         }
 
         const [items, total] = await queryBuilder.getManyAndCount();

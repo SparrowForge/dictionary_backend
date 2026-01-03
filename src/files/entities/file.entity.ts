@@ -61,8 +61,8 @@ export class Files {
   })
   file_category: FileCategory;
 
-  @Column({ name: 'uploaded_by' })
-  uploaded_by: number;
+  @Column({ name: 'uploaded_by', nullable: true })
+  uploaded_by: string;
 
   @CreateDateColumn({ name: 'uploaded_at' })
   uploaded_at: Date;

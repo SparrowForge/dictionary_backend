@@ -42,8 +42,8 @@ export class StudentsService {
 
         // Apply status filter if provided
         if (filters?.name) {
-            queryBuilder.andWhere('user.name = :name', {
-                name: filters.name,
+            queryBuilder.andWhere('user.name ILIKE :name', {
+                name: `%${filters.name}%`,
             });
         }
         if (filters?.user_id) {
@@ -62,8 +62,8 @@ export class StudentsService {
             });
         }
         if (filters?.class_name) {
-            queryBuilder.andWhere('class.name = :class_name', {
-                class_name: filters.class_name,
+            queryBuilder.andWhere('class.name ILIKE :class_name', {
+                class_name: `%${filters.class_name}%`,
             });
         }
         const [items, total] = await queryBuilder.getManyAndCount();
@@ -92,7 +92,7 @@ export class StudentsService {
     findOne(id: string) {
         return this.StudentsRepository.findOne({
             where: { id },
-            relations: ['created_by_user', 'updated_by_user'],
+            relations: ['user', 'class', 'file', 'created_by_user', 'updated_by_user'],
             withDeleted: false, // Only get non-deleted Studentss
         });
     }

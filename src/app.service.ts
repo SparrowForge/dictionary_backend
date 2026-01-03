@@ -8,6 +8,9 @@ import { AuditLog } from './audits/entities/audit.entity';
 import { Teacher } from './teacher/entities/teacher.entity';
 import { Classes } from './classes/entities/classes.entity';
 import { Students } from './students/entities/students.entity';
+import { Files } from './files/entities/file.entity';
+import { FileReference } from './files/entities/file-reference.entity';
+import { Words } from './words/entities/words.entity';
 
 @Injectable()
 
@@ -29,10 +32,12 @@ export class AppService implements TypeOrmOptionsFactory {
         RefreshToken,
         PasswordResetToken,
         User,
-        File,
+        Files,
+        FileReference,
         Teacher,
         Classes,
-        Students
+        Students,
+        Words,
       ],
       synchronize: false, // Never use synchronize in production
       logging: isDevelopment,

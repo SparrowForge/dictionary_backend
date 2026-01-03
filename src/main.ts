@@ -76,16 +76,7 @@ async function bootstrap() {
     customfavIcon: '/favicon.ico',
   });
 
-
-  app.use(
-    '/api/v1/stripe-payment-public/webhook',
-    express.raw({ type: 'application/json' }),
-  );
-  app.use(
-    '/api/v1/stripe-payment-public/webhook-thin',
-    express.raw({ type: 'application/json' }),
-  );
-
+  console.log('App listining to port:', process.env.PORT ?? 3000);
   await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
 }
 void bootstrap();

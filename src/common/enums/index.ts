@@ -1,5 +1,5 @@
 export * from './alert-frequency.enum';
-export * from './expense-status.enum';
+export * from './word-status.enum';
 export * from './expense-type.enum';
 export * from './farrier-visit-attachment-stage.enum';
 export * from './gender.enum';
