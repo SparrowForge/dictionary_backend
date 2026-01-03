@@ -16,6 +16,7 @@ import { ClassesModule } from './classes/classes.module';
 import { StudentsModule } from './students/students.module';
 import { FilesModule } from './files/files.module';
 import { WordsModule } from './words/words.module';
+import { WordClassesModule } from './word-classes/word-classes.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { WordsModule } from './words/words.module';
     StudentsModule,
     FilesModule,
     WordsModule,
+    WordClassesModule,
   ],
   controllers: [AppController],
   providers: [

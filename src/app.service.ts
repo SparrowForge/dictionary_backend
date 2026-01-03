@@ -11,6 +11,7 @@ import { Students } from './students/entities/students.entity';
 import { Files } from './files/entities/file.entity';
 import { FileReference } from './files/entities/file-reference.entity';
 import { Words } from './words/entities/words.entity';
+import { WordClasses } from './word-classes/entities/word-classes.entity';
 
 @Injectable()
 
@@ -38,6 +39,7 @@ export class AppService implements TypeOrmOptionsFactory {
         Classes,
         Students,
         Words,
+        WordClasses
       ],
       synchronize: false, // Never use synchronize in production
       logging: isDevelopment,
