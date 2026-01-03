@@ -31,11 +31,6 @@ export class CreateUserDto {
   @IsOptional()
   phone_no?: string;
 
-  @ApiProperty({ description: 'User role ID', example: 1, })
-  @IsString()
-  @IsOptional()
-  roleId?: string;
-
   @ApiProperty({ description: 'User Roles', example: 'STUDENT', enum: RolesEnum, })
   @IsEnum(RolesEnum, { message: 'Roles must be either ADMIN, TEACHER or STUDENT' })
   @IsString()
@@ -46,4 +41,10 @@ export class CreateUserDto {
   @IsEnum(Status, { message: 'status must be either active or inactive' })
   @IsOptional()
   status?: Status = Status.ACTIVE;
+
+  @ApiProperty({ description: 'Created by user id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })
+  @IsString()
+  @IsOptional()
+  created_by: string;
+
 }

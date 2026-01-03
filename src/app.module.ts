@@ -13,6 +13,7 @@ import { RolesGuard } from './common/guards/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { ClassesModule } from './classes/classes.module';
+import { StudentsModule } from './students/students.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { ClassesModule } from './classes/classes.module';
     CommandModule,
     UsersModule,
     TeacherModule,
-    ClassesModule,],
+    ClassesModule,
+    StudentsModule,],
   controllers: [AppController],
   providers: [AppService, AuditInterceptorProvider,
     {

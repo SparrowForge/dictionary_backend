@@ -43,4 +43,10 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsEnum(Status, { message: 'status must be either active or inactive' })
   @IsOptional()
   status?: Status = Status.ACTIVE;
+
+  @ApiProperty({ description: 'Updated by user id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })
+  @IsString()
+  @IsOptional()
+  updated_by: string;
+
 }

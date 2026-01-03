@@ -20,13 +20,14 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     // Hash the password before saving
     const existingUser = await this.findByEmailOrUserName(createUserDto.email);
+    console.log(existingUser);
     if (existingUser) {
       throw new BadRequestException('Email already exists');
     }
-    const existingUserByUserName = await this.findByEmailOrUserName(createUserDto.name);
-    if (existingUserByUserName) {
-      throw new BadRequestException('Username already exists');
-    }
+    // const existingUserByUserName = await this.findByEmailOrUserName(createUserDto.name);
+    // if (existingUserByUserName) {
+    //   throw new BadRequestException('Username already exists');
+    // }
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
     // Create user DTO with hashed password
@@ -48,11 +49,9 @@ export class UsersService {
 
     const queryBuilder = this.userRepository
       .createQueryBuilder('user')
-      .leftJoinAndSelect('user.countries', 'country')
       .skip(skip)
       .take(limit)
-      .orderBy('user.createdAt', 'DESC')
-      .where('user.deletedAt IS NULL');
+      .orderBy('user.name', 'DESC');
 
     // Apply filter if phone no avl
     if (filters?.phone_no) {
@@ -75,20 +74,20 @@ export class UsersService {
       });
     }
 
-    // Apply department filter if provided
-    if (filters?.department) {
-      queryBuilder.andWhere('user.department = :department', {
-        department: filters.department,
+    // Apply email filter if provided
+    if (filters?.email) {
+      queryBuilder.andWhere('user.email = :email', {
+        email: filters.email,
       });
     }
 
-    // Apply search filter if provided
-    if (filters?.search) {
-      queryBuilder.andWhere(
-        '(user.fullName ILIKE :search OR user.email ILIKE :search)',
-        { search: `%${filters.search}%` },
-      );
+    // Apply name filter if provided
+    if (filters?.name) {
+      queryBuilder.andWhere('user.name ILIKE :name', {
+        name: filters.name,
+      });
     }
+
 
     const [items, total] = await queryBuilder.getManyAndCount();
 
@@ -125,7 +124,6 @@ export class UsersService {
       .createQueryBuilder('user')
       .addSelect('user.password')
       .where('user.email = :email', { email })
-      // .andWhere('user.deletedAt IS NULL') // Only get non-deleted users
       .getOne();
   }
 

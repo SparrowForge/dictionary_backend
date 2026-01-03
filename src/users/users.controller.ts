@@ -7,9 +7,7 @@ import {
   Patch,
   Post,
   Query,
-  // UseGuards,
 } from '@nestjs/common';
-// import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -25,12 +23,11 @@ import { FilterUserDto } from './dto/filter-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
-import { Public } from 'src/common/decorators/public.decorator';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import type AuthUser from 'src/auth/dto/auth-user';
 
 @ApiTags('Users')
 @ApiBearerAuth()
-// @UseGuards(AuthGuard('jwt'))
-@Public()
 @Controller('api/v1/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
@@ -42,7 +39,9 @@ export class UsersController {
   @ApiResponse({ status: 201, description: 'User created successfully', type: BaseResponseDto<User>, })
   @ApiResponse({ status: 400, description: 'Bad request - validation error', })
   @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required', })
-  async create(@Body() createUserDto: CreateUserDto) {
+  async create(@CurrentUser() authUser: AuthUser, @Body() createUserDto: CreateUserDto) {
+    createUserDto.created_by = authUser.userId;
+    console.log(createUserDto);
     const user = await this.usersService.create(createUserDto);
     return new BaseResponseDto(user, 'User created successfully');
   }
@@ -107,7 +106,8 @@ export class UsersController {
   @ApiResponse({ status: 200, description: 'User updated successfully', type: BaseResponseDto<User>, })
   @ApiResponse({ status: 404, description: 'User not found', })
   @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required', })
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto,) {
+  async update(@CurrentUser() authUser: AuthUser, @Param('id') id: string, @Body() updateUserDto: UpdateUserDto,) {
+    updateUserDto.updated_by = authUser.userId;
     const user = await this.usersService.update(id, updateUserDto);
     return new BaseResponseDto(user, 'User updated successfully');
   }

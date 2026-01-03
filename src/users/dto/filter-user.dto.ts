@@ -6,6 +6,20 @@ import { Status } from '../../common/enums';
 import { RolesEnum } from 'src/common/enums/role.enum';
 
 export class FilterUserDto extends PaginationDto {
+  @ApiProperty({ description: 'User Roles', example: 'STUDENT', enum: RolesEnum, required: false, })
+  @IsEnum(RolesEnum, { message: 'Roles must be either ADMIN, TEACHER or STUDENT' })
+  @IsOptional()
+  role: RolesEnum;
+
+  @ApiProperty({ description: 'Filter by phone_no', required: false, })
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @ApiProperty({ description: 'Filter by department', required: false, })
+  @IsOptional()
+  @IsString()
+  email?: string;
 
   @ApiProperty({ description: 'Filter by phone_no', required: false, })
   @IsOptional()
@@ -17,21 +31,4 @@ export class FilterUserDto extends PaginationDto {
   @IsEnum(Status, { message: 'status must be either active or inactive' })
   status: Status;
 
-  @ApiProperty({ description: 'User Roles', example: 'STUDENT', enum: RolesEnum, required: false, })
-  @IsEnum(RolesEnum, { message: 'Roles must be either ADMIN, TEACHER or STUDENT' })
-  @IsOptional()
-  role: RolesEnum;
-
-  @ApiProperty({ description: 'Filter by department', required: false, })
-  @IsOptional()
-  @IsString()
-  department?: string;
-
-  @ApiProperty({
-    description: 'Search term for name, email, or username',
-    required: false,
-  })
-  @IsOptional()
-  @IsString()
-  search?: string;
 }
