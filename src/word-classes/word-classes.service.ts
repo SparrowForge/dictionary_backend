@@ -1,24 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { WordClasses } from './entities/word-classes.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateWordClassesDto } from './dto/create-word-classes.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { FilterWordClassesDto } from './dto/filter-word-classes.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { WordClasses } from './entities/word-classes.entity';
+import { CreateWordClassesDto } from './dto/create-word-classes.dto';
+import { FilterWordClassesDto } from './dto/filter-word-classes.dto';
 import { UpdateWordClassesDto } from './dto/update-word-classes.dto';
 
 @Injectable()
 export class WordClassesService {
     constructor(
         @InjectRepository(WordClasses)
-        private ClassesRepository: Repository<WordClasses>,
+        private WordClassesRepository: Repository<WordClasses>,
     ) { }
 
-    async create(createClassesDto: CreateWordClassesDto) {
+    async create(createWordClassesDto: CreateWordClassesDto) {
 
-        const Classes = this.ClassesRepository.create(createClassesDto);
-        return this.ClassesRepository.save(Classes);
+        const WordClasses = this.WordClassesRepository.create(createWordClassesDto);
+        return this.WordClassesRepository.save(WordClasses);
     }
 
     async findAll(
@@ -28,23 +28,25 @@ export class WordClassesService {
         const { page = 1, limit = 1000000000000 } = paginationDto;
         const skip = (page - 1) * limit;
 
-        const queryBuilder = this.ClassesRepository
-            .createQueryBuilder('Classes')
-            .leftJoinAndSelect('Classes.created_by_user', 'created_by_user')
-            .leftJoinAndSelect('Classes.updated_by_user', 'updated_by_user')
+        const queryBuilder = this.WordClassesRepository
+            .createQueryBuilder('WordClasses')
+            .leftJoinAndSelect('WordClasses.word', 'word')
+            .leftJoinAndSelect('WordClasses.class', 'class')
+            .leftJoinAndSelect('WordClasses.created_by_user', 'created_by_user')
+            .leftJoinAndSelect('WordClasses.updated_by_user', 'updated_by_user')
             .skip(skip)
             .take(limit)
-            .orderBy('Classes.name', 'ASC')
-            .where('Classes.deleted_at IS NULL');
+            .orderBy('word.english_word', 'ASC')
+            .where('WordClasses.deleted_at IS NULL');
 
         // Apply status filter if provided
         if (filters?.word_id) {
-            queryBuilder.andWhere('Classes.word_id = :word_id', {
+            queryBuilder.andWhere('WordClasses.word_id = :word_id', {
                 word_id: filters.word_id,
             });
         }
         if (filters?.class_id) {
-            queryBuilder.andWhere('Classes.class_id = :class_id', {
+            queryBuilder.andWhere('WordClasses.class_id = :class_id', {
                 class_id: filters.class_id,
             });
         }
@@ -73,38 +75,29 @@ export class WordClassesService {
     }
 
     findOne(id: string) {
-        return this.ClassesRepository.findOne({
+        return this.WordClassesRepository.findOne({
             where: { id },
-            relations: ['created_by_user', 'updated_by_user'],
-            withDeleted: false, // Only get non-deleted Classess
+            relations: ['word', 'class', 'created_by_user', 'updated_by_user'],
+            withDeleted: false,
         });
     }
 
-    findByEmailOrClassesName(email: string) {
-        return this.ClassesRepository
-            .createQueryBuilder('Classes')
-            .addSelect('Classes.password')
-            .where('Classes.email = :email', { email })
-            // .andWhere('Classes.deletedAt IS NULL') // Only get non-deleted Classess
-            .getOne();
-    }
-
-    update(id: string, updateClassesDto: UpdateWordClassesDto) {
-        return this.ClassesRepository.update(id, updateClassesDto);
+    update(id: string, updateWordClassesDto: UpdateWordClassesDto) {
+        return this.WordClassesRepository.update(id, updateWordClassesDto);
     }
 
     remove(id: string) {
-        return this.ClassesRepository.softDelete(id);
+        return this.WordClassesRepository.softDelete(id);
     }
 
-    // Method to permanently delete a Classes (for admin purposes)
+    // Method to permanently delete a WordClasses (for admin purposes)
     permanentRemove(id: string) {
-        return this.ClassesRepository.delete(id);
+        return this.WordClassesRepository.delete(id);
     }
 
-    // Method to restore a soft-deleted Classes
+    // Method to restore a soft-deleted WordClasses
     restore(id: string) {
-        return this.ClassesRepository.restore(id);
+        return this.WordClassesRepository.restore(id);
     }
 
 
