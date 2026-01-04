@@ -19,6 +19,7 @@ import { WordsModule } from './words/words.module';
 import { WordClassesModule } from './word-classes/word-classes.module';
 import { WordSynonymsModule } from './word-synonyms/word-synonyms.module';
 import { WordAntonymsModule } from './word-antonyms/word-antonyms.module';
+import { WordFormsModule } from './word-forms/word-forms.module';
 
 @Module({
   imports: [
@@ -41,7 +42,8 @@ import { WordAntonymsModule } from './word-antonyms/word-antonyms.module';
     WordsModule,
     WordClassesModule,
     WordSynonymsModule,
-    WordAntonymsModule
+    WordAntonymsModule,
+    WordFormsModule
   ],
   controllers: [AppController],
   providers: [

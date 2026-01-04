@@ -12,8 +12,8 @@ import {
 import { User } from 'src/users/entities/user.entity';
 import { Words } from 'src/words/entities/words.entity';
 
-@Entity('dc_word_antonyms')
-export class WordAntonyms {
+@Entity('dc_word_forms')
+export class WordForms {
   @ApiProperty({ description: 'User ID' })
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -22,9 +22,13 @@ export class WordAntonyms {
   @Column({ unique: false, nullable: false })
   word_id: string;
 
-  @ApiProperty({ description: 'Word antonym', example: 'antonym', })
+  @ApiProperty({ description: 'Word form_type', example: 'form_type', })
   @Column({ nullable: false })
-  antonym: string;
+  form_type: string;
+
+  @ApiProperty({ description: 'Word form_value', example: 'form_value', })
+  @Column({ nullable: false })
+  form_value: string;
 
   //====================================================================
 
