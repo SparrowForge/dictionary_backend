@@ -20,6 +20,8 @@ import { WordClassesModule } from './word-classes/word-classes.module';
 import { WordSynonymsModule } from './word-synonyms/word-synonyms.module';
 import { WordAntonymsModule } from './word-antonyms/word-antonyms.module';
 import { WordFormsModule } from './word-forms/word-forms.module';
+import { WordSentencesModule } from './word-sentences/word-sentences.module';
+import { WordMediaModule } from './word-media/word-media.module';
 
 @Module({
   imports: [
@@ -43,7 +45,9 @@ import { WordFormsModule } from './word-forms/word-forms.module';
     WordClassesModule,
     WordSynonymsModule,
     WordAntonymsModule,
-    WordFormsModule
+    WordFormsModule,
+    WordSentencesModule,
+    WordMediaModule,
   ],
   controllers: [AppController],
   providers: [
