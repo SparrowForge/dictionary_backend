@@ -2,7 +2,7 @@ import { BadRequestException, Body, Controller, Delete, Get, Param, ParseEnumPip
 import { WordsService } from './words.service';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BaseResponseDto } from 'src/common/dto/base-response.dto';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CurrentUser } from './../common/decorators/current-user.decorator';
 import type AuthUser from 'src/auth/dto/auth-user';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
 import { Roles } from 'src/common/decorators/roles.decorator';

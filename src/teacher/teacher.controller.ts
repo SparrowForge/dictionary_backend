@@ -9,7 +9,7 @@ import { FilterTeacherDto } from './dto/filter-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { RolesEnum } from 'src/common/enums/role.enum';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CurrentUser } from './../common/decorators/current-user.decorator';
 import type AuthUser from 'src/auth/dto/auth-user';
 
 @ApiTags('Teachers')

@@ -23,7 +23,7 @@ import { FilterUserDto } from './dto/filter-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CurrentUser } from './../common/decorators/current-user.decorator';
 import type AuthUser from 'src/auth/dto/auth-user';
 
 @ApiTags('Users')
