@@ -17,6 +17,7 @@ import { WordAntonyms } from './word-antonyms/entities/word-antonyms.entity';
 import { WordForms } from './word-forms/entities/word-forms.entity';
 import { WordSentences } from './word-sentences/entities/word-sentences.entity';
 import { WordMedia } from './word-media/entities/word-media.entity';
+import { FavouriteWords } from './favourite_words/entities/favourite_words.entity';
 
 @Injectable()
 
@@ -49,7 +50,8 @@ export class AppService implements TypeOrmOptionsFactory {
         WordAntonyms,
         WordForms,
         WordSentences,
-        WordMedia
+        WordMedia,
+        FavouriteWords
       ],
       synchronize: false, // Never use synchronize in production
       logging: isDevelopment,
