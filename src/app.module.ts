@@ -23,6 +23,7 @@ import { WordFormsModule } from './word-forms/word-forms.module';
 import { WordSentencesModule } from './word-sentences/word-sentences.module';
 import { WordMediaModule } from './word-media/word-media.module';
 import { FavouriteWordsModule } from './favourite_words/favourite_words.module';
+import { StudentActivityModule } from './student_activity/student-activity.module';
 
 @Module({
   imports: [
@@ -49,7 +50,8 @@ import { FavouriteWordsModule } from './favourite_words/favourite_words.module';
     WordFormsModule,
     WordSentencesModule,
     WordMediaModule,
-    FavouriteWordsModule
+    FavouriteWordsModule,
+    StudentActivityModule
   ],
   controllers: [AppController],
   providers: [

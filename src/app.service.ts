@@ -18,6 +18,7 @@ import { WordForms } from './word-forms/entities/word-forms.entity';
 import { WordSentences } from './word-sentences/entities/word-sentences.entity';
 import { WordMedia } from './word-media/entities/word-media.entity';
 import { FavouriteWords } from './favourite_words/entities/favourite_words.entity';
+import { StudentActivity } from './student_activity/entities/student-activity.entity';
 
 @Injectable()
 
@@ -51,7 +52,8 @@ export class AppService implements TypeOrmOptionsFactory {
         WordForms,
         WordSentences,
         WordMedia,
-        FavouriteWords
+        FavouriteWords,
+        StudentActivity
       ],
       synchronize: false, // Never use synchronize in production
       logging: isDevelopment,
