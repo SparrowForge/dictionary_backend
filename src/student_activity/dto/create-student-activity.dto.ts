@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsOptional, IsString, } from 'class-validator';
-import { ActivityType } from 'src/common/enums/action-type.enum';
+import { ActivityType } from './../../common/enums/action-type.enum';
 
 export class CreateStudentActivityDto {
   @ApiProperty({ description: 'Student id', example: 'xxxxx xxxxx xxxxx' })

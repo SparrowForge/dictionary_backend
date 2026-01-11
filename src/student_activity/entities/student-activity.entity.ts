@@ -12,7 +12,7 @@ import {
 import { User } from 'src/users/entities/user.entity';
 import { Words } from 'src/words/entities/words.entity';
 import { Students } from 'src/students/entities/students.entity';
-import { ActivityType } from 'src/common/enums/action-type.enum';
+import { ActivityType } from './../../common/enums/action-type.enum';
 
 @Entity('dc_student_activity')
 export class StudentActivity {

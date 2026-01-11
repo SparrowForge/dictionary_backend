@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 
 import { PaginationDto } from '../../common/dto/pagination.dto';
-import { ActivityType } from 'src/common/enums/action-type.enum';
+import { ActivityType } from './../../common/enums/action-type.enum';
 
 export class FilterStudentActivityDto extends PaginationDto {
   @ApiProperty({ description: 'Student id', example: 'xxxxx xxxxx xxxxx' })

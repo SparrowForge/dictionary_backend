@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 
 import { CreateStudentActivityDto } from './create-student-activity.dto';
-import { ActivityType } from 'src/common/enums/action-type.enum';
+import { ActivityType } from './../../common/enums/action-type.enum';
 
 export class UpdateStudentActivityDto extends PartialType(CreateStudentActivityDto) {
   @ApiProperty({ description: 'Student id', example: 'xxxxx xxxxx xxxxx' })
