@@ -4,20 +4,15 @@ import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { PaginationDto } from '../../common/dto/pagination.dto';
 import { Status } from 'src/common/enums';
 
-export class FilterClassesDto extends PaginationDto {
-  @ApiProperty({ description: 'Class name', example: 'class1' })
+export class FilterCatagoryDto extends PaginationDto {
+  @ApiProperty({ description: 'Catagory name', example: 'catagory1' })
   @IsString()
   @IsOptional()
   name: string;
 
-  @ApiProperty({ description: 'Class active status', example: Status.ACTIVE, default: Status.ACTIVE })
+  @ApiProperty({ description: 'Catagory active status', example: Status.ACTIVE, default: Status.ACTIVE })
   @IsEnum(Status, { message: 'Status must be active or inactive' })
   @IsOptional()
   status: Status;
-
-  @ApiProperty({ description: 'Catagory id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })
-  @IsString()
-  @IsOptional()
-  catagory_id: string;
 
 }

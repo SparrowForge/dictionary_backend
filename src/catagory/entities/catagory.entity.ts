@@ -11,29 +11,25 @@ import {
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Status } from 'src/common/enums';
-import { Catagory } from 'src/catagory/entities/catagory.entity';
 
-@Entity('dc_classess')
-export class Classes {
+@Entity('dc_catagory')
+export class Catagory {
   @ApiProperty({ description: 'User ID' })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty({ description: 'Class name', example: 'class1' })
+  @ApiProperty({ description: 'Catagory name', example: 'catagory1' })
   @Column({ unique: true, nullable: false })
   name: string;
 
-  @ApiProperty({ description: 'Class name order/serial', example: '1' })
+  @ApiProperty({ description: 'Catagory name order/serial', example: '1' })
   @Column({ unique: false, nullable: true, default: 0 })
   order_no: number;
 
-  @ApiProperty({ description: 'Class active status', example: Status.ACTIVE })
+  @ApiProperty({ description: 'Catagory active status', example: Status.ACTIVE })
   @Column({ enum: Status, unique: false, nullable: false, default: Status.ACTIVE })
   status: Status;
 
-  @ApiProperty({ description: 'Catagory id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })
-  @Column({ nullable: true })
-  catagory_id: string;
   //====================================================================
 
   @ApiProperty({ description: 'Created by user id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })
@@ -58,11 +54,6 @@ export class Classes {
 
 
   //Relations====================
-  @ApiProperty({ description: 'Catagory object', type: () => Catagory, })
-  @ManyToOne(() => Catagory, { nullable: true })
-  @JoinColumn({ name: 'catagory_id' })
-  catagory: Catagory;
-
   @ApiProperty({ description: 'User object', type: () => User, })
   @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'created_by' })

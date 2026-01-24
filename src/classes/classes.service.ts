@@ -32,6 +32,7 @@ export class ClassesService {
             .createQueryBuilder('Classes')
             .leftJoinAndSelect('Classes.created_by_user', 'created_by_user')
             .leftJoinAndSelect('Classes.updated_by_user', 'updated_by_user')
+            .leftJoinAndSelect('Classes.catagory', 'catagory')
             .skip(skip)
             .take(limit)
             .orderBy('Classes.name', 'ASC')
@@ -47,6 +48,11 @@ export class ClassesService {
         if (filters?.status) {
             queryBuilder.andWhere('user.status = :status', {
                 status: filters.status,
+            });
+        }
+        if (filters?.catagory_id) {
+            queryBuilder.andWhere('Classes.catagory_id = :catagory_id', {
+                catagory_id: filters.catagory_id,
             });
         }
         const [items, total] = await queryBuilder.getManyAndCount();
@@ -75,7 +81,7 @@ export class ClassesService {
     findOne(id: string) {
         return this.ClassesRepository.findOne({
             where: { id },
-            relations: ['created_by_user', 'updated_by_user'],
+            relations: ['created_by_user', 'updated_by_user', 'catagory'],
             withDeleted: false, // Only get non-deleted Classess
         });
     }

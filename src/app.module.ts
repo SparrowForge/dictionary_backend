@@ -24,6 +24,7 @@ import { WordSentencesModule } from './word-sentences/word-sentences.module';
 import { WordMediaModule } from './word-media/word-media.module';
 import { FavouriteWordsModule } from './favourite_words/favourite_words.module';
 import { StudentActivityModule } from './student_activity/student-activity.module';
+import { CatagoryModule } from './catagory/catagory.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { StudentActivityModule } from './student_activity/student-activity.modul
     AuthModule,
     CommandModule,
     UsersModule,
+    CatagoryModule,
     TeacherModule,
     ClassesModule,
     StudentsModule,

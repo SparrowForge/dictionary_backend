@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { WordStatusEnum } from 'src/common/enums/word-status.enum';
+import { Classes } from 'src/classes/entities/classes.entity';
 
 @Entity('dc_words')
 export class Words {
@@ -46,6 +47,10 @@ export class Words {
   @CreateDateColumn({ type: 'timestamp', nullable: true })
   approved_at: Date;
 
+  @ApiProperty({ description: 'class_id', example: 'xxxx xxxx xxxxx xxx' })
+  @Column({ unique: false, nullable: true })
+  class_id: string;
+
   //====================================================================
 
   @ApiProperty({ description: 'Created by user id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })
@@ -68,8 +73,12 @@ export class Words {
   @DeleteDateColumn({ type: 'timestamp' })
   deleted_at: Date;
 
-
   //Relations====================
+  @ApiProperty({ description: 'Class object', type: () => Classes, })
+  @ManyToOne(() => Classes, { nullable: true })
+  @JoinColumn({ name: 'class_id' })
+  classes: Classes;
+
   @ApiProperty({ description: 'User object', type: () => User, })
   @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'approved_by_user_id' })

@@ -34,4 +34,9 @@ export class FilterWordsDto extends PaginationDto {
   @IsString()
   @IsOptional()
   approved_by_user_id: string;
+
+  @ApiProperty({ description: 'class_id', example: 'xxxx xxxx xxxxx xxx' })
+  @IsString()
+  @IsOptional()
+  class_id: string;
 }

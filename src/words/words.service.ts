@@ -34,6 +34,7 @@ export class WordsService {
             .leftJoinAndSelect('words.approved_by_user', 'user')
             .leftJoinAndSelect('words.created_by_user', 'created_by_user')
             .leftJoinAndSelect('words.updated_by_user', 'updated_by_user')
+            .leftJoinAndSelect('words.classes', 'classes')
             .skip(skip)
             .take(limit)
             .orderBy('user.name', 'ASC')
@@ -70,6 +71,11 @@ export class WordsService {
                 approved_by_user_id: filters.approved_by_user_id,
             });
         }
+        if (filters?.class_id) {
+            queryBuilder.andWhere('words.class_id = :class_id', {
+                class_id: filters.class_id,
+            });
+        }
         const [items, total] = await queryBuilder.getManyAndCount();
 
         const totalPages = Math.ceil(total / limit);
@@ -96,7 +102,7 @@ export class WordsService {
     findOne(id: string) {
         return this.WordsRepository.findOne({
             where: { id },
-            relations: ['approved_by_user', 'created_by_user', 'updated_by_user'],
+            relations: ['approved_by_user', 'created_by_user', 'updated_by_user', 'classes'],
             withDeleted: false, // Only get non-deleted Wordss
         });
     }

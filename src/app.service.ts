@@ -19,6 +19,7 @@ import { WordSentences } from './word-sentences/entities/word-sentences.entity';
 import { WordMedia } from './word-media/entities/word-media.entity';
 import { FavouriteWords } from './favourite_words/entities/favourite_words.entity';
 import { StudentActivity } from './student_activity/entities/student-activity.entity';
+import { Catagory } from './catagory/entities/catagory.entity';
 
 @Injectable()
 
@@ -42,6 +43,7 @@ export class AppService implements TypeOrmOptionsFactory {
         User,
         Files,
         FileReference,
+        Catagory,
         Teacher,
         Classes,
         Students,

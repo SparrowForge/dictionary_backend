@@ -46,6 +46,11 @@ export class UpdateWordsDto extends PartialType(CreateWordsDto) {
   @IsOptional()
   approved_at: Date;
 
+  @ApiProperty({ description: 'class_id', example: 'xxxx xxxx xxxxx xxx' })
+  @IsString()
+  @IsNotEmpty()
+  class_id: string;
+
   @ApiProperty({ description: 'Created by user id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', required: false })
   @IsString()
   @IsOptional()
