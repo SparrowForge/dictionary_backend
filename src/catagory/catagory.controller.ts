@@ -11,6 +11,7 @@ import { RolesEnum } from 'src/common/enums/role.enum';
 import { CreateCatagoryDto } from './dto/create-catagory.dto';
 import { FilterCatagoryDto } from './dto/filter-catagory.dto';
 import { UpdateCatagoryDto } from './dto/update-catagory.dto';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTags('Catagory')
 @ApiBearerAuth()
@@ -33,6 +34,7 @@ export class CatagoryController {
     }
 
     @Get()
+    @Public()
     @ApiOperation({ summary: 'Get all catagory with pagination and filters', description: 'Retrieves a paginated list of all active catagory with optional filtering by role, department, and search terms. Requires authentication.', })
     @ApiResponse({
         status: 200, description: 'Returns paginated list of catagory', type: BaseResponseDto<PaginatedResponseDto<Catagory>>,
@@ -64,6 +66,7 @@ export class CatagoryController {
     }
 
     @Get(':id')
+    @Public()
     @ApiOperation({ summary: 'Get a catagory by id', description: 'Retrieves a specific catagory by their ID. Only returns active catagory (soft-deleted catagory are excluded). Requires authentication.', })
     @ApiParam({ name: 'id', description: 'Catagory ID (uuid)', example: '45e16f14-b27f-4d20-99df-c1d5535ff9e3', type: 'string', })
     @ApiResponse({ status: 200, description: 'Catagory retrieved successfully', type: BaseResponseDto<Catagory>, })

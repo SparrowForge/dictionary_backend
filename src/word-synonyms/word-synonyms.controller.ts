@@ -33,6 +33,7 @@ export class WordSynonymsController {
     }
 
     @Get()
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER, RolesEnum.STUDENT)
     @ApiOperation({ summary: 'Get all WordSynonyms with pagination and filters', description: 'Retrieves a paginated list of all active WordSynonyms with optional filtering by role, department, and search terms. Requires authentication.', })
     @ApiResponse({
         status: 200, description: 'Returns paginated list of WordSynonyms', type: BaseResponseDto<PaginatedResponseDto<WordSynonyms>>,
@@ -64,6 +65,7 @@ export class WordSynonymsController {
     }
 
     @Get(':id')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER, RolesEnum.STUDENT)
     @ApiOperation({ summary: 'Get a WordSynonyms by id', description: 'Retrieves a specific WordSynonyms by their ID. Only returns active WordSynonyms (soft-deleted WordSynonyms are excluded). Requires authentication.', })
     @ApiParam({ name: 'id', description: 'WordSynonyms ID (uuid)', example: '45e16f14-b27f-4d20-99df-c1d5535ff9e3', type: 'string', })
     @ApiResponse({ status: 200, description: 'WordSynonyms retrieved successfully', type: BaseResponseDto<WordSynonyms>, })

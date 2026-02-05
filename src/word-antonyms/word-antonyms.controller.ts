@@ -33,6 +33,7 @@ export class WordAntonymsController {
     }
 
     @Get()
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER, RolesEnum.STUDENT)
     @ApiOperation({ summary: 'Get all WordAntonyms with pagination and filters', description: 'Retrieves a paginated list of all active WordAntonyms with optional filtering by role, department, and search terms. Requires authentication.', })
     @ApiResponse({
         status: 200, description: 'Returns paginated list of WordAntonyms', type: BaseResponseDto<PaginatedResponseDto<WordAntonyms>>,
@@ -64,6 +65,7 @@ export class WordAntonymsController {
     }
 
     @Get(':id')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER, RolesEnum.STUDENT)
     @ApiOperation({ summary: 'Get a WordAntonyms by id', description: 'Retrieves a specific WordAntonyms by their ID. Only returns active WordAntonyms (soft-deleted WordAntonyms are excluded). Requires authentication.', })
     @ApiParam({ name: 'id', description: 'WordAntonyms ID (uuid)', example: '45e16f14-b27f-4d20-99df-c1d5535ff9e3', type: 'string', })
     @ApiResponse({ status: 200, description: 'WordAntonyms retrieved successfully', type: BaseResponseDto<WordAntonyms>, })

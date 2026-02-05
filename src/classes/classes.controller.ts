@@ -11,6 +11,7 @@ import { FilterClassesDto } from './dto/filter-classes.dto';
 import { UpdateClassesDto } from './dto/update-classes.dto';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { RolesEnum } from 'src/common/enums/role.enum';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTags('Classes')
 @ApiBearerAuth()
@@ -33,6 +34,7 @@ export class ClassesController {
     }
 
     @Get()
+    @Public()
     @ApiOperation({ summary: 'Get all classes with pagination and filters', description: 'Retrieves a paginated list of all active classes with optional filtering by role, department, and search terms. Requires authentication.', })
     @ApiResponse({
         status: 200, description: 'Returns paginated list of classes', type: BaseResponseDto<PaginatedResponseDto<Classes>>,
@@ -64,6 +66,7 @@ export class ClassesController {
     }
 
     @Get(':id')
+    @Public()
     @ApiOperation({ summary: 'Get a classes by id', description: 'Retrieves a specific classes by their ID. Only returns active classes (soft-deleted classes are excluded). Requires authentication.', })
     @ApiParam({ name: 'id', description: 'Classes ID (uuid)', example: '45e16f14-b27f-4d20-99df-c1d5535ff9e3', type: 'string', })
     @ApiResponse({ status: 200, description: 'Classes retrieved successfully', type: BaseResponseDto<Classes>, })

@@ -15,12 +15,12 @@ import { WordStatusEnum } from 'src/common/enums';
 
 @ApiTags('Words')
 @ApiBearerAuth()
-@Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
 @Controller('api/v1/words')
 export class WordsController {
     constructor(private readonly wordsService: WordsService) { }
 
     @Post()
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
     @ApiOperation({
         summary: 'Create a new words', description: 'Creates a new words with the provided information. Password will be hashed before saving. Requires authentication.',
     })
@@ -34,6 +34,7 @@ export class WordsController {
     }
 
     @Get()
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER, RolesEnum.STUDENT)
     @ApiOperation({ summary: 'Get all words with pagination and filters', description: 'Retrieves a paginated list of all active words with optional filtering by role, department, and search terms. Requires authentication.', })
     @ApiResponse({
         status: 200, description: 'Returns paginated list of words', type: BaseResponseDto<PaginatedResponseDto<Words>>,
@@ -65,6 +66,7 @@ export class WordsController {
     }
 
     @Get(':id')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER, RolesEnum.STUDENT)
     @ApiOperation({ summary: 'Get a words by id', description: 'Retrieves a specific words by their ID. Only returns active words (soft-deleted words are excluded). Requires authentication.', })
     @ApiParam({ name: 'id', description: 'Words ID (uuid)', example: '45e16f14-b27f-4d20-99df-c1d5535ff9e3', type: 'string', })
     @ApiResponse({ status: 200, description: 'Words retrieved successfully', type: BaseResponseDto<Words>, })
@@ -76,6 +78,7 @@ export class WordsController {
     }
 
     @Patch(':id')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
     @ApiOperation({ summary: 'Update a words by id', description: 'Updates an existing words with the provided information. Only active words can be updated. Requires authentication.', })
     @ApiParam({ name: 'id', description: 'Words ID (uuid)', example: '45e16f14-b27f-4d20-99df-c1d5535ff9e3', type: 'number', })
     @ApiResponse({ status: 200, description: 'Words updated successfully', type: BaseResponseDto<Words>, })
@@ -114,6 +117,7 @@ export class WordsController {
     }
 
     @Delete(':id')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
     @ApiOperation({
         summary: 'Soft delete a words by id',
         description: 'Soft deletes a words by setting the deletedAt timestamp. The words will not appear in regular queries but can be restored. Requires authentication.',
@@ -128,6 +132,7 @@ export class WordsController {
     }
 
     @Delete(':id/permanent')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
     @ApiOperation({ summary: 'Permanently delete a words by id', description: 'Permanently deletes a words from the database. This action cannot be undone. Requires authentication.', })
     @ApiParam({ name: 'id', description: 'Words ID (uuid)', example: 1, type: 'number', })
     @ApiResponse({ status: 200, description: 'Words permanently deleted successfully', type: BaseResponseDto<null>, })
@@ -139,6 +144,7 @@ export class WordsController {
     }
 
     @Post(':id/restore')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
     @ApiOperation({ summary: 'Restore a soft-deleted words', description: 'Restores a soft-deleted words.', })
     @ApiParam({ name: 'id', description: 'Words ID (uuid)', example: 1, type: 'number', })
     @ApiResponse({ status: 200, description: 'Words restored successfully', type: BaseResponseDto<null>, })

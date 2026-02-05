@@ -33,6 +33,7 @@ export class FavouriteWordsController {
     }
 
     @Get()
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER, RolesEnum.STUDENT)
     @ApiOperation({ summary: 'Get all FavouriteWords with pagination and filters', description: 'Retrieves a paginated list of all active FavouriteWords with optional filtering by role, department, and search terms. Requires authentication.', })
     @ApiResponse({
         status: 200, description: 'Returns paginated list of FavouriteWords', type: BaseResponseDto<PaginatedResponseDto<FavouriteWords>>,
@@ -64,6 +65,7 @@ export class FavouriteWordsController {
     }
 
     @Get(':id')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER, RolesEnum.STUDENT)
     @ApiOperation({ summary: 'Get a FavouriteWords by id', description: 'Retrieves a specific FavouriteWords by their ID. Only returns active FavouriteWords (soft-deleted FavouriteWords are excluded). Requires authentication.', })
     @ApiParam({ name: 'id', description: 'FavouriteWords ID (uuid)', example: '45e16f14-b27f-4d20-99df-c1d5535ff9e3', type: 'string', })
     @ApiResponse({ status: 200, description: 'FavouriteWords retrieved successfully', type: BaseResponseDto<FavouriteWords>, })
