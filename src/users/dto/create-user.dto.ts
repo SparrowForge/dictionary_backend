@@ -3,8 +3,10 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
 
 import { Status } from '../../common/enums';
@@ -46,5 +48,27 @@ export class CreateUserDto {
   @IsString()
   @IsOptional()
   created_by: string;
+
+  //===========================
+  @ApiProperty({ description: 'Image file id', example: 10, })
+  @IsNumber()
+  @IsOptional()
+  image_file_id?: number;
+
+  @ApiProperty({ description: 'Class id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })
+  @IsUUID()
+  @IsOptional()
+  class_id?: string;
+
+  @ApiProperty({ description: 'Student section', example: 'A', required: false, })
+  @IsString()
+  @IsOptional()
+  section?: string;
+
+  @ApiProperty({ description: 'Student roll_number', example: '001ction', required: false, })
+  @IsString()
+  @IsOptional()
+  roll_number?: string;
+
 
 }

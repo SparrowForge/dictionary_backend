@@ -31,4 +31,19 @@ export class FilterUserDto extends PaginationDto {
   @IsEnum(Status, { message: 'status must be either active or inactive' })
   status: Status;
 
+  //===========================
+  @ApiProperty({ description: 'Class id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })
+  @IsOptional()
+  class_id?: string;
+
+  @ApiProperty({ description: 'Student section', example: 'A', required: false, })
+  @IsString()
+  @IsOptional()
+  section?: string;
+
+  @ApiProperty({ description: 'Student roll_number', example: '001ction', required: false, })
+  @IsString()
+  @IsOptional()
+  roll_number?: string;
+
 }

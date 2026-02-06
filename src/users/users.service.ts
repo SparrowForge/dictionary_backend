@@ -49,6 +49,8 @@ export class UsersService {
 
     const queryBuilder = this.userRepository
       .createQueryBuilder('user')
+      .leftJoinAndSelect('user.file', 'file')
+      .leftJoinAndSelect('user.class', 'class')
       .skip(skip)
       .take(limit)
       .orderBy('user.name', 'DESC');
@@ -87,7 +89,16 @@ export class UsersService {
         name: filters.name,
       });
     }
-
+    if (filters?.class_id) {
+      queryBuilder.andWhere('user.class_id = :class_id', {
+        class_id: filters.class_id,
+      });
+    }
+    if (filters?.section) {
+      queryBuilder.andWhere('(user.section ILIKE :section)',
+        { section: `%${filters.section}%` },
+      );
+    }
 
     const [items, total] = await queryBuilder.getManyAndCount();
 
@@ -115,6 +126,7 @@ export class UsersService {
   findOne(id: string) {
     return this.userRepository.findOne({
       where: { id },
+      relations: ['file', 'class'],
       withDeleted: false, // Only get non-deleted users
     });
   }
