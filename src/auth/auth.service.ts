@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 
 import { BaseResponseDto } from '../common/dto/base-response.dto';
-import { StatusEnum } from '../common/enums/status.enum';
+import { Status, StatusEnum } from '../common/enums/status.enum';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
@@ -18,6 +18,7 @@ import { VerifyCodeDto } from './dto/verify-code.dto';
 import { PasswordResetService } from './password-reset.service';
 import { RefreshTokenService } from './refresh-token.service';
 import { EmailService } from './email.service';
+import { RolesEnum } from 'src/common/enums/role.enum';
 // Import UserStatus enum (adjust the path as needed)
 
 @Injectable()
@@ -42,6 +43,9 @@ export class AuthService {
     const existingUserByUserName = await this.usersService.findByEmailOrUserName(createUserDto.name);
     if (existingUserByUserName) {
       throw new BadRequestException('Username already exists');
+    }
+    if (createUserDto.role === RolesEnum.STUDENT) {
+      createUserDto.status = Status.INACTIVE;
     }
     const user = await this.usersService.create(createUserDto);
     const { password, ...result } = user;
