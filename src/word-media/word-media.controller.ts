@@ -14,7 +14,7 @@ import { UpdateWordMediaDto } from './dto/update-word-media.dto';
 
 @ApiTags('Word Media')
 @ApiBearerAuth()
-@Roles(RolesEnum.ADMIN)
+@Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
 @Controller('api/v1/word-media')
 export class WordMediaController {
     constructor(private readonly WordMediaService: WordMediaService) { }
@@ -33,6 +33,7 @@ export class WordMediaController {
     }
 
     @Get()
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER, RolesEnum.STUDENT)
     @ApiOperation({ summary: 'Get all WordMedia with pagination and filters', description: 'Retrieves a paginated list of all active WordMedia with optional filtering by role, department, and search terms. Requires authentication.', })
     @ApiResponse({
         status: 200, description: 'Returns paginated list of WordMedia', type: BaseResponseDto<PaginatedResponseDto<WordMedia>>,
@@ -64,6 +65,7 @@ export class WordMediaController {
     }
 
     @Get(':id')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER, RolesEnum.STUDENT)
     @ApiOperation({ summary: 'Get a WordMedia by id', description: 'Retrieves a specific WordMedia by their ID. Only returns active WordMedia (soft-deleted WordMedia are excluded). Requires authentication.', })
     @ApiParam({ name: 'id', description: 'WordMedia ID (uuid)', example: '45e16f14-b27f-4d20-99df-c1d5535ff9e3', type: 'string', })
     @ApiResponse({ status: 200, description: 'WordMedia retrieved successfully', type: BaseResponseDto<WordMedia>, })
