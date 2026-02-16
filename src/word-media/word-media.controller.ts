@@ -21,7 +21,7 @@ export class WordMediaController {
 
     @Post()
     @ApiOperation({
-        summary: 'Create a new WordMedia', description: 'Creates a new WordMedia with the provided information. Password will be hashed before saving. Requires authentication.',
+        summary: 'Create a new WordMedia..', description: 'Creates a new WordMedia with the provided information. Password will be hashed before saving. Requires authentication.',
     })
     @ApiResponse({ status: 201, description: 'WordMedia created successfully', type: BaseResponseDto<WordMedia>, })
     @ApiResponse({ status: 400, description: 'Bad request - validation error', })
