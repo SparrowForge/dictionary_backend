@@ -17,6 +17,16 @@ export class FavouriteWordsService {
 
     async create(createFavouriteWordsDto: CreateFavouriteWordsDto) {
 
+        const existingFavouriteWords = await this.FavouriteWordsRepository.findOne({
+            where: { student_id: createFavouriteWordsDto.student_id, word_id: createFavouriteWordsDto.word_id },
+            withDeleted: true
+        });
+
+        if (existingFavouriteWords) {
+            //if exist then delete
+            await this.FavouriteWordsRepository.delete(existingFavouriteWords.id);
+        }
+
         const FavouriteWords = this.FavouriteWordsRepository.create(createFavouriteWordsDto);
         return this.FavouriteWordsRepository.save(FavouriteWords);
     }

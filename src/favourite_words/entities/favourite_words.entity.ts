@@ -11,7 +11,6 @@ import {
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Words } from 'src/words/entities/words.entity';
-import { Students } from 'src/students/entities/students.entity';
 
 @Entity('dc_favourite_words')
 export class FavouriteWords {
@@ -50,10 +49,10 @@ export class FavouriteWords {
   deleted_at: Date;
 
   //Relations==============================================================================
-  @ApiProperty({ description: 'Student object', type: () => Students, })
-  @ManyToOne(() => Students, { nullable: true })
+  @ApiProperty({ description: 'Student object', type: () => User, })
+  @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'student_id' })
-  student: Students;
+  student: User;
 
   @ApiProperty({ description: 'Words object', type: () => Words, })
   @ManyToOne(() => Words, { nullable: true })

@@ -4,8 +4,6 @@ import { BaseResponseDto } from 'src/common/dto/base-response.dto';
 import { CurrentUser } from './../common/decorators/current-user.decorator';
 import type AuthUser from 'src/auth/dto/auth-user';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { RolesEnum } from 'src/common/enums/role.enum';
 import { FavouriteWords } from './entities/favourite_words.entity';
 import { CreateFavouriteWordsDto } from './dto/create-favourite_words.dto';
 import { FavouriteWordsService } from './favourite_words.service';
@@ -14,7 +12,6 @@ import { UpdateFavouriteWordsDto } from './dto/update-favourite_words.dto';
 
 @ApiTags('FavouriteWords')
 @ApiBearerAuth()
-@Roles(RolesEnum.ADMIN)
 @Controller('api/v1/favourite-words')
 export class FavouriteWordsController {
     constructor(private readonly FavouriteWordsService: FavouriteWordsService) { }
@@ -33,7 +30,6 @@ export class FavouriteWordsController {
     }
 
     @Get()
-    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER, RolesEnum.STUDENT)
     @ApiOperation({ summary: 'Get all FavouriteWords with pagination and filters', description: 'Retrieves a paginated list of all active FavouriteWords with optional filtering by role, department, and search terms. Requires authentication.', })
     @ApiResponse({
         status: 200, description: 'Returns paginated list of FavouriteWords', type: BaseResponseDto<PaginatedResponseDto<FavouriteWords>>,
@@ -65,7 +61,6 @@ export class FavouriteWordsController {
     }
 
     @Get(':id')
-    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER, RolesEnum.STUDENT)
     @ApiOperation({ summary: 'Get a FavouriteWords by id', description: 'Retrieves a specific FavouriteWords by their ID. Only returns active FavouriteWords (soft-deleted FavouriteWords are excluded). Requires authentication.', })
     @ApiParam({ name: 'id', description: 'FavouriteWords ID (uuid)', example: '45e16f14-b27f-4d20-99df-c1d5535ff9e3', type: 'string', })
     @ApiResponse({ status: 200, description: 'FavouriteWords retrieved successfully', type: BaseResponseDto<FavouriteWords>, })
