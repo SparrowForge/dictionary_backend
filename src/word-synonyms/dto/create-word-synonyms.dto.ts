@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, } from 'class-validator';
+import { ArrayMinSize, IsArray, IsNotEmpty, IsOptional, IsString, } from 'class-validator';
 
 export class CreateWordSynonymsDto {
   @ApiProperty({ description: 'Word id', example: 'class1' })
@@ -8,9 +8,11 @@ export class CreateWordSynonymsDto {
   word_id: string;
 
   @ApiProperty({ description: 'Word synonym', example: 'synonym', })
-  @IsString()
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsString({ each: true })
   @IsNotEmpty()
-  synonym: string;
+  synonym: string[];
 
   @ApiProperty({ description: 'Created by user id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })
   @IsString()

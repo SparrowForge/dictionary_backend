@@ -15,7 +15,7 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
-import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UpdatePasswordDto } from '../users/dto/update-password.dto';
 import { VerifyCodeDto } from './dto/verify-code.dto';
 import { PasswordResetService } from './password-reset.service';
 import { RefreshTokenService } from './refresh-token.service';

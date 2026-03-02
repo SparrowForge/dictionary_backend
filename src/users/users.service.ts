@@ -9,7 +9,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { FilterUserDto } from './dto/filter-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { UpdatePasswordDto } from 'src/auth/dto/update-password.dto';
+import { UpdatePasswordDto } from 'src/users/dto/update-password.dto';
 import { BaseResponseDto } from 'src/common/dto/base-response.dto';
 
 @Injectable()

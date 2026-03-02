@@ -1,5 +1,7 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
+  ArrayMinSize,
+  IsArray,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -14,9 +16,11 @@ export class UpdateWordAntonymsDto extends PartialType(CreateWordAntonymsDto) {
   word_id: string;
 
   @ApiProperty({ description: 'Word antonym', example: 'antonym', })
-  @IsString()
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsString({ each: true })
   @IsNotEmpty()
-  antonym: string;
+  antonym: string[];
 
   @ApiProperty({ description: 'Created by user id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })
   @IsString()

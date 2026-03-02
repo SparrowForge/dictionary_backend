@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,10 +17,25 @@ export class WordAntonymsService {
         private WordAntonymsRepository: Repository<WordAntonyms>,
     ) { }
 
-    async create(createWordAntonymsDto: CreateWordAntonymsDto) {
+    async create(updateWordAntonymsDto: CreateWordAntonymsDto) {
 
-        const WordAntonyms = this.WordAntonymsRepository.create(createWordAntonymsDto);
-        return this.WordAntonymsRepository.save(WordAntonyms);
+        // const WordAntonyms = this.WordAntonymsRepository.create(createWordAntonymsDto);
+        // return this.WordAntonymsRepository.save(WordAntonyms);
+
+        //delete this word previous data
+        await this.WordAntonymsRepository.delete({ word_id: updateWordAntonymsDto.word_id });
+        console.log(updateWordAntonymsDto);
+
+        const entity = updateWordAntonymsDto.antonym.map(item => {
+            return {
+                word_id: updateWordAntonymsDto.word_id,
+                antonym: item,
+                created_by: updateWordAntonymsDto.created_by
+            }
+        })
+        console.log(entity);
+        const WordSynonyms = this.WordAntonymsRepository.create(entity);
+        return this.WordAntonymsRepository.save(WordSynonyms);
     }
 
     async findAll(
@@ -77,8 +94,23 @@ export class WordAntonymsService {
         });
     }
 
-    update(id: string, updateWordAntonymsDto: UpdateWordAntonymsDto) {
-        return this.WordAntonymsRepository.update(id, updateWordAntonymsDto);
+    async update(id: string, updateWordAntonymsDto: UpdateWordAntonymsDto) {
+        // return this.WordAntonymsRepository.update(id, updateWordAntonymsDto);
+
+        //delete this word previous data
+        await this.WordAntonymsRepository.delete({ word_id: updateWordAntonymsDto.word_id });
+        console.log(updateWordAntonymsDto);
+
+        const entity = updateWordAntonymsDto.antonym.map(item => {
+            return {
+                word_id: updateWordAntonymsDto.word_id,
+                antonym: item,
+                created_by: updateWordAntonymsDto.created_by
+            }
+        })
+        console.log(entity);
+        const WordSynonyms = this.WordAntonymsRepository.create(entity);
+        return this.WordAntonymsRepository.save(WordSynonyms);
     }
 
     remove(id: string) {

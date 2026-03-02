@@ -16,8 +16,19 @@ export class WordSynonymsService {
     ) { }
 
     async create(createWordSynonymsDto: CreateWordSynonymsDto) {
+        //delete this word previous data
+        await this.WordSynonymsRepository.delete({ word_id: createWordSynonymsDto.word_id });
+        console.log(createWordSynonymsDto);
 
-        const WordSynonyms = this.WordSynonymsRepository.create(createWordSynonymsDto);
+        const entity = createWordSynonymsDto.synonym.map(item => {
+            return {
+                word_id: createWordSynonymsDto.word_id,
+                synonym: item,
+                created_by: createWordSynonymsDto.created_by
+            }
+        })
+        console.log(entity);
+        const WordSynonyms = this.WordSynonymsRepository.create(entity);
         return this.WordSynonymsRepository.save(WordSynonyms);
     }
 
@@ -77,8 +88,22 @@ export class WordSynonymsService {
         });
     }
 
-    update(id: string, updateWordSynonymsDto: UpdateWordSynonymsDto) {
-        return this.WordSynonymsRepository.update(id, updateWordSynonymsDto);
+    async update(id: string, createWordSynonymsDto: UpdateWordSynonymsDto) {
+        // return this.WordSynonymsRepository.update(id, updateWordSynonymsDto);
+        //delete this word previous data
+        await this.WordSynonymsRepository.delete({ word_id: createWordSynonymsDto.word_id });
+        console.log(createWordSynonymsDto);
+
+        const entity = createWordSynonymsDto.synonym.map(item => {
+            return {
+                word_id: createWordSynonymsDto.word_id,
+                synonym: item,
+                created_by: createWordSynonymsDto.created_by
+            }
+        })
+        console.log(entity);
+        const WordSynonyms = this.WordSynonymsRepository.create(entity);
+        return this.WordSynonymsRepository.save(WordSynonyms);
     }
 
     remove(id: string) {
