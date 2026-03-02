@@ -3,6 +3,7 @@ import {
   BadRequestException,
   Injectable,
   Logger,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -14,6 +15,7 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 import { VerifyCodeDto } from './dto/verify-code.dto';
 import { PasswordResetService } from './password-reset.service';
 import { RefreshTokenService } from './refresh-token.service';
@@ -163,4 +165,5 @@ export class AuthService {
     await this.passwordResetService.resetPassword(email, code, newPassword);
     return new BaseResponseDto(null, 'Password has been reset successfully');
   }
+
 }

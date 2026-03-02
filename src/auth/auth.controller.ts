@@ -14,7 +14,7 @@ import { VerifyCodeDto } from './dto/verify-code.dto';
 @Controller('api/v1/auth')
 @Public()
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Post('register')
   @ApiOperation({ summary: 'Register a new user' })
@@ -106,4 +106,6 @@ export class AuthController {
   ): Promise<BaseResponseDto<any>> {
     return this.authService.resetPassword(resetPasswordDto);
   }
+
+
 }

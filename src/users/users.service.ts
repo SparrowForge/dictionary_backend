@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Repository } from 'typeorm';
@@ -9,6 +9,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { FilterUserDto } from './dto/filter-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { UpdatePasswordDto } from 'src/auth/dto/update-password.dto';
+import { BaseResponseDto } from 'src/common/dto/base-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -139,6 +141,14 @@ export class UsersService {
       .getOne();
   }
 
+  findByIdWithPassword(id: string) {
+    return this.userRepository
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .where('user.id = :id', { id })
+      .getOne();
+  }
+
   update(id: string, updateUserDto: UpdateUserDto) {
     return this.userRepository.update(id, updateUserDto);
   }
@@ -167,5 +177,32 @@ export class UsersService {
   async updatePassword(id: string, newPassword: string): Promise<void> {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await this.userRepository.update(id, { password: hashedPassword });
+  }
+
+  async updatePasswordNew(userId: string, updatePasswordDto: UpdatePasswordDto) {
+    const { previousPassword, newPassword } = updatePasswordDto;
+
+    const user = await this.findByIdWithPassword(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    console.log(user);
+    const isPreviousPasswordValid = await bcrypt.compare(
+      previousPassword,
+      user.password,
+    );
+    if (!isPreviousPasswordValid) {
+      throw new UnauthorizedException('Previous password is incorrect');
+    }
+
+    const isSamePassword = await bcrypt.compare(newPassword, user.password);
+    if (isSamePassword) {
+      throw new BadRequestException(
+        'New password must be different from previous password',
+      );
+    }
+
+    await this.updatePassword(userId, newPassword);
+    return new BaseResponseDto(null, 'Password updated successfully');
   }
 }

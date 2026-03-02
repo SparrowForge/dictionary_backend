@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -25,6 +27,7 @@ import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { CurrentUser } from './../common/decorators/current-user.decorator';
 import type AuthUser from 'src/auth/dto/auth-user';
+import { UpdatePasswordDto } from 'src/auth/dto/update-password.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -146,5 +149,25 @@ export class UsersController {
   async restore(@Param('id') id: string) {
     await this.usersService.restore(id);
     return new BaseResponseDto(null, 'User restored successfully');
+  }
+
+
+  @Post('update-password')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Update password' })
+  @ApiResponse({
+    status: 200,
+    description: 'Password reset successfully',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid request or passwords do not match',
+  })
+  async updatePassword(
+    @CurrentUser() authUser: AuthUser,
+    @Body() updatePasswordDto: UpdatePasswordDto,
+  ): Promise<BaseResponseDto<any>> {
+    console.log('user', authUser);
+    return await this.usersService.updatePasswordNew(authUser.userId, updatePasswordDto);
   }
 }
