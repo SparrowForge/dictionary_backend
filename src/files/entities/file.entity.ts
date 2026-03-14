@@ -16,6 +16,7 @@ export enum FileType {
   RECEIPT = 'receipt',
   PHOTO = 'photo',
   VIDEO = 'video',
+  AUDIO = 'audio',
   OTHER = 'other',
 }
 
@@ -72,6 +73,9 @@ export class Files {
 
   @DeleteDateColumn({ type: 'timestamp' })
   deleted_at: Date;
+
+  @Column({ name: 'public_url', type: 'varchar', nullable: true })
+  public_url: string;
 
   // Relations
   @ManyToOne(() => User, { onDelete: 'NO ACTION' })

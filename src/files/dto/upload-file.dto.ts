@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   MaxLength,
 } from 'class-validator';
@@ -48,8 +49,9 @@ export class UploadFileDto {
 
   @ApiProperty({
     description: 'ID of the user',
-    example: "123",
+    example: 123,
   })
   @IsString()
+  @IsOptional()
   uploadedBy: string;
 }

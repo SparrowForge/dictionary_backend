@@ -15,8 +15,11 @@ export class WordFormsService {
         private WordFormsRepository: Repository<WordForms>,
     ) { }
 
-    async create(createWordFormsDto: CreateWordFormsDto) {
+    async create(createWordFormsDto: CreateWordFormsDto[]) {
+        //delte previous data of this wrod
+        await this.WordFormsRepository.delete({ word_id: createWordFormsDto[0].word_id });
 
+        //create new data
         const WordForms = this.WordFormsRepository.create(createWordFormsDto);
         return this.WordFormsRepository.save(WordForms);
     }

@@ -4,6 +4,7 @@
 import {
   Body,
   Controller,
+  Delete,
   FileTypeValidator,
   Get,
   HttpCode,
@@ -43,15 +44,19 @@ import { FilterFilesDto } from './dto/filter-files.dto';
 import { UploadFileDto } from './dto/upload-file.dto';
 import { Files, FileCategory, FileType } from './entities/file.entity';
 import { FilesService } from './files.service';
+import { ConfigService } from '@nestjs/config';
 
 @ApiTags('Files')
 @ApiBearerAuth()
 @Controller('api/v1/files')
 export class FilesController {
   private readonly logger = new Logger(FilesController.name);
-  constructor(private readonly filesService: FilesService) { }
+  constructor(
+    private configService: ConfigService,
+    private readonly filesService: FilesService) { }
 
   @Post('upload')
+  // @Public()
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({
@@ -122,7 +127,8 @@ export class FilesController {
         validators: [
           new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }), // 10MB
           new FileTypeValidator({
-            fileType: /image\/(png|jpeg|jpg|gif)|application\/pdf|video\/(mp4|quicktime)/,
+            fileType:
+              /image\/(png|jpeg|jpg|gif)|application\/pdf|video\/(mp4|quicktime)|audio\/(mpeg|mp3|wav|ogg|webm|aac|x-m4a|mp4)/,
             fallbackToMimetype: true, // Crucial for resolving identical-type errors
           })
         ],
@@ -131,9 +137,16 @@ export class FilesController {
     file: any, // Using any for now to avoid type issues
     @Body() uploadFileDto: UploadFileDto,
   ): Promise<FileResponseDto> {
-    // const uploadedBy = 1;
-    console.log("file");
-    return await this.filesService.uploadFile(file, uploadFileDto);
+    // if (!req.headers["x-api-key"]) {
+    //   throw new UnauthorizedException();
+    // }
+
+    // if (String(req.headers["x-api-key"]) !== String(this.configService.get('FILE_UPLOAD_KEY'))) {
+    //   throw new UnauthorizedException();
+    // }
+
+    const res = await this.filesService.uploadFile(file, uploadFileDto);
+    return res;
   }
 
   @Get()
@@ -317,7 +330,7 @@ export class FilesController {
       // Redirect to the presigned URL
       return res.redirect(presignedUrl);
     } catch (error) {
-      this.logger.error(`Error in serveFile: ${error.message}`, error.stack);
+      this.logger.error(`Error in serveFile: ${error}`, error);
       return res.status(500).json({ message: 'Internal server error' });
     }
   }
@@ -369,4 +382,11 @@ export class FilesController {
       return res.status(500).json({ message: 'Internal server error' });
     }
   }
+
+  @Delete(':id')
+  async getHeaderDataInReturn(@Param('id') id: number) {
+    return await this.filesService.deleteFile(id);
+  }
+
+
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BaseResponseDto } from 'src/common/dto/base-response.dto';
 import { CurrentUser } from './../common/decorators/current-user.decorator';
@@ -26,8 +26,15 @@ export class WordFormsController {
     @ApiResponse({ status: 201, description: 'WordForms created successfully', type: BaseResponseDto<WordForms>, })
     @ApiResponse({ status: 400, description: 'Bad request - validation error', })
     @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required', })
-    async create(@CurrentUser() user: AuthUser, @Body() createWordFormsDto: CreateWordFormsDto) {
-        createWordFormsDto.created_by = user.userId;
+    async create(@CurrentUser() user: AuthUser, @Body() createWordFormsDto: CreateWordFormsDto[]) {
+        //if createWordFormsDto length 0 then rerun error
+        if (createWordFormsDto.length === 0)
+            return new BadRequestException('WordForms cannot be empty');
+
+        createWordFormsDto = createWordFormsDto.map(wordForm => {
+            wordForm.created_by = user.userId;
+            return wordForm;
+        });
         const entity = await this.WordFormsService.create(createWordFormsDto);
         return new BaseResponseDto(entity, 'WordForms created successfully');
     }
