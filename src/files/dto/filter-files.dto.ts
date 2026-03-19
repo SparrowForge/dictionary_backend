@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsEnum,
   IsNumber,
   IsOptional,
   IsString,
@@ -38,6 +37,6 @@ export class FilterFilesDto extends PaginationDto {
     required: false,
   })
   @IsOptional()
-  @IsEnum(FileType, { message: 'Invalid file type' })
-  file_type?: FileType;
+  @IsString()
+  file_type?: string;
 }

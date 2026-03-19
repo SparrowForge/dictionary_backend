@@ -48,12 +48,8 @@ export class Files {
   @Column({ name: 'mime_type', type: 'varchar', length: 100 })
   mime_type: string;
 
-  @Column({
-    type: 'enum',
-    enum: FileType,
-    default: FileType.OTHER,
-  })
-  file_type: FileType;
+  @Column({ nullable: true })
+  file_type: string;
 
   @Column({
     type: 'enum',

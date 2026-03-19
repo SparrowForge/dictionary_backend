@@ -9,23 +9,14 @@ import {
   MaxLength,
 } from 'class-validator';
 
-import { FileCategory, FileType } from '../entities/file.entity';
+import { FileCategory } from '../entities/file.entity';
 
 export class UploadFileDto {
-  @ApiProperty({
-    description: 'Type of file (profile_picture, document, receipt, etc.)',
-    enum: FileType,
-    example: FileType.OTHER,
-  })
-  @IsEnum(FileType)
-  file_type: FileType;
+  @ApiProperty({ description: 'Type of file (profile_picture, document, receipt, etc.)', example: 'image', })
+  @IsString()
+  file_type: string;
 
-  @ApiProperty({
-    description:
-      'Category of the file (personal, financial, medical, administrative, etc.)',
-    enum: FileCategory,
-    example: FileCategory.PERSONAL,
-  })
+  @ApiProperty({ description: 'Category of the file (personal, financial, medical, administrative, etc.)', enum: FileCategory, example: FileCategory.PERSONAL, })
   @IsEnum(FileCategory)
   file_category: FileCategory;
 

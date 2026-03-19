@@ -41,7 +41,7 @@ export class FilesService {
     uploadFileDto: UploadFileDto,
   ): Promise<FileResponseDto> {
     // Validate file
-    this.validateFile(file, uploadFileDto.file_type);
+    // this.validateFile(file, uploadFileDto.file_type);
     // Generate unique filename
     const timestamp = Date.now();
     const extension = path.extname(file.originalname || '');

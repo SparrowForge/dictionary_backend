@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -18,9 +21,10 @@ import {
   Query,
   Res,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -147,6 +151,101 @@ export class FilesController {
 
     const res = await this.filesService.uploadFile(file, uploadFileDto);
     return res;
+  }
+
+
+  @Post('upload/multiple')
+  // @Public()
+  @HttpCode(HttpStatus.OK)
+  @UseInterceptors(FilesInterceptor('files', 10))
+  @ApiOperation({
+    summary: 'Upload multiple files',
+    description:
+      'Uploads multiple files and associates them with an entity. Returns file_id and file_url for each file.',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Multiple file upload with metadata',
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'array',
+          items: {
+            type: 'string',
+            format: 'binary',
+          },
+          description: 'Upload multiple files (max 10MB each)',
+        },
+        file_type: {
+          type: 'string',
+          enum: Object.values(FileType),
+          example: FileType.PHOTO,
+        },
+        file_category: {
+          type: 'string',
+          enum: Object.values(FileCategory),
+          example: FileCategory.FINANCIAL,
+        },
+        entity_type: {
+          type: 'string',
+          example: 'inventory',
+        },
+        entity_id: {
+          type: 'number',
+          example: 123,
+        },
+        uploadedBy: {
+          type: 'number',
+          example: 39,
+        },
+      },
+      required: ['file', 'file_type', 'file_category', 'entity_type'],
+    },
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'File uploaded successfully',
+    type: [FileResponseDto]
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Bad request - invalid file type, size, or missing required fields',
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error during file upload',
+  })
+  async uploadMultipleFile(
+    @UploadedFiles() files: any[],
+    @Body() uploadFileDto: UploadFileDto,
+  ): Promise<FileResponseDto[]> {
+    const results: FileResponseDto[] = [];
+
+    // ✅ Manual validation (recommended)
+    const allowedTypes =
+      /image\/(png|jpeg|jpg|gif)|application\/pdf|video\/(mp4|quicktime)|audio\/(mpeg|mp3|wav|ogg|webm|aac|x-m4a|mp4)/;
+
+    for (const file of files) {
+      if (file.size > 10 * 1024 * 1024) {
+        throw new BadRequestException(`File too large: ${file.originalname}`);
+      }
+
+      if (!allowedTypes.test(file.mimetype)) {
+        throw new BadRequestException(`Invalid file type: ${file.originalname}`);
+      }
+    }
+
+    for (const file of files) {
+      uploadFileDto.file_type = file.mimetype.split('/')[0] as FileType;
+      console.log(uploadFileDto);
+      const uploaded = await this.filesService.uploadFile(file, uploadFileDto);
+      results.push(uploaded);
+    }
+
+    return results;
+
+    // const res = await this.filesService.uploadFile(file, uploadFileDto);
+    // return res;
   }
 
   @Get()

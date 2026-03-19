@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
 
-import { FileCategory, FileType } from '../entities/file.entity';
+import { FileCategory } from '../entities/file.entity';
 
 export class FileResponseDto {
   @ApiProperty({
@@ -55,10 +55,8 @@ export class FileResponseDto {
 
   @ApiProperty({
     description: 'Type of file',
-    enum: FileType,
-    example: FileType.AUDIO,
   })
-  file_type: FileType;
+  file_type: string;
 
   @ApiProperty({
     description: 'Category of the file',
