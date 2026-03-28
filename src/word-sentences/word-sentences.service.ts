@@ -35,7 +35,7 @@ export class WordSentencesService {
             .leftJoinAndSelect('WordSentences.updated_by_user', 'updated_by_user')
             .skip(skip)
             .take(limit)
-            .orderBy('word.english_word', 'ASC')
+            .orderBy('WordSentences.sentence', 'ASC')
             .where('WordSentences.deleted_at IS NULL');
 
         // Apply status filter if provided

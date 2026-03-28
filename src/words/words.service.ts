@@ -37,7 +37,7 @@ export class WordsService {
             .leftJoinAndSelect('words.classes', 'classes')
             .skip(skip)
             .take(limit)
-            .orderBy('user.name', 'ASC')
+            .orderBy('words.english_word', 'ASC')
             .where('words.deleted_at IS NULL');
 
         // Apply status filter if provided

@@ -55,7 +55,7 @@ export class UsersService {
       .leftJoinAndSelect('user.class', 'class')
       .skip(skip)
       .take(limit)
-      .orderBy('user.name', 'DESC');
+      .orderBy('user.name', 'ASC');
 
     // Apply filter if phone no avl
     if (filters?.phone_no) {

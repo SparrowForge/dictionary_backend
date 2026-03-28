@@ -46,7 +46,7 @@ export class WordSynonymsService {
             .leftJoinAndSelect('WordSynonyms.updated_by_user', 'updated_by_user')
             .skip(skip)
             .take(limit)
-            .orderBy('word.english_word', 'ASC')
+            .orderBy('WordSynonyms.synonym', 'ASC')
             .where('WordSynonyms.deleted_at IS NULL');
 
         // Apply status filter if provided

@@ -52,7 +52,7 @@ export class WordAntonymsService {
             .leftJoinAndSelect('WordAntonyms.updated_by_user', 'updated_by_user')
             .skip(skip)
             .take(limit)
-            .orderBy('word.english_word', 'ASC')
+            .orderBy('WordAntonyms.antonym', 'ASC')
             .where('WordAntonyms.deleted_at IS NULL');
 
         // Apply status filter if provided

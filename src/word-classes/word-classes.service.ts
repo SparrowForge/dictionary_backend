@@ -36,7 +36,7 @@ export class WordClassesService {
             .leftJoinAndSelect('WordClasses.updated_by_user', 'updated_by_user')
             .skip(skip)
             .take(limit)
-            .orderBy('word.english_word', 'ASC')
+            .orderBy('class.name', 'ASC')
             .where('WordClasses.deleted_at IS NULL');
 
         // Apply status filter if provided

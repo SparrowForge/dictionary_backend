@@ -45,6 +45,14 @@ async function bootstrap() {
     },
   });
 
+  const publicBaseDir = join(__dirname, '..', 'public');
+  app.useStaticAssets(publicBaseDir, {
+    prefix: '/public/',
+    setHeaders: (res: import('express').Response) => {
+      res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 year cache
+    },
+  });
+
 
   const config = new DocumentBuilder()
     .setTitle('Dictionary API')

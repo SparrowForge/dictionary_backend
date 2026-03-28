@@ -38,7 +38,7 @@ export class WordFormsService {
             .leftJoinAndSelect('WordForms.updated_by_user', 'updated_by_user')
             .skip(skip)
             .take(limit)
-            .orderBy('word.english_word', 'ASC')
+            .orderBy('WordForms.form_type', 'ASC')
             .where('WordForms.deleted_at IS NULL');
 
         // Apply status filter if provided
