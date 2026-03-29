@@ -22,4 +22,8 @@ export class CreateCatagoryDto {
   @IsString()
   @IsOptional()
   created_by: string;
+
+  @IsString()
+  @IsOptional()
+  description: string;
 }

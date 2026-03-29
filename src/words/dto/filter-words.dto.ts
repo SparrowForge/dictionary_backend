@@ -39,4 +39,11 @@ export class FilterWordsDto extends PaginationDto {
   @IsString()
   @IsOptional()
   class_id: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  class_name: string;
+
+
 }

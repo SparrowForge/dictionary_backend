@@ -1,5 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateString, IsEnum, IsNotEmpty, IsOptional, IsString, } from 'class-validator';
+import {
+  ArrayNotEmpty,
+  IsArray,
+  IsDateString,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 import { WordStatusEnum } from 'src/common/enums/word-status.enum';
 
 export class CreateWordsDto {
@@ -23,6 +32,11 @@ export class CreateWordsDto {
   @IsOptional()
   description: string;
 
+  @ApiProperty({ description: 'English meaning', example: 'Good', required: false })
+  @IsString()
+  @IsOptional()
+  english_meaning: string;
+
   @ApiProperty({ description: 'Word Status', example: WordStatusEnum.PENDING, required: true })
   @IsEnum(WordStatusEnum, { message: `status must be one of: ${Object.values(WordStatusEnum).join(', ')}`, })
   @IsNotEmpty()
@@ -38,10 +52,11 @@ export class CreateWordsDto {
   @IsOptional()
   approved_at: Date;
 
-  @ApiProperty({ description: 'class_id', example: 'xxxx xxxx xxxxx xxx' })
-  @IsString()
-  @IsNotEmpty()
-  class_id: string;
+  @ApiProperty({ description: 'List of class ids', example: ['xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'] })
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsUUID('4', { each: true })
+  class_ids: string[];
 
   @ApiProperty({ description: 'Created by user id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', required: false })
   @IsString()

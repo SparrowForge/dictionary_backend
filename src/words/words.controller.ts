@@ -1,6 +1,6 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, ParseEnumPipe, Patch, Post, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, FileTypeValidator, Get, MaxFileSizeValidator, Param, ParseEnumPipe, ParseFilePipe, Patch, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { WordsService } from './words.service';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BaseResponseDto } from 'src/common/dto/base-response.dto';
 import { CurrentUser } from './../common/decorators/current-user.decorator';
 import type AuthUser from 'src/auth/dto/auth-user';
@@ -12,12 +12,73 @@ import { CreateWordsDto } from './dto/create-words.dto';
 import { FilterWordsDto } from './dto/filter-words.dto';
 import { UpdateWordsDto } from './dto/update-words.dto';
 import { WordStatusEnum } from 'src/common/enums';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Words')
 @ApiBearerAuth()
 @Controller('api/v1/words')
 export class WordsController {
     constructor(private readonly wordsService: WordsService) { }
+
+    @Post('upload-words')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
+    @ApiOperation({
+        summary: 'Upload words from Excel file',
+        description: 'Uploads an Excel file containing english_word, bangla_word, part_of_speech, description, and class columns.',
+    })
+    @UseInterceptors(FileInterceptor('file'))
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        schema: {
+            type: 'object',
+            properties: {
+                file: {
+                    type: 'string',
+                    format: 'binary',
+                    description: 'Excel file (.xlsx or .xls)',
+                },
+            },
+            required: ['file'],
+        },
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Words uploaded successfully',
+        type: BaseResponseDto,
+        schema: {
+            example: {
+                success: true,
+                message: 'Words uploaded successfully',
+                data: {
+                    total_uploaded: 2,
+                    words: [],
+                },
+                timestamp: '2024-03-14T12:00:00.000Z',
+            },
+        },
+    })
+    @ApiResponse({
+        status: 400,
+        description: 'Invalid file, missing columns, duplicate words, or invalid class names',
+    })
+    async uploadWords(
+        @CurrentUser() user: AuthUser,
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [
+                    new MaxFileSizeValidator({ maxSize: 10 * 1024 * 1024 }),
+                    new FileTypeValidator({
+                        fileType: /(application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet|application\/vnd.ms-excel)/,
+                        fallbackToMimetype: true,
+                    }),
+                ],
+            }),
+        )
+        file: any,
+    ) {
+        const result = await this.wordsService.uploadWords(file, user.userId);
+        return new BaseResponseDto(result, 'Words uploaded successfully');
+    }
 
     @Post()
     @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)

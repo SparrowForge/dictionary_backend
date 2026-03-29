@@ -43,6 +43,19 @@ export class User {
   @ApiProperty({ description: 'User status', example: 'active', enum: Status, })
   @Column({ type: 'enum', enum: Status, nullable: false, default: Status.ACTIVE, })
   status: Status;
+
+  @ApiProperty()
+  @Column({ type: 'boolean', default: false, })
+  is_verified: boolean;
+
+  @ApiProperty({ required: false })
+  @Column({ nullable: true })
+  verification_token?: string | null;
+
+  @ApiProperty({ required: false })
+  @Column({ type: 'timestamp', nullable: true })
+  verification_token_expires_at?: Date | null;
+
   //--
   @ApiProperty({ description: 'Image file id', example: 10, })
   @Column({ nullable: true })

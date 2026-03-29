@@ -17,6 +17,7 @@ import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UpdatePasswordDto } from '../users/dto/update-password.dto';
 import { VerifyCodeDto } from './dto/verify-code.dto';
+import { VerifyEmailDto } from './dto/verify-email.dto';
 import { PasswordResetService } from './password-reset.service';
 import { RefreshTokenService } from './refresh-token.service';
 import { EmailService } from './email.service';
@@ -49,10 +50,23 @@ export class AuthService {
     if (createUserDto.role === RolesEnum.STUDENT) {
       createUserDto.status = Status.INACTIVE;
     }
-    const user = await this.usersService.create(createUserDto);
+    const verificationToken = await bcrypt.hash(
+      `${createUserDto.email}-${Date.now()}`,
+      10,
+    );
+    const verificationTokenExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
+    const user = await this.usersService.create({
+      ...createUserDto,
+      verification_token: verificationToken,
+      verification_token_expires_at: verificationTokenExpiresAt,
+    });
     const { password, ...result } = user;
 
-    await this.emailService.sendWelcomeEmail(user.email, user.name);
+    await this.emailService.sendWelcomeEmail(
+      user.email,
+      user.name,
+      verificationToken,
+    );
 
     return new BaseResponseDto(result, 'User registered successfully');
   }
@@ -63,6 +77,9 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
     // Import UserStatus enum from the appropriate location
+    if (user.verification_token && !user.is_verified) {
+      throw new UnauthorizedException('Please verify your email first');
+    }
     if (user.status !== StatusEnum.ACTIVE) {
       throw new UnauthorizedException('User account is inactive');
     }
@@ -147,6 +164,38 @@ export class AuthService {
       null,
       'Verification code is valid. You can now reset your password',
     );
+  }
+
+  async verifyEmail(verifyEmailDto: VerifyEmailDto) {
+    const { email, token } = verifyEmailDto;
+    const user = await this.usersService.findByEmailOrUserName(email);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (user.is_verified) {
+      return new BaseResponseDto(null, 'Email already verified');
+    }
+
+    if (!user.verification_token || user.verification_token !== token) {
+      throw new BadRequestException('Invalid verification token');
+    }
+
+    if (
+      !user.verification_token_expires_at ||
+      new Date(user.verification_token_expires_at) < new Date()
+    ) {
+      throw new BadRequestException('Verification token has expired');
+    }
+
+    await this.usersService.update(user.id, {
+      is_verified: true,
+      verification_token: null,
+      verification_token_expires_at: null,
+    });
+
+    return new BaseResponseDto(null, 'Email verified successfully');
   }
 
   /**

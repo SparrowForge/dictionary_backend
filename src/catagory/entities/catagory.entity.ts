@@ -30,6 +30,10 @@ export class Catagory {
   @Column({ enum: Status, unique: false, nullable: false, default: Status.ACTIVE })
   status: Status;
 
+  @ApiProperty()
+  @Column({ unique: false, nullable: true })
+  description: string;
+
   //====================================================================
 
   @ApiProperty({ description: 'Created by user id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })

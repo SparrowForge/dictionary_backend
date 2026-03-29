@@ -43,16 +43,21 @@ export class EmailService {
   /**
    * Send welcome email to new users with professional template
    */
-  async sendWelcomeEmail(email: string, fullName: string): Promise<void> {
+  async sendWelcomeEmail(
+    email: string,
+    fullName: string,
+    verificationToken: string,
+  ): Promise<void> {
     try {
       this.logger.log(`Sending welcome email to ${email} for ${fullName}`);
-      console.log('email: ', email)
+      const verificationUrl = `https://dictionary.com/verified?email=${encodeURIComponent(email)}&token=${encodeURIComponent(verificationToken)}`;
       await this.mailerService.sendMail({
         to: email,
-        subject: 'Welcome to Solo Clash - Your Equestrian Journey Begins!',
+        subject: 'Welcome to Dictionary - Verify Your Email',
         template: 'welcome',
         context: {
           fullName,
+          verificationUrl,
         },
       });
       this.logger.log(`Welcome email sent successfully to ${email}`);

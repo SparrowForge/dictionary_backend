@@ -1,10 +1,13 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
+  ArrayNotEmpty,
+  IsArray,
   IsDateString,
   IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
 } from 'class-validator';
 
 import { CreateWordsDto } from './create-words.dto';
@@ -31,6 +34,11 @@ export class UpdateWordsDto extends PartialType(CreateWordsDto) {
   @IsOptional()
   description: string;
 
+  @ApiProperty({ description: 'English meaning', example: 'Good', required: false })
+  @IsString()
+  @IsOptional()
+  english_meaning: string;
+
   @ApiProperty({ description: 'Word Status', example: WordStatusEnum.PENDING, required: true })
   @IsEnum(WordStatusEnum)
   @IsNotEmpty()
@@ -46,10 +54,12 @@ export class UpdateWordsDto extends PartialType(CreateWordsDto) {
   @IsOptional()
   approved_at: Date;
 
-  @ApiProperty({ description: 'class_id', example: 'xxxx xxxx xxxxx xxx' })
-  @IsString()
-  @IsNotEmpty()
-  class_id: string;
+  @ApiProperty({ description: 'List of class ids', example: ['xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'], required: false })
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsUUID('4', { each: true })
+  @IsOptional()
+  class_ids?: string[];
 
   @ApiProperty({ description: 'Created by user id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', required: false })
   @IsString()

@@ -9,6 +9,7 @@ import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { LoginDto } from './dto/login.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { VerifyCodeDto } from './dto/verify-code.dto';
+import { VerifyEmailDto } from './dto/verify-email.dto';
 
 @ApiTags('Auth')
 @Controller('api/v1/auth')
@@ -88,6 +89,23 @@ export class AuthController {
     @Body() verifyCodeDto: VerifyCodeDto,
   ): Promise<BaseResponseDto<any>> {
     return this.authService.verifyResetCode(verifyCodeDto);
+  }
+
+  @Post('verify-email')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Verify email with token' })
+  @ApiResponse({
+    status: 200,
+    description: 'Email verified successfully',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid or expired verification token',
+  })
+  async verifyEmail(
+    @Body() verifyEmailDto: VerifyEmailDto,
+  ): Promise<BaseResponseDto<any>> {
+    return this.authService.verifyEmail(verifyEmailDto);
   }
 
   @Post('reset-password')

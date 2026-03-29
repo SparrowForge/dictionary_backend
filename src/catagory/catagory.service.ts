@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCatagoryDto } from './dto/create-catagory.dto';
@@ -16,6 +16,7 @@ export class CatagoryService {
     ) { }
 
     async create(createCatagoryDto: CreateCatagoryDto) {
+        await this.ensureCatagoryNameIsUnique(createCatagoryDto.name);
 
         const Catagory = this.CatagoryRepository.create(createCatagoryDto);
         return this.CatagoryRepository.save(Catagory);
@@ -89,7 +90,8 @@ export class CatagoryService {
             .getOne();
     }
 
-    update(id: string, updateCatagoryDto: UpdateCatagoryDto) {
+    async update(id: string, updateCatagoryDto: UpdateCatagoryDto) {
+        await this.ensureCatagoryNameIsUnique(updateCatagoryDto.name, id);
         return this.CatagoryRepository.update(id, updateCatagoryDto);
     }
 
@@ -105,6 +107,20 @@ export class CatagoryService {
     // Method to restore a soft-deleted Catagory
     restore(id: string) {
         return this.CatagoryRepository.restore(id);
+    }
+
+    private async ensureCatagoryNameIsUnique(name: string, excludeCatagoryId?: string) {
+        const normalizedName = name.trim().toLowerCase();
+
+        const existingCatagory = await this.CatagoryRepository
+            .createQueryBuilder('catagory')
+            .withDeleted()
+            .where('LOWER(catagory.name) = :name', { name: normalizedName })
+            .getOne();
+
+        if (existingCatagory && existingCatagory.id !== excludeCatagoryId) {
+            throw new BadRequestException(`Catagory name "${name}" already exists`);
+        }
     }
 
 

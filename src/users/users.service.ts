@@ -12,6 +12,12 @@ import { User } from './entities/user.entity';
 import { UpdatePasswordDto } from 'src/users/dto/update-password.dto';
 import { BaseResponseDto } from 'src/common/dto/base-response.dto';
 
+type InternalVerificationFields = {
+  is_verified?: boolean;
+  verification_token?: string | null;
+  verification_token_expires_at?: Date | null;
+};
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -19,7 +25,12 @@ export class UsersService {
     private userRepository: Repository<User>,
   ) { }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(
+    createUserDto: CreateUserDto & {
+      verification_token?: string | null;
+      verification_token_expires_at?: Date | null;
+    },
+  ) {
     // Hash the password before saving
     const existingUser = await this.findByEmailOrUserName(createUserDto.email);
     console.log(existingUser);
@@ -149,7 +160,7 @@ export class UsersService {
       .getOne();
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: UpdateUserDto & InternalVerificationFields) {
     return this.userRepository.update(id, updateUserDto);
   }
 

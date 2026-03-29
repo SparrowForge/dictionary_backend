@@ -2,7 +2,6 @@ import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsEmail,
   IsEnum,
-  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
@@ -17,19 +16,19 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   @ApiProperty({ description: 'User email', example: 'admin@solocrest.com', })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @IsEmail()
-  email: string;
+  email?: string;
 
   @ApiProperty({ description: 'User name', example: 'solocrest', })
   @IsString()
-  @IsNotEmpty()
-  name: string;
+  @IsOptional()
+  name?: string;
 
   @ApiProperty({ description: 'User password', example: 'qwerty', })
   @IsString()
-  @IsNotEmpty()
-  password: string;
+  @IsOptional()
+  password?: string;
 
   @ApiProperty({ description: 'User phone number', example: '+880', required: false, })
   @IsOptional()
@@ -38,8 +37,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @ApiProperty({ description: 'User Roles', example: 'STUDENT', enum: RolesEnum, })
   @IsEnum(RolesEnum, { message: 'Roles must be either ADMIN, TEACHER or STUDENT' })
   @IsString()
-  @IsNotEmpty()
-  role: RolesEnum;
+  @IsOptional()
+  role?: RolesEnum;
 
   @ApiProperty({ description: 'User status', example: 'active', enum: Status, })
   @IsEnum(Status, { message: 'status must be either active or inactive' })
@@ -49,7 +48,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @ApiProperty({ description: 'Updated by user id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })
   @IsString()
   @IsOptional()
-  updated_by: string;
+  updated_by?: string;
 
   //===========================
   @ApiProperty({ description: 'Image file id', example: 10, })

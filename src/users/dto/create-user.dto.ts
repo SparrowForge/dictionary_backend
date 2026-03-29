@@ -70,5 +70,4 @@ export class CreateUserDto {
   @IsOptional()
   roll_number?: string;
 
-
 }

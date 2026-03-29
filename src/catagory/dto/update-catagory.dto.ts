@@ -30,4 +30,8 @@ export class UpdateCatagoryDto extends PartialType(CreateCatagoryDto) {
   @IsString()
   @IsOptional()
   updated_by: string;
+
+  @IsString()
+  @IsOptional()
+  description: string;
 }

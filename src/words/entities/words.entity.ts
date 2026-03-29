@@ -6,12 +6,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { WordStatusEnum } from 'src/common/enums/word-status.enum';
-import { Classes } from 'src/classes/entities/classes.entity';
+import { WordDetails } from './word-details.entity';
 
 @Entity('dc_words')
 export class Words {
@@ -47,9 +48,11 @@ export class Words {
   @CreateDateColumn({ type: 'timestamp', nullable: true })
   approved_at: Date;
 
-  @ApiProperty({ description: 'class_id', example: 'xxxx xxxx xxxxx xxx' })
+
+  @ApiProperty({ description: 'English meaning', example: 'Good' })
   @Column({ unique: false, nullable: true })
-  class_id: string;
+  english_meaning: string;
+
 
   //====================================================================
 
@@ -74,10 +77,9 @@ export class Words {
   deleted_at: Date;
 
   //Relations====================
-  @ApiProperty({ description: 'Class object', type: () => Classes, })
-  @ManyToOne(() => Classes, { nullable: true })
-  @JoinColumn({ name: 'class_id' })
-  classes: Classes;
+  @ApiProperty({ description: 'Word details with class mapping', type: () => [WordDetails] })
+  @OneToMany(() => WordDetails, (wordDetail) => wordDetail.word)
+  word_details: WordDetails[];
 
   @ApiProperty({ description: 'User object', type: () => User, })
   @ManyToOne(() => User, { nullable: true })
