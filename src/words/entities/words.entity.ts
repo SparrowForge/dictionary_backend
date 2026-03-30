@@ -13,6 +13,7 @@ import {
 import { User } from 'src/users/entities/user.entity';
 import { WordStatusEnum } from 'src/common/enums/word-status.enum';
 import { WordDetails } from './word-details.entity';
+import { WordView } from './word-view.entity';
 
 @Entity('dc_words')
 export class Words {
@@ -53,6 +54,10 @@ export class Words {
   @Column({ unique: false, nullable: true })
   english_meaning: string;
 
+  @ApiProperty({ description: 'Total unique view count', example: 10, default: 0 })
+  @Column({ type: 'integer', default: 0 })
+  view_count: number;
+
 
   //====================================================================
 
@@ -80,6 +85,10 @@ export class Words {
   @ApiProperty({ description: 'Word details with class mapping', type: () => [WordDetails] })
   @OneToMany(() => WordDetails, (wordDetail) => wordDetail.word)
   word_details: WordDetails[];
+
+  @ApiProperty({ description: 'Word views', type: () => [WordView] })
+  @OneToMany(() => WordView, (wordView) => wordView.word)
+  word_views: WordView[];
 
   @ApiProperty({ description: 'User object', type: () => User, })
   @ManyToOne(() => User, { nullable: true })

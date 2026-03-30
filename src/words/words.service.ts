@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-base-to-string */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -16,6 +19,7 @@ import { WordUploadTemplateDto } from './dto/word-upload-template.dto';
 import * as XLSX from 'xlsx';
 import { UploadedWordFile } from './dto/UploadedWordFile.type';
 import { WordDetails } from './entities/word-details.entity';
+import { WordView } from './entities/word-view.entity';
 
 
 @Injectable()
@@ -27,6 +31,8 @@ export class WordsService {
         private ClassesRepository: Repository<Classes>,
         @InjectRepository(WordDetails)
         private WordDetailsRepository: Repository<WordDetails>,
+        @InjectRepository(WordView)
+        private WordViewRepository: Repository<WordView>,
     ) { }
 
     async create(createWordsDto: CreateWordsDto) {
@@ -243,10 +249,21 @@ export class WordsService {
             .leftJoinAndSelect('words.word_details', 'word_details', 'word_details.deleted_at IS NULL')
             .leftJoinAndSelect('word_details.class', 'classes')
             .skip(skip)
-            .take(limit)
-            .orderBy('words.english_word', 'ASC')
+            .take(limit);
+
+        if (filters?.is_most_viewed) {
+            queryBuilder
+                .orderBy('words.view_count', 'DESC')
+                .addOrderBy('words.english_word', 'ASC');
+        } else {
+            queryBuilder
+                .orderBy('words.english_word', 'ASC');
+        }
+
+        queryBuilder
             .where('words.deleted_at IS NULL')
             .distinct(true);
+
 
         // Apply status filter if provided
         if (filters?.english_word) {
@@ -314,12 +331,40 @@ export class WordsService {
         };
     }
 
-    findOne(id: string) {
-        return this.WordsRepository.findOne({
+    async findOne(id: string, viewerUserId?: string) {
+        const word = await this.WordsRepository.findOne({
             where: { id },
             relations: ['approved_by_user', 'created_by_user', 'updated_by_user', 'word_details', 'word_details.class'],
             withDeleted: false, // Only get non-deleted Wordss
         });
+
+        if (word && viewerUserId) {
+            const existingView = await this.WordViewRepository.findOne({
+                where: {
+                    user_id: viewerUserId,
+                    word_id: word.id,
+                },
+            });
+
+            if (!existingView) {
+                await this.WordViewRepository.save(
+                    this.WordViewRepository.create({
+                        user_id: viewerUserId,
+                        word_id: word.id,
+                    }),
+                );
+
+                await this.WordsRepository.increment(
+                    { id: word.id },
+                    'view_count',
+                    1,
+                );
+
+                word.view_count = (word.view_count ?? 0) + 1;
+            }
+        }
+
+        return word;
     }
 
     findByEmailOrWordsName(email: string) {
@@ -350,6 +395,7 @@ export class WordsService {
 
     // Method to permanently delete a Words (for admin purposes)
     async permanentRemove(id: string) {
+        await this.WordViewRepository.delete({ word_id: id });
         await this.WordDetailsRepository.delete({ word_id: id });
         return this.WordsRepository.delete(id);
     }

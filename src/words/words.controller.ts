@@ -133,8 +133,8 @@ export class WordsController {
     @ApiResponse({ status: 200, description: 'Words retrieved successfully', type: BaseResponseDto<Words>, })
     @ApiResponse({ status: 404, description: 'Words not found', })
     @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required', })
-    async findOne(@Param('id') id: string) {
-        const words = await this.wordsService.findOne(id);
+    async findOne(@CurrentUser() user: AuthUser, @Param('id') id: string) {
+        const words = await this.wordsService.findOne(id, user.userId);
         return new BaseResponseDto(words, 'Words retrieved successfully');
     }
 

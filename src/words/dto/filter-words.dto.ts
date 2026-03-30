@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 
 import { PaginationDto } from '../../common/dto/pagination.dto';
 import { WordStatusEnum } from 'src/common/enums/word-status.enum';
+import { Transform } from 'class-transformer';
 
 export class FilterWordsDto extends PaginationDto {
   @ApiProperty({ description: 'English word', example: 'Good', required: false })
@@ -44,6 +45,16 @@ export class FilterWordsDto extends PaginationDto {
   @IsString()
   @IsOptional()
   class_name: string;
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => {
+    if (typeof value === 'boolean') return value;
+    if (typeof value === 'string' && value.toLowerCase() === 'true') return true;
+    if (typeof value === 'string' && value.toLowerCase() === 'false') return false;
+    return undefined;
+  })
+  is_most_viewed: boolean;
 
 
 }

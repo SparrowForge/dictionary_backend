@@ -30,9 +30,9 @@ export class UsersService {
       verification_token?: string | null;
       verification_token_expires_at?: Date | null;
     },
-  ) {
+  ): Promise<User> {
     // Hash the password before saving
-    const existingUser = await this.findByEmailOrUserName(createUserDto.email);
+    const existingUser = await this.findByEmail(createUserDto.email);
     console.log(existingUser);
     if (existingUser) {
       throw new BadRequestException('Email already exists');
@@ -136,7 +136,7 @@ export class UsersService {
     };
   }
 
-  findOne(id: string) {
+  findOne(id: string): Promise<User | null> {
     return this.userRepository.findOne({
       where: { id },
       relations: ['file', 'class'],
@@ -144,7 +144,7 @@ export class UsersService {
     });
   }
 
-  findByEmailOrUserName(email: string) {
+  findByEmail(email: string): Promise<User | null> {
     return this.userRepository
       .createQueryBuilder('user')
       .addSelect('user.password')
@@ -152,7 +152,7 @@ export class UsersService {
       .getOne();
   }
 
-  findByIdWithPassword(id: string) {
+  findByIdWithPassword(id: string): Promise<User | null> {
     return this.userRepository
       .createQueryBuilder('user')
       .addSelect('user.password')

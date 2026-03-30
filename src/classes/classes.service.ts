@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Classes } from './entities/classes.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,6 +16,7 @@ export class ClassesService {
     ) { }
 
     async create(createClassesDto: CreateClassesDto) {
+        await this.ensureClassesNameIsUnique(createClassesDto.name);
 
         const Classes = this.ClassesRepository.create(createClassesDto);
         return this.ClassesRepository.save(Classes);
@@ -95,7 +96,8 @@ export class ClassesService {
             .getOne();
     }
 
-    update(id: string, updateClassesDto: UpdateClassesDto) {
+    async update(id: string, updateClassesDto: UpdateClassesDto) {
+        await this.ensureClassesNameIsUnique(updateClassesDto.name, id);
         return this.ClassesRepository.update(id, updateClassesDto);
     }
 
@@ -111,6 +113,20 @@ export class ClassesService {
     // Method to restore a soft-deleted Classes
     restore(id: string) {
         return this.ClassesRepository.restore(id);
+    }
+
+    private async ensureClassesNameIsUnique(name: string, excludeClassesId?: string) {
+        const normalizedName = name.trim().toLowerCase();
+
+        const existingClasses = await this.ClassesRepository
+            .createQueryBuilder('classes')
+            .withDeleted()
+            .where('LOWER(classes.name) = :name', { name: normalizedName })
+            .getOne();
+
+        if (existingClasses && existingClasses.id !== excludeClassesId) {
+            throw new BadRequestException(`Class name "${name}" already exists`);
+        }
     }
 
 

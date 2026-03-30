@@ -50,10 +50,10 @@ export class EmailService {
   ): Promise<void> {
     try {
       this.logger.log(`Sending welcome email to ${email} for ${fullName}`);
-      const verificationUrl = `https://dictionary.com/verified?email=${encodeURIComponent(email)}&token=${encodeURIComponent(verificationToken)}`;
+      const verificationUrl = `https://dictionary-web-app-blond.vercel.app/verified?email=${encodeURIComponent(email)}&token=${encodeURIComponent(verificationToken)}`;
       await this.mailerService.sendMail({
         to: email,
-        subject: 'Welcome to Dictionary - Verify Your Email',
+        subject: 'Welcome to BCSK Smart Dictionary - Verify Your Email',
         template: 'welcome',
         context: {
           fullName,

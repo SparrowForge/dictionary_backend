@@ -7,6 +7,7 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { LoginDto } from './dto/login.dto';
+import { ResendVerificationEmailDto } from './dto/resend-verification-email.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { VerifyCodeDto } from './dto/verify-code.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
@@ -106,6 +107,25 @@ export class AuthController {
     @Body() verifyEmailDto: VerifyEmailDto,
   ): Promise<BaseResponseDto<any>> {
     return this.authService.verifyEmail(verifyEmailDto);
+  }
+
+  @Post('resend-verification-email')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Resend email verification link' })
+  @ApiResponse({
+    status: 200,
+    description: 'Verification email resent successfully',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Email is already verified or current token is still valid',
+  })
+  async resendVerificationEmail(
+    @Body() resendVerificationEmailDto: ResendVerificationEmailDto,
+  ): Promise<BaseResponseDto<any>> {
+    return this.authService.resendVerificationEmail(
+      resendVerificationEmailDto,
+    );
   }
 
   @Post('reset-password')

@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Words } from './entities/words.entity';
 import { Classes } from 'src/classes/entities/classes.entity';
 import { WordDetails } from './entities/word-details.entity';
+import { WordView } from './entities/word-view.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Words, Classes, WordDetails])],
+  imports: [TypeOrmModule.forFeature([Words, Classes, WordDetails, WordView])],
   controllers: [WordsController],
   providers: [WordsService]
 })

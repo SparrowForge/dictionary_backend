@@ -15,6 +15,7 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ResendVerificationEmailDto } from './dto/resend-verification-email.dto';
 import { UpdatePasswordDto } from '../users/dto/update-password.dto';
 import { VerifyCodeDto } from './dto/verify-code.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
@@ -39,15 +40,15 @@ export class AuthService {
   async register(createUserDto: CreateUserDto) {
     // UsersService.create already hashes the password.
     // Pass the DTO directly to avoid double-hashing.
-    const existingUser = await this.usersService.findByEmailOrUserName(createUserDto.email);
+    const existingUser = await this.usersService.findByEmail(createUserDto.email);
     if (existingUser) {
       throw new BadRequestException('Email already exists');
     }
-    const existingUserByUserName = await this.usersService.findByEmailOrUserName(createUserDto.name);
+    const existingUserByUserName = await this.usersService.findByEmail(createUserDto.name);
     if (existingUserByUserName) {
       throw new BadRequestException('Username already exists');
     }
-    if (createUserDto.role === RolesEnum.STUDENT) {
+    if (createUserDto.role === RolesEnum.STUDENT || createUserDto.role === RolesEnum.TEACHER) {
       createUserDto.status = Status.INACTIVE;
     }
     const verificationToken = await bcrypt.hash(
@@ -55,11 +56,12 @@ export class AuthService {
       10,
     );
     const verificationTokenExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
-    const user = await this.usersService.create({
+    const enity = {
       ...createUserDto,
       verification_token: verificationToken,
       verification_token_expires_at: verificationTokenExpiresAt,
-    });
+    };
+    const user = await this.usersService.create(enity);
     const { password, ...result } = user;
 
     await this.emailService.sendWelcomeEmail(
@@ -72,7 +74,7 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
-    const user = await this.usersService.findByEmailOrUserName(email);
+    const user = await this.usersService.findByEmail(email);
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
@@ -168,7 +170,7 @@ export class AuthService {
 
   async verifyEmail(verifyEmailDto: VerifyEmailDto) {
     const { email, token } = verifyEmailDto;
-    const user = await this.usersService.findByEmailOrUserName(email);
+    const user = await this.usersService.findByEmail(email);
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -196,6 +198,49 @@ export class AuthService {
     });
 
     return new BaseResponseDto(null, 'Email verified successfully');
+  }
+
+  async resendVerificationEmail(resendVerificationEmailDto: ResendVerificationEmailDto) {
+    const { email } = resendVerificationEmailDto;
+    const user = await this.usersService.findByEmail(email);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (user.is_verified) {
+      return new BaseResponseDto(null, 'Email already verified');
+    }
+
+    const now = new Date();
+    if (
+      user.verification_token &&
+      user.verification_token_expires_at &&
+      new Date(user.verification_token_expires_at) >= now
+    ) {
+      throw new BadRequestException(
+        'Current verification token is still valid',
+      );
+    }
+
+    const verificationToken = await bcrypt.hash(`${user.email}-${Date.now()}`, 10);
+    const verificationTokenExpiresAt = new Date(now.getTime() + 15 * 60 * 1000);
+
+    await this.usersService.update(user.id, {
+      verification_token: verificationToken,
+      verification_token_expires_at: verificationTokenExpiresAt,
+    });
+
+    await this.emailService.sendWelcomeEmail(
+      user.email,
+      user.name,
+      verificationToken,
+    );
+
+    return new BaseResponseDto(
+      null,
+      'Verification email resent successfully',
+    );
   }
 
   /**

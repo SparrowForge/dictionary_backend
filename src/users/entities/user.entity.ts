@@ -49,12 +49,12 @@ export class User {
   is_verified: boolean;
 
   @ApiProperty({ required: false })
-  @Column({ nullable: true })
-  verification_token?: string | null;
+  @Column({ type: 'varchar', nullable: true })
+  verification_token: string | null;
 
   @ApiProperty({ required: false })
   @Column({ type: 'timestamp', nullable: true })
-  verification_token_expires_at?: Date | null;
+  verification_token_expires_at: Date | null;
 
   //--
   @ApiProperty({ description: 'Image file id', example: 10, })
