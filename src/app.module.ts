@@ -25,6 +25,8 @@ import { WordMediaModule } from './word-media/word-media.module';
 import { FavouriteWordsModule } from './favourite_words/favourite_words.module';
 import { StudentActivityModule } from './student_activity/student-activity.module';
 import { CatagoryModule } from './catagory/catagory.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { NotificationRecordModule } from './notification-record/notification-record.module';
 
 @Module({
   imports: [
@@ -53,7 +55,9 @@ import { CatagoryModule } from './catagory/catagory.module';
     WordSentencesModule,
     WordMediaModule,
     FavouriteWordsModule,
-    StudentActivityModule
+    StudentActivityModule,
+    NotificationsModule,
+    NotificationRecordModule
   ],
   controllers: [AppController],
   providers: [

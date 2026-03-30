@@ -21,6 +21,8 @@ import { FavouriteWords } from './favourite_words/entities/favourite_words.entit
 import { StudentActivity } from './student_activity/entities/student-activity.entity';
 import { Catagory } from './catagory/entities/catagory.entity';
 import { WordView } from './words/entities/word-view.entity';
+import { NotificationRecord } from './notification-record/entities/notification-record.entity';
+import { UserToFirebaseTokenMap } from './notifications/entity/userToFirebaseTokenMap.entity';
 
 @Injectable()
 
@@ -57,7 +59,9 @@ export class AppService implements TypeOrmOptionsFactory {
         WordMedia,
         FavouriteWords,
         StudentActivity,
-        WordView
+        WordView,
+        NotificationRecord,
+        UserToFirebaseTokenMap
       ],
       synchronize: false, // Never use synchronize in production
       logging: isDevelopment,
