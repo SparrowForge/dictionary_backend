@@ -105,8 +105,6 @@ export class WordsService {
         }));
 
         const validationErrors: string[] = [];
-        const seenEnglishWords = new Set<string>();
-        const classNames = new Set<string>();
 
         trimmedRows.forEach((row, index) => {
             const rowNumber = index + 2;
@@ -114,17 +112,48 @@ export class WordsService {
             if (!row.english_word) {
                 validationErrors.push(`Row ${rowNumber}: english_word is required`);
             }
+        });
+
+        if (validationErrors.length) {
+            throw new BadRequestException(validationErrors);
+        }
+
+        const englishWords = [...new Set(trimmedRows.map((row) => row.english_word.toLowerCase()))];
+        const existingWords = englishWords.length
+            ? await this.WordsRepository
+                .createQueryBuilder('words')
+                .where('LOWER(words.english_word) IN (:...englishWords)', { englishWords })
+                .withDeleted()
+                .getMany()
+            : [];
+        const existingWordMap = new Map(existingWords.map((word) => [word.english_word.toLowerCase(), word]));
+        const skippedExistingWords = trimmedRows.flatMap((row, index) => (
+            existingWordMap.has(row.english_word.toLowerCase())
+                ? [{
+                    row: index + 2,
+                    english_word: row.english_word,
+                }]
+                : []
+        ));
+        const rowsToUpload = trimmedRows.filter(
+            (row) => !existingWordMap.has(row.english_word.toLowerCase()),
+        );
+        const seenEnglishWords = new Set<string>();
+        const classNames = new Set<string>();
+
+        rowsToUpload.forEach((row) => {
+            const rowNumber = trimmedRows.indexOf(row) + 2;
 
             if (!row.bangla_word) {
                 validationErrors.push(`Row ${rowNumber}: bangla_word is required`);
             }
 
-            if (!row.class) {
-                validationErrors.push(`Row ${rowNumber}: class is required`);
-            }
-
             if (!row.english_meaning) {
                 validationErrors.push(`Row ${rowNumber}: english_meaning is required`);
+            }
+
+            if (!row.class) {
+                validationErrors.push(`Row ${rowNumber}: class is required`);
             }
 
             if (row.class && !row.classNames.length) {
@@ -150,40 +179,26 @@ export class WordsService {
             throw new BadRequestException(validationErrors);
         }
 
-        const classes = await this.ClassesRepository
-            .createQueryBuilder('classes')
-            .where('LOWER(classes.name) IN (:...names)', { names: [...classNames] })
-            .andWhere('classes.deleted_at IS NULL')
-            .getMany();
+        const classes = classNames.size
+            ? await this.ClassesRepository
+                .createQueryBuilder('classes')
+                .where('LOWER(classes.name) IN (:...names)', { names: [...classNames] })
+                .andWhere('classes.deleted_at IS NULL')
+                .getMany()
+            : [];
 
         const classMap = new Map(classes.map((item) => [item.name.toLowerCase(), item]));
 
-        trimmedRows.forEach((row, index) => {
+        rowsToUpload.forEach((row) => {
+            const rowNumber = trimmedRows.indexOf(row) + 2;
             const missingClassNames = row.classNames.filter(
                 (className) => !classMap.has(className.toLowerCase()),
             );
 
             if (missingClassNames.length) {
                 validationErrors.push(
-                    `Row ${index + 2}: class "${missingClassNames.join(', ')}" was not found`,
+                    `Row ${rowNumber}: class "${missingClassNames.join(', ')}" was not found`,
                 );
-            }
-        });
-
-        const englishWords = trimmedRows.map((row) => row.english_word.toLowerCase());
-        const existingWords = englishWords.length
-            ? await this.WordsRepository
-                .createQueryBuilder('words')
-                .where('LOWER(words.english_word) IN (:...englishWords)', { englishWords })
-                .withDeleted()
-                .getMany()
-            : [];
-        // return existingWords;
-        const existingWordMap = new Set(existingWords.map((word) => word.english_word.toLowerCase()));
-
-        trimmedRows.forEach((row, index) => {
-            if (existingWordMap.has(row.english_word.toLowerCase())) {
-                validationErrors.push(`Row ${index + 2}: english_word "${row.english_word}" already exists`);
             }
         });
 
@@ -191,7 +206,7 @@ export class WordsService {
             throw new BadRequestException(validationErrors);
         }
 
-        const wordsToCreate = trimmedRows.map((row) => {
+        const wordsToCreate = rowsToUpload.map((row) => {
             const wordPayload: Partial<Words> = {
                 english_word: row.english_word,
                 bangla_word: row.bangla_word,
@@ -207,7 +222,7 @@ export class WordsService {
 
         const savedWords = await this.WordsRepository.save(wordsToCreate);
         const wordDetailsToCreate = savedWords.flatMap((word, index) => {
-            const row = trimmedRows[index];
+            const row = rowsToUpload[index];
             const uniqueClassNames = [...new Set(row.classNames.map((className) => className.toLowerCase()))];
 
             return uniqueClassNames.map((className) => this.WordDetailsRepository.create({
@@ -231,6 +246,8 @@ export class WordsService {
 
         return {
             total_uploaded: uploadedWords.length,
+            total_skipped_existing: skippedExistingWords.length,
+            skipped_existing_words: skippedExistingWords,
             words: uploadedWords,
         };
     }

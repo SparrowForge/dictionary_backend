@@ -51,6 +51,13 @@ export class WordsController {
                 message: 'Words uploaded successfully',
                 data: {
                     total_uploaded: 2,
+                    total_skipped_existing: 1,
+                    skipped_existing_words: [
+                        {
+                            row: 4,
+                            english_word: 'apple',
+                        },
+                    ],
                     words: [],
                 },
                 timestamp: '2024-03-14T12:00:00.000Z',
@@ -59,7 +66,7 @@ export class WordsController {
     })
     @ApiResponse({
         status: 400,
-        description: 'Invalid file, missing columns, duplicate words, or invalid class names',
+        description: 'Invalid file, missing columns, duplicate words in file, or invalid class names',
     })
     async uploadWords(
         @CurrentUser() user: AuthUser,
