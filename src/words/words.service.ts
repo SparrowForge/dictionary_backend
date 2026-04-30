@@ -175,9 +175,10 @@ export class WordsService {
             ? await this.WordsRepository
                 .createQueryBuilder('words')
                 .where('LOWER(words.english_word) IN (:...englishWords)', { englishWords })
+                .withDeleted()
                 .getMany()
             : [];
-
+        // return existingWords;
         const existingWordMap = new Set(existingWords.map((word) => word.english_word.toLowerCase()));
 
         trimmedRows.forEach((row, index) => {
