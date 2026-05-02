@@ -11,6 +11,19 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UpdatePasswordDto } from 'src/users/dto/update-password.dto';
 import { BaseResponseDto } from 'src/common/dto/base-response.dto';
+import { WordView } from 'src/words/entities/word-view.entity';
+import { AuditLog } from 'src/audits/entities/audit.entity';
+import { PasswordResetToken } from 'src/auth/entities/password-reset-token.entity';
+import { RefreshToken } from 'src/auth/entities/refresh-token.entity';
+import { Catagory } from 'src/catagory/entities/catagory.entity';
+import { Classes } from 'src/classes/entities/classes.entity';
+import { FavouriteWords } from 'src/favourite_words/entities/favourite_words.entity';
+import { NotificationRecord } from 'src/notification-record/entities/notification-record.entity';
+import { UserToFirebaseTokenMap } from 'src/notifications/entity/userToFirebaseTokenMap.entity';
+import { StudentActivity } from 'src/student_activity/entities/student-activity.entity';
+import { Students } from 'src/students/entities/students.entity';
+import { Files } from 'src/files/entities/file.entity';
+import { RolesEnum } from 'src/common/enums/role.enum';
 
 type InternalVerificationFields = {
   is_verified?: boolean;
@@ -23,6 +36,32 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(WordView)
+    private wordViewRepository: Repository<WordView>,
+    @InjectRepository(AuditLog)
+    private AuditLogRepository: Repository<AuditLog>,
+    @InjectRepository(PasswordResetToken)
+    private PasswordResetTokenRepository: Repository<PasswordResetToken>,
+    @InjectRepository(RefreshToken)
+    private RefreshTokenRepository: Repository<RefreshToken>,
+    @InjectRepository(Catagory)
+    private CatagoryRepository: Repository<Catagory>,
+    @InjectRepository(Classes)
+    private ClassesRepository: Repository<Classes>,
+    @InjectRepository(FavouriteWords)
+    private FavouriteWordsRepository: Repository<FavouriteWords>,
+    @InjectRepository(NotificationRecord)
+    private NotificationRecordRepository: Repository<NotificationRecord>,
+    @InjectRepository(UserToFirebaseTokenMap)
+    private UserToFirebaseTokenMapRepository: Repository<UserToFirebaseTokenMap>,
+    @InjectRepository(StudentActivity)
+    private StudentActivityRepository: Repository<StudentActivity>,
+    @InjectRepository(WordView)
+    private WordViewRepository: Repository<WordView>,
+    @InjectRepository(Students)
+    private StudentsRepository: Repository<Students>,
+    @InjectRepository(Files)
+    private FilesRepository: Repository<Files>,
   ) { }
 
   async create(
@@ -169,7 +208,31 @@ export class UsersService {
   }
 
   // Method to permanently delete a user (for admin purposes)
-  permanentRemove(id: string) {
+  async permanentRemove(id: string) {
+
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    if (!user) {
+      return new BadRequestException('User not found');
+    }
+    if (user.role === RolesEnum.STUDENT) {
+      await this.wordViewRepository.delete({ user_id: id });
+      await this.AuditLogRepository.delete({ userId: id });
+      await this.PasswordResetTokenRepository.delete({ userId: id });
+      await this.RefreshTokenRepository.delete({ userId: id });
+      await this.CatagoryRepository.delete({ created_by: id });
+      await this.CatagoryRepository.delete({ updated_by: id });
+      await this.FavouriteWordsRepository.delete({ created_by: id });
+      await this.FavouriteWordsRepository.delete({ updated_by: id });
+      await this.NotificationRecordRepository.delete({ userId: id });
+      await this.UserToFirebaseTokenMapRepository.delete({ userId: id });
+      await this.StudentActivityRepository.delete({ created_by: id });
+      await this.StudentActivityRepository.delete({ updated_by: id });
+      await this.WordViewRepository.delete({ user_id: id });
+      await this.StudentsRepository.delete({ user_id: id });
+      await this.FilesRepository.delete({ uploaded_by: id });
+    }
+
     return this.userRepository.delete(id);
   }
 
