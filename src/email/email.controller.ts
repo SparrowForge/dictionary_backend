@@ -25,6 +25,7 @@ export class EmailController {
   @ApiResponse({ status: 200, description: 'Email sent successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async sendWelcomeEmail(@Body() dto: SendWelcomeEmailDto): Promise<BaseResponseDto<any>> {
+    console.log('api call receive to send a welcome email')
     await this.emailService.sendWelcomeEmail(
       dto.email,
       dto.name,
@@ -43,7 +44,7 @@ export class EmailController {
     return new BaseResponseDto(null, 'Vrification code email sent successfully');
   }
 
-  @Post('re-send-varificatio-email')
+  @Post('re-send-verificatio-email')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login user' })
   @ApiResponse({ status: 200, description: 'Vrification email re-send successfully' })

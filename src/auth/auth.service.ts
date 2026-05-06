@@ -2,10 +2,12 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 
@@ -35,6 +37,7 @@ export class AuthService {
     private refreshTokenService: RefreshTokenService,
     private passwordResetService: PasswordResetService,
     private emailService: EmailService,
+    private configService: ConfigService,
   ) { }
 
   async register(createUserDto: CreateUserDto) {
@@ -64,11 +67,11 @@ export class AuthService {
     const user = await this.usersService.create(enity);
     const { password, ...result } = user;
 
-    await this.emailService.sendWelcomeEmail(
-      user.email,
-      user.name,
+    this.sendEmailByExternalApi('/api/v1/email/send-welcome-email', {
+      email: user.email,
+      name: user.name,
       verificationToken,
-    );
+    });
 
     return new BaseResponseDto(result, 'User registered successfully');
   }
@@ -231,11 +234,12 @@ export class AuthService {
       verification_token_expires_at: verificationTokenExpiresAt,
     });
 
-    await this.emailService.sendWelcomeEmail(
-      user.email,
-      user.name,
+    this.sendEmailByExternalApi('/api/v1/email/re-send-verificatio-email', {
+      email: user.email,
+      name: user.name,
       verificationToken,
-    );
+    });
+
 
     return new BaseResponseDto(
       null,
@@ -258,6 +262,37 @@ export class AuthService {
 
     await this.passwordResetService.resetPassword(email, code, newPassword);
     return new BaseResponseDto(null, 'Password has been reset successfully');
+  }
+
+  private sendEmailByExternalApi(
+    endpoint: string,
+    body: Record<string, unknown>,
+  ): void {
+    const emailSendUrl = this.buildEmailSendUrl(endpoint);
+    const emailSendHeaderKey = this.configService.get<string>('EMAIL_SEND_HEADER_KEY');
+
+    if (!emailSendHeaderKey) {
+      throw new InternalServerErrorException('Email sending configuration is missing');
+    }
+    console.log('email sending by api..')
+    const response = fetch(emailSendUrl, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-email-key': emailSendHeaderKey,
+      },
+      body: JSON.stringify(body),
+    });
+  }
+
+  private buildEmailSendUrl(endpoint: string): string {
+    const emailSendBaseUrl = this.configService.get<string>('EMAIL_SEND_URL');
+
+    if (!emailSendBaseUrl) {
+      throw new InternalServerErrorException('Email sending configuration is missing');
+    }
+
+    return `${emailSendBaseUrl.replace(/\/+$/, '')}/${endpoint.replace(/^\/+/, '')}`;
   }
 
 }
