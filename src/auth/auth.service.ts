@@ -274,7 +274,7 @@ export class AuthService {
     if (!emailSendHeaderKey) {
       throw new InternalServerErrorException('Email sending configuration is missing');
     }
-    console.log('email sending by api..')
+    console.log('email sending by api..', emailSendUrl)
     const response = fetch(emailSendUrl, {
       method: 'POST',
       headers: {
