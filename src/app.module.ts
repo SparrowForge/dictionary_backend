@@ -27,6 +27,7 @@ import { StudentActivityModule } from './student_activity/student-activity.modul
 import { CatagoryModule } from './catagory/catagory.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { NotificationRecordModule } from './notification-record/notification-record.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -57,7 +58,8 @@ import { NotificationRecordModule } from './notification-record/notification-rec
     FavouriteWordsModule,
     StudentActivityModule,
     NotificationsModule,
-    NotificationRecordModule
+    NotificationRecordModule,
+    EmailModule
   ],
   controllers: [AppController],
   providers: [
