@@ -1,4 +1,4 @@
- 
+
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -59,7 +59,7 @@ import { RefreshTokenService } from './refresh-token.service';
             },
           },
           defaults: {
-            from: `"${config.get('FROM_NAME') || 'Solo Crest Team'}" <${config.get('FROM_EMAIL') || config.get('SMTP_USER')}>`,
+            from: `"${config.get('FROM_NAME') || 'BCSK Smart Dictionary Team'}" <${config.get('FROM_EMAIL') || config.get('SMTP_USER')}>`,
           },
           template: {
             dir: templatesDir,

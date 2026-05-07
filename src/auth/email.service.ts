@@ -20,7 +20,7 @@ export class EmailService {
 
       await this.mailerService.sendMail({
         to: email,
-        subject: 'Password Reset Verification Code - Solo Crest',
+        subject: 'Password Reset Verification Code - BCSK Smart Dictionary',
         template: 'password-reset',
         context: {
           code,
@@ -89,12 +89,12 @@ export class EmailService {
 
       await this.mailerService.sendMail({
         to: testEmail,
-        subject: 'Solo Crest - Email Configuration Test',
+        subject: 'BCSK Smart Dictionary - Email Configuration Test',
         html: `
           <h2>Email Configuration Test</h2>
           <p>This is a test email to verify that your email configuration is working correctly.</p>
           <p>Sent at: ${new Date().toISOString()}</p>
-          <p>From: Solo Crest Backend</p>
+          <p>From: BCSK Smart Dictionary Backend</p>
         `,
       });
 
