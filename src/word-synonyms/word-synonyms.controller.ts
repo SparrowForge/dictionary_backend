@@ -14,7 +14,7 @@ import { UpdateWordSynonymsDto } from './dto/update-word-synonyms.dto';
 
 @ApiTags('WordSynonyms')
 @ApiBearerAuth()
-@Roles(RolesEnum.ADMIN)
+//@Roles(RolesEnum.ADMIN)
 @Controller('api/v1/word-synonyms')
 export class WordSynonymsController {
     constructor(private readonly WordSynonymsService: WordSynonymsService) { }
