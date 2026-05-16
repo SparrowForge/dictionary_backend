@@ -14,7 +14,7 @@ import { UpdateWordAntonymsDto } from './dto/update-word-antonyms.dto';
 
 @ApiTags('WordAntonyms')
 @ApiBearerAuth()
-@Roles(RolesEnum.ADMIN)
+//@Roles(RolesEnum.ADMIN)
 @Controller('api/v1/word-antonyms')
 export class WordAntonymsController {
     constructor(private readonly WordAntonymsService: WordAntonymsService) { }
