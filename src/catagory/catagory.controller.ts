@@ -15,7 +15,7 @@ import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTags('Catagory')
 @ApiBearerAuth()
-@Roles(RolesEnum.ADMIN)
+//@Roles(RolesEnum.ADMIN)
 @Controller('api/v1/catagory')
 export class CatagoryController {
     constructor(private readonly catagoryService: CatagoryService) { }
