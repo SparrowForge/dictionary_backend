@@ -14,7 +14,7 @@ export class FilterAuditDto extends PaginationDto {
   search?: string;
 
   @ApiProperty({
-    description: 'Filter by resource ID',
+    description: 'Filter by target days',
     required: false,
   })
   @IsOptional()

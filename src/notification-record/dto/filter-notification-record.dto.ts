@@ -22,14 +22,14 @@ export class FilterNotificationRecordDto extends PaginationDto {
   })
   deliveryStatus?: NotificationDeliveryStatusType;
 
-  @ApiProperty({ description: 'User ID', example: 39, required: false })
+  @ApiProperty({ description: 'User ID', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', required: false })
   @IsUUID()
   @IsOptional()
   userId?: number;
 
   @ApiProperty({
     description: 'Is Seen',
-    example: false,
+    example: 'false',
     default: false,
     required: false,
   })

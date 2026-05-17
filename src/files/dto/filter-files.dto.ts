@@ -24,7 +24,7 @@ export class FilterFilesDto extends PaginationDto {
   file_name?: string;
 
   @ApiProperty({
-    description: 'Search by name or passport number',
+    description: 'Search by file name or original name',
     required: false,
   })
   @IsOptional()
@@ -34,6 +34,7 @@ export class FilterFilesDto extends PaginationDto {
   @ApiProperty({
     description: 'Type of file',
     enum: FileType,
+    example: FileType.PHOTO,
     required: false,
   })
   @IsOptional()

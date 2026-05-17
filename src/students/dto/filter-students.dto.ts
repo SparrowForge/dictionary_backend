@@ -9,7 +9,7 @@ export class FilterStudentsDto extends PaginationDto {
   @IsOptional()
   name: string;
 
-  @ApiProperty({ description: 'User id', example: 'xxxx xxxx xxxxx xxx', required: false })
+  @ApiProperty({ description: 'User ID', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', required: false })
   @IsString()
   @IsOptional()
   user_id: string;
@@ -19,12 +19,12 @@ export class FilterStudentsDto extends PaginationDto {
   @IsOptional()
   student_id: string;
 
-  @ApiProperty({ description: 'Class id', example: 'xxxx xxxx xxxxx xxx', required: false })
+  @ApiProperty({ description: 'Class ID', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', required: false })
   @IsString()
   @IsOptional()
   class_id: string;
 
-  @ApiProperty({ description: 'Student name', example: 'some one', required: false })
+  @ApiProperty({ description: 'Class name', example: 'class1', required: false })
   @IsString()
   @IsOptional()
   class_name: string;

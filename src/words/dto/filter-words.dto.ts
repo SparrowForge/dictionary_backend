@@ -16,36 +16,37 @@ export class FilterWordsDto extends PaginationDto {
   @IsOptional()
   bangla_word: string;
 
-  @ApiProperty({ description: 'English word', example: 'Good', required: false })
+  @ApiProperty({ description: 'Part of speech', example: 'noun', required: false })
   @IsString()
   @IsOptional()
   part_of_speech: string;
 
-  @ApiProperty({ description: 'English word', example: 'Good', required: false })
+  @ApiProperty({ description: 'Word description', example: 'A positive quality or state', required: false })
   @IsString()
   @IsOptional()
   description: string;
 
-  @ApiProperty({ description: 'Word Status', example: WordStatusEnum.PENDING, required: true })
+  @ApiProperty({ description: 'Word Status', example: WordStatusEnum.PENDING, required: false })
   @IsEnum(WordStatusEnum, { message: `status must be one of: ${Object.values(WordStatusEnum).join(', ')}`, })
   @IsOptional()
   status: WordStatusEnum;
 
-  @ApiProperty({ description: 'approved_by User id', example: 'xxxx xxxx xxxxx xxx', required: false })
+  @ApiProperty({ description: 'Approved by user ID', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', required: false })
   @IsString()
   @IsOptional()
   approved_by_user_id: string;
 
-  @ApiProperty({ description: 'class_id', example: 'xxxx xxxx xxxxx xxx' })
+  @ApiProperty({ description: 'Class ID', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', required: false })
   @IsString()
   @IsOptional()
   class_id: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Class name', example: 'class1', required: false })
   @IsString()
   @IsOptional()
   class_name: string;
 
+  @ApiProperty({ description: 'Sort by most viewed words', example: true, required: false })
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => {

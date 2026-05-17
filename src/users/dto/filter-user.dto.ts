@@ -11,12 +11,12 @@ export class FilterUserDto extends PaginationDto {
   @IsOptional()
   role: RolesEnum;
 
-  @ApiProperty({ description: 'Filter by phone_no', required: false, })
+  @ApiProperty({ description: 'Filter by name', required: false, })
   @IsOptional()
   @IsString()
   name?: string;
 
-  @ApiProperty({ description: 'Filter by department', required: false, })
+  @ApiProperty({ description: 'Filter by email', required: false, })
   @IsOptional()
   @IsString()
   email?: string;
@@ -32,7 +32,7 @@ export class FilterUserDto extends PaginationDto {
   status: Status;
 
   //===========================
-  @ApiProperty({ description: 'Class id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', })
+  @ApiProperty({ description: 'Class ID', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', required: false })
   @IsOptional()
   class_id?: string;
 
@@ -41,7 +41,7 @@ export class FilterUserDto extends PaginationDto {
   @IsOptional()
   section?: string;
 
-  @ApiProperty({ description: 'Student roll_number', example: '001ction', required: false, })
+  @ApiProperty({ description: 'Student roll number', example: '001', required: false, })
   @IsString()
   @IsOptional()
   roll_number?: string;

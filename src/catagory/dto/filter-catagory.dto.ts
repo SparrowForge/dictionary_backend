@@ -5,12 +5,12 @@ import { PaginationDto } from '../../common/dto/pagination.dto';
 import { Status } from 'src/common/enums';
 
 export class FilterCatagoryDto extends PaginationDto {
-  @ApiProperty({ description: 'Catagory name', example: 'catagory1' })
+  @ApiProperty({ description: 'Catagory name', example: 'catagory1', required: false })
   @IsString()
   @IsOptional()
   name: string;
 
-  @ApiProperty({ description: 'Catagory active status', example: Status.ACTIVE, default: Status.ACTIVE })
+  @ApiProperty({ description: 'Catagory active status', example: Status.ACTIVE, default: Status.ACTIVE, required: false })
   @IsEnum(Status, { message: 'Status must be active or inactive' })
   @IsOptional()
   status: Status;

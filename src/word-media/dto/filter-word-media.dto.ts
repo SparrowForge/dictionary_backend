@@ -4,7 +4,7 @@ import { IsOptional, IsString } from 'class-validator';
 import { PaginationDto } from '../../common/dto/pagination.dto';
 
 export class FilterWordMediaDto extends PaginationDto {
-  @ApiProperty({ description: 'Word id', example: 'class1' })
+  @ApiProperty({ description: 'Word ID', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', required: false })
   @IsString()
   @IsOptional()
   word_id: string;
