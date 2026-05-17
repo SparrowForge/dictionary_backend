@@ -1,11 +1,8 @@
- 
- 
- 
 /* eslint-disable @typescript-eslint/no-base-to-string */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { ObjectLiteral, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
@@ -20,7 +17,32 @@ import * as XLSX from 'xlsx';
 import { UploadedWordFile } from './dto/UploadedWordFile.type';
 import { WordDetails } from './entities/word-details.entity';
 import { WordView } from './entities/word-view.entity';
+import { WordSentences } from 'src/word-sentences/entities/word-sentences.entity';
+import { WordSynonyms } from 'src/word-synonyms/entities/word-synonyms.entity';
+import { WordAntonyms } from 'src/word-antonyms/entities/word-antonyms.entity';
 
+type TrimmedWordUploadRow = {
+    english_word: string;
+    bangla_word: string;
+    part_of_speech: string;
+    description: string;
+    class: string;
+    english_meaning: string;
+    sentence: string;
+    synonyms: string[];
+    antonyms: string[];
+    classNames: string[];
+};
+
+type UploadedWordRelationRow = {
+    wordId: string;
+    row: TrimmedWordUploadRow;
+};
+
+type WordTextCandidate = {
+    wordId: string;
+    value: string;
+};
 
 @Injectable()
 export class WordsService {
@@ -33,7 +55,13 @@ export class WordsService {
         private WordDetailsRepository: Repository<WordDetails>,
         @InjectRepository(WordView)
         private WordViewRepository: Repository<WordView>,
-    ) { }
+        @InjectRepository(WordSentences)
+        private WordSentencesRepository: Repository<WordSentences>,
+        @InjectRepository(WordSynonyms)
+        private WordSynonymsRepository: Repository<WordSynonyms>,
+        @InjectRepository(WordAntonyms)
+        private WordAntonymsRepository: Repository<WordAntonyms>,
+    ) {}
 
     async create(createWordsDto: CreateWordsDto) {
         await this.ensureEnglishWordIsUnique(createWordsDto.english_word);
@@ -63,17 +91,24 @@ export class WordsService {
         const firstSheetName = workbook.SheetNames[0];
 
         if (!firstSheetName) {
-            throw new BadRequestException('Uploaded Excel file does not contain any sheet');
+            throw new BadRequestException(
+                'Uploaded Excel file does not contain any sheet',
+            );
         }
 
         const worksheet = workbook.Sheets[firstSheetName];
-        const rows = XLSX.utils.sheet_to_json<WordUploadTemplateDto>(worksheet, {
-            defval: '',
-            raw: false,
-        });
+        const rows = XLSX.utils.sheet_to_json<WordUploadTemplateDto>(
+            worksheet,
+            {
+                defval: '',
+                raw: false,
+            },
+        );
 
         if (!rows.length) {
-            throw new BadRequestException('Uploaded Excel file does not contain any data row');
+            throw new BadRequestException(
+                'Uploaded Excel file does not contain any data row',
+            );
         }
 
         const expectedHeaders: (keyof WordUploadTemplateDto)[] = [
@@ -83,10 +118,15 @@ export class WordsService {
             'description',
             'class',
             'english_meaning',
+            'sentence',
+            'synonyms',
+            'antonyms',
         ];
 
         const worksheetHeaders = this.getWorksheetHeaders(worksheet);
-        const missingHeaders = expectedHeaders.filter((header) => !worksheetHeaders.includes(header));
+        const missingHeaders = expectedHeaders.filter(
+            (header) => !worksheetHeaders.includes(header),
+        );
 
         if (missingHeaders.length) {
             throw new BadRequestException(
@@ -101,6 +141,9 @@ export class WordsService {
             description: String(row.description ?? '').trim(),
             class: String(row.class ?? '').trim(),
             english_meaning: String(row.english_meaning ?? '').trim(),
+            sentence: String(row.sentence ?? '').trim(),
+            synonyms: this.parseCommaSeparatedValues(row.synonyms),
+            antonyms: this.parseCommaSeparatedValues(row.antonyms),
             classNames: this.parseClassNames(row.class),
         }));
 
@@ -110,7 +153,9 @@ export class WordsService {
             const rowNumber = index + 2;
 
             if (!row.english_word) {
-                validationErrors.push(`Row ${rowNumber}: english_word is required`);
+                validationErrors.push(
+                    `Row ${rowNumber}: english_word is required`,
+                );
             }
         });
 
@@ -118,23 +163,35 @@ export class WordsService {
             throw new BadRequestException(validationErrors);
         }
 
-        const englishWords = [...new Set(trimmedRows.map((row) => row.english_word.toLowerCase()))];
+        const englishWords = [
+            ...new Set(
+                trimmedRows.map((row) => row.english_word.toLowerCase()),
+            ),
+        ];
         const existingWords = englishWords.length
-            ? await this.WordsRepository
-                .createQueryBuilder('words')
-                .where('LOWER(words.english_word) IN (:...englishWords)', { englishWords })
-                .withDeleted()
-                .getMany()
+            ? await this.WordsRepository.createQueryBuilder('words')
+                  .where('LOWER(words.english_word) IN (:...englishWords)', {
+                      englishWords,
+                  })
+                  .withDeleted()
+                  .getMany()
             : [];
-        const existingWordMap = new Map(existingWords.map((word) => [word.english_word.toLowerCase(), word]));
-        const skippedExistingWords = trimmedRows.flatMap((row, index) => (
+        const existingWordMap = new Map(
+            existingWords.map((word) => [
+                word.english_word.toLowerCase(),
+                word,
+            ]),
+        );
+        const skippedExistingWords = trimmedRows.flatMap((row, index) =>
             existingWordMap.has(row.english_word.toLowerCase())
-                ? [{
-                    row: index + 2,
-                    english_word: row.english_word,
-                }]
-                : []
-        ));
+                ? [
+                      {
+                          row: index + 2,
+                          english_word: row.english_word,
+                      },
+                  ]
+                : [],
+        );
         const rowsToUpload = trimmedRows.filter(
             (row) => !existingWordMap.has(row.english_word.toLowerCase()),
         );
@@ -145,11 +202,15 @@ export class WordsService {
             const rowNumber = trimmedRows.indexOf(row) + 2;
 
             if (!row.bangla_word) {
-                validationErrors.push(`Row ${rowNumber}: bangla_word is required`);
+                validationErrors.push(
+                    `Row ${rowNumber}: bangla_word is required`,
+                );
             }
 
             if (!row.english_meaning) {
-                validationErrors.push(`Row ${rowNumber}: english_meaning is required`);
+                validationErrors.push(
+                    `Row ${rowNumber}: english_meaning is required`,
+                );
             }
 
             if (!row.class) {
@@ -157,13 +218,17 @@ export class WordsService {
             }
 
             if (row.class && !row.classNames.length) {
-                validationErrors.push(`Row ${rowNumber}: class must contain at least one valid class name`);
+                validationErrors.push(
+                    `Row ${rowNumber}: class must contain at least one valid class name`,
+                );
             }
 
             const normalizedEnglishWord = row.english_word.toLowerCase();
             if (normalizedEnglishWord) {
                 if (seenEnglishWords.has(normalizedEnglishWord)) {
-                    validationErrors.push(`Row ${rowNumber}: duplicate english_word "${row.english_word}" found in file`);
+                    validationErrors.push(
+                        `Row ${rowNumber}: duplicate english_word "${row.english_word}" found in file`,
+                    );
                 }
                 seenEnglishWords.add(normalizedEnglishWord);
             }
@@ -180,14 +245,17 @@ export class WordsService {
         }
 
         const classes = classNames.size
-            ? await this.ClassesRepository
-                .createQueryBuilder('classes')
-                .where('LOWER(classes.name) IN (:...names)', { names: [...classNames] })
-                .andWhere('classes.deleted_at IS NULL')
-                .getMany()
+            ? await this.ClassesRepository.createQueryBuilder('classes')
+                  .where('LOWER(classes.name) IN (:...names)', {
+                      names: [...classNames],
+                  })
+                  .andWhere('classes.deleted_at IS NULL')
+                  .getMany()
             : [];
 
-        const classMap = new Map(classes.map((item) => [item.name.toLowerCase(), item]));
+        const classMap = new Map(
+            classes.map((item) => [item.name.toLowerCase(), item]),
+        );
 
         rowsToUpload.forEach((row) => {
             const rowNumber = trimmedRows.indexOf(row) + 2;
@@ -223,25 +291,57 @@ export class WordsService {
         const savedWords = await this.WordsRepository.save(wordsToCreate);
         const wordDetailsToCreate = savedWords.flatMap((word, index) => {
             const row = rowsToUpload[index];
-            const uniqueClassNames = [...new Set(row.classNames.map((className) => className.toLowerCase()))];
+            const uniqueClassNames = [
+                ...new Set(
+                    row.classNames.map((className) => className.toLowerCase()),
+                ),
+            ];
 
-            return uniqueClassNames.map((className) => this.WordDetailsRepository.create({
-                word_id: word.id,
-                class_id: classMap.get(className)!.id,
-                created_by: createdBy,
-            }));
+            return uniqueClassNames.map((className) =>
+                this.WordDetailsRepository.create({
+                    word_id: word.id,
+                    class_id: classMap.get(className)!.id,
+                    created_by: createdBy,
+                }),
+            );
         });
 
         if (wordDetailsToCreate.length) {
             await this.WordDetailsRepository.save(wordDetailsToCreate);
         }
 
+        const uploadedWordRelationRows: UploadedWordRelationRow[] = [
+            ...savedWords.map((word, index) => ({
+                wordId: word.id,
+                row: rowsToUpload[index],
+            })),
+            ...trimmedRows.flatMap((row) => {
+                const existingWord = existingWordMap.get(
+                    row.english_word.toLowerCase(),
+                );
+
+                return existingWord && !existingWord.deleted_at
+                    ? [
+                          {
+                              wordId: existingWord.id,
+                              row,
+                          },
+                      ]
+                    : [];
+            }),
+        ];
+
+        await this.saveUploadedWordRelations(
+            uploadedWordRelationRows,
+            createdBy,
+        );
+
         const uploadedWords = savedWords.length
             ? await this.WordsRepository.find({
-                where: savedWords.map((word) => ({ id: word.id })),
-                relations: ['word_details', 'word_details.class'],
-                order: { english_word: 'ASC' },
-            })
+                  where: savedWords.map((word) => ({ id: word.id })),
+                  relations: ['word_details', 'word_details.class'],
+                  order: { english_word: 'ASC' },
+              })
             : [];
 
         return {
@@ -259,12 +359,15 @@ export class WordsService {
         const { page = 1, limit = 1000000000000 } = paginationDto;
         const skip = (page - 1) * limit;
 
-        const queryBuilder = this.WordsRepository
-            .createQueryBuilder('words')
+        const queryBuilder = this.WordsRepository.createQueryBuilder('words')
             .leftJoinAndSelect('words.approved_by_user', 'user')
             .leftJoinAndSelect('words.created_by_user', 'created_by_user')
             .leftJoinAndSelect('words.updated_by_user', 'updated_by_user')
-            .leftJoinAndSelect('words.word_details', 'word_details', 'word_details.deleted_at IS NULL')
+            .leftJoinAndSelect(
+                'words.word_details',
+                'word_details',
+                'word_details.deleted_at IS NULL',
+            )
             .leftJoinAndSelect('word_details.class', 'classes')
             .skip(skip)
             .take(limit);
@@ -274,14 +377,10 @@ export class WordsService {
                 .orderBy('words.view_count', 'DESC')
                 .addOrderBy('words.english_word', 'ASC');
         } else {
-            queryBuilder
-                .orderBy('words.english_word', 'ASC');
+            queryBuilder.orderBy('words.english_word', 'ASC');
         }
 
-        queryBuilder
-            .where('words.deleted_at IS NULL')
-            .distinct(true);
-
+        queryBuilder.where('words.deleted_at IS NULL').distinct(true);
 
         // Apply status filter if provided
         if (filters?.english_word) {
@@ -295,9 +394,12 @@ export class WordsService {
             });
         }
         if (filters?.part_of_speech) {
-            queryBuilder.andWhere('words.part_of_speech ILIKE :part_of_speech', {
-                part_of_speech: `%${filters.part_of_speech}%`,
-            });
+            queryBuilder.andWhere(
+                'words.part_of_speech ILIKE :part_of_speech',
+                {
+                    part_of_speech: `%${filters.part_of_speech}%`,
+                },
+            );
         }
         if (filters?.description) {
             queryBuilder.andWhere('words.description ILIKE :description', {
@@ -310,9 +412,12 @@ export class WordsService {
             });
         }
         if (filters?.approved_by_user_id) {
-            queryBuilder.andWhere('words.approved_by_user_id = :approved_by_user_id', {
-                approved_by_user_id: filters.approved_by_user_id,
-            });
+            queryBuilder.andWhere(
+                'words.approved_by_user_id = :approved_by_user_id',
+                {
+                    approved_by_user_id: filters.approved_by_user_id,
+                },
+            );
         }
         if (filters?.class_id) {
             queryBuilder.andWhere('word_details.class_id = :class_id', {
@@ -324,7 +429,6 @@ export class WordsService {
                 class_name: `%${filters.class_name}%`,
             });
         }
-
 
         const [items, total] = await queryBuilder.getManyAndCount();
 
@@ -352,7 +456,13 @@ export class WordsService {
     async findOne(id: string, viewerUserId?: string) {
         const word = await this.WordsRepository.findOne({
             where: { id },
-            relations: ['approved_by_user', 'created_by_user', 'updated_by_user', 'word_details', 'word_details.class'],
+            relations: [
+                'approved_by_user',
+                'created_by_user',
+                'updated_by_user',
+                'word_details',
+                'word_details.class',
+            ],
             withDeleted: false, // Only get non-deleted Wordss
         });
 
@@ -386,26 +496,30 @@ export class WordsService {
     }
 
     findByEmailOrWordsName(email: string) {
-        return this.WordsRepository
-            .createQueryBuilder('Words')
-            .addSelect('Words.password')
-            .where('Words.email = :email', { email })
-            // .andWhere('Words.deletedAt IS NULL') // Only get non-deleted Wordss
-            .getOne();
+        return (
+            this.WordsRepository.createQueryBuilder('Words')
+                .addSelect('Words.password')
+                .where('Words.email = :email', { email })
+                // .andWhere('Words.deletedAt IS NULL') // Only get non-deleted Wordss
+                .getOne()
+        );
     }
 
     update(id: string, updateWordsDto: UpdateWordsDto) {
         return this.updateWordWithDetails(id, updateWordsDto);
     }
 
-    updateApprovalStatus(id: string, status: WordStatusEnum, approved_by_user_id: string,) {
+    updateApprovalStatus(
+        id: string,
+        status: WordStatusEnum,
+        approved_by_user_id: string,
+    ) {
         return this.WordsRepository.update(id, {
             status,
             approved_by_user_id,
             approved_at: new Date(),
         });
     }
-
 
     remove(id: string) {
         return this.WordsRepository.softDelete(id);
@@ -423,7 +537,10 @@ export class WordsService {
         return this.WordsRepository.restore(id);
     }
 
-    private async updateWordWithDetails(id: string, updateWordsDto: UpdateWordsDto) {
+    private async updateWordWithDetails(
+        id: string,
+        updateWordsDto: UpdateWordsDto,
+    ) {
         await this.ensureEnglishWordIsUnique(updateWordsDto.english_word, id);
 
         const { class_ids, ...wordData } = updateWordsDto;
@@ -444,17 +561,25 @@ export class WordsService {
         return this.findOne(id);
     }
 
-    private async ensureEnglishWordIsUnique(englishWord: string, excludeWordId?: string) {
+    private async ensureEnglishWordIsUnique(
+        englishWord: string,
+        excludeWordId?: string,
+    ) {
         const normalizedEnglishWord = englishWord.trim().toLowerCase();
 
-        const existingWord = await this.WordsRepository
-            .createQueryBuilder('words')
+        const existingWord = await this.WordsRepository.createQueryBuilder(
+            'words',
+        )
             .withDeleted()
-            .where('LOWER(words.english_word) = :englishWord', { englishWord: normalizedEnglishWord })
+            .where('LOWER(words.english_word) = :englishWord', {
+                englishWord: normalizedEnglishWord,
+            })
             .getOne();
 
         if (existingWord && existingWord.id !== excludeWordId) {
-            throw new BadRequestException(`english_word "${englishWord}" already exists`);
+            throw new BadRequestException(
+                `english_word "${englishWord}" already exists`,
+            );
         }
     }
 
@@ -466,12 +591,14 @@ export class WordsService {
     ): WordDetails[] {
         const uniqueClassIds = [...new Set(classIds)];
 
-        return uniqueClassIds.map((class_id) => this.WordDetailsRepository.create({
-            word_id: wordId,
-            class_id,
-            created_by: createdBy,
-            updated_by: updatedBy,
-        }));
+        return uniqueClassIds.map((class_id) =>
+            this.WordDetailsRepository.create({
+                word_id: wordId,
+                class_id,
+                created_by: createdBy,
+                updated_by: updatedBy,
+            }),
+        );
     }
 
     private getWorksheetHeaders(worksheet: XLSX.WorkSheet): string[] {
@@ -479,7 +606,10 @@ export class WordsService {
         const headers: string[] = [];
 
         for (let col = range.s.c; col <= range.e.c; col++) {
-            const cellAddress = XLSX.utils.encode_cell({ r: range.s.r, c: col });
+            const cellAddress = XLSX.utils.encode_cell({
+                r: range.s.r,
+                c: col,
+            });
             const cell = worksheet[cellAddress];
             headers.push(String(cell?.v ?? '').trim());
         }
@@ -494,5 +624,186 @@ export class WordsService {
             .filter(Boolean);
     }
 
+    private parseCommaSeparatedValues(value: unknown): string[] {
+        const seenValues = new Set<string>();
 
+        return String(value ?? '')
+            .split(',')
+            .map((item) => item.trim())
+            .filter((item) => {
+                if (!item) {
+                    return false;
+                }
+
+                const normalizedItem = item.toLowerCase();
+                if (seenValues.has(normalizedItem)) {
+                    return false;
+                }
+
+                seenValues.add(normalizedItem);
+                return true;
+            });
+    }
+
+    private async saveUploadedWordRelations(
+        rows: UploadedWordRelationRow[],
+        createdBy: string,
+    ) {
+        const sentenceCandidates = this.getUniqueWordTextCandidates(
+            rows.flatMap(({ wordId, row }) =>
+                row.sentence ? [{ wordId, value: row.sentence }] : [],
+            ),
+        );
+        const synonymCandidates = this.getUniqueWordTextCandidates(
+            rows.flatMap(({ wordId, row }) =>
+                row.synonyms.map((synonym) => ({
+                    wordId,
+                    value: synonym,
+                })),
+            ),
+        );
+        const antonymCandidates = this.getUniqueWordTextCandidates(
+            rows.flatMap(({ wordId, row }) =>
+                row.antonyms.map((antonym) => ({
+                    wordId,
+                    value: antonym,
+                })),
+            ),
+        );
+
+        const [existingSentenceKeys, existingSynonymKeys, existingAntonymKeys] =
+            await Promise.all([
+                this.getExistingWordTextKeys(
+                    this.WordSentencesRepository,
+                    'WordSentences',
+                    'sentence',
+                    sentenceCandidates,
+                ),
+                this.getExistingWordTextKeys(
+                    this.WordSynonymsRepository,
+                    'WordSynonyms',
+                    'synonym',
+                    synonymCandidates,
+                ),
+                this.getExistingWordTextKeys(
+                    this.WordAntonymsRepository,
+                    'WordAntonyms',
+                    'antonym',
+                    antonymCandidates,
+                ),
+            ]);
+
+        const sentencesToCreate = sentenceCandidates
+            .filter(
+                (candidate) =>
+                    !existingSentenceKeys.has(
+                        this.getWordTextKey(candidate.wordId, candidate.value),
+                    ),
+            )
+            .map((candidate) =>
+                this.WordSentencesRepository.create({
+                    word_id: candidate.wordId,
+                    sentence: candidate.value,
+                    created_by: createdBy,
+                }),
+            );
+        const synonymsToCreate = synonymCandidates
+            .filter(
+                (candidate) =>
+                    !existingSynonymKeys.has(
+                        this.getWordTextKey(candidate.wordId, candidate.value),
+                    ),
+            )
+            .map((candidate) =>
+                this.WordSynonymsRepository.create({
+                    word_id: candidate.wordId,
+                    synonym: candidate.value,
+                    created_by: createdBy,
+                }),
+            );
+        const antonymsToCreate = antonymCandidates
+            .filter(
+                (candidate) =>
+                    !existingAntonymKeys.has(
+                        this.getWordTextKey(candidate.wordId, candidate.value),
+                    ),
+            )
+            .map((candidate) =>
+                this.WordAntonymsRepository.create({
+                    word_id: candidate.wordId,
+                    antonym: candidate.value,
+                    created_by: createdBy,
+                }),
+            );
+
+        await Promise.all([
+            sentencesToCreate.length
+                ? this.WordSentencesRepository.save(sentencesToCreate)
+                : Promise.resolve(),
+            synonymsToCreate.length
+                ? this.WordSynonymsRepository.save(synonymsToCreate)
+                : Promise.resolve(),
+            antonymsToCreate.length
+                ? this.WordAntonymsRepository.save(antonymsToCreate)
+                : Promise.resolve(),
+        ]);
+    }
+
+    private getUniqueWordTextCandidates(
+        candidates: WordTextCandidate[],
+    ): WordTextCandidate[] {
+        const seenCandidates = new Set<string>();
+
+        return candidates.filter((candidate) => {
+            const key = this.getWordTextKey(candidate.wordId, candidate.value);
+
+            if (seenCandidates.has(key)) {
+                return false;
+            }
+
+            seenCandidates.add(key);
+            return true;
+        });
+    }
+
+    private async getExistingWordTextKeys<Entity extends ObjectLiteral>(
+        repository: Repository<Entity>,
+        alias: string,
+        fieldName: string,
+        candidates: WordTextCandidate[],
+    ): Promise<Set<string>> {
+        if (!candidates.length) {
+            return new Set<string>();
+        }
+
+        const wordIds = [
+            ...new Set(candidates.map((candidate) => candidate.wordId)),
+        ];
+        const values = [
+            ...new Set(
+                candidates.map((candidate) => candidate.value.toLowerCase()),
+            ),
+        ];
+        const existingRecords = await repository
+            .createQueryBuilder(alias)
+            .where(`${alias}.word_id IN (:...wordIds)`, { wordIds })
+            .andWhere(`LOWER(${alias}.${fieldName}) IN (:...values)`, {
+                values,
+            })
+            .andWhere(`${alias}.deleted_at IS NULL`)
+            .getMany();
+
+        return new Set(
+            existingRecords.map((record) => {
+                const wordId = String(record['word_id']);
+                const value = String(record[fieldName]);
+
+                return this.getWordTextKey(wordId, value);
+            }),
+        );
+    }
+
+    private getWordTextKey(wordId: string, value: string): string {
+        return `${wordId}:${value.trim().toLowerCase()}`;
+    }
 }

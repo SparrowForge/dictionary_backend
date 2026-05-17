@@ -12,12 +12,20 @@ export class WordUploadTemplateDto {
   @IsNotEmpty()
   bangla_word: string;
 
-  @ApiProperty({ description: 'Part of speech', example: 'noun', required: false })
+  @ApiProperty({
+    description: 'Part of speech',
+    example: 'noun',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   part_of_speech?: string;
 
-  @ApiProperty({ description: 'Word description', example: 'A round fruit.', required: false })
+  @ApiProperty({
+    description: 'Word description',
+    example: 'A round fruit.',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   description?: string;
@@ -31,4 +39,31 @@ export class WordUploadTemplateDto {
   @IsString()
   @IsNotEmpty()
   english_meaning: string;
+
+  @ApiProperty({
+    description: 'Example sentence',
+    example: 'I ate an apple.',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  sentence?: string;
+
+  @ApiProperty({
+    description: 'Comma separated synonyms',
+    example: 'fruit, pome',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  synonyms?: string;
+
+  @ApiProperty({
+    description: 'Comma separated antonyms',
+    example: 'opposite word',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  antonyms?: string;
 }
