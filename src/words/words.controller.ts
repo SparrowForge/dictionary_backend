@@ -24,7 +24,7 @@ export class WordsController {
     @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
     @ApiOperation({
         summary: 'Upload words from Excel file',
-        description: 'Uploads an Excel file containing english_word, bangla_word, part_of_speech, description, and class columns.',
+        description: 'Uploads an Excel file containing english_word, phonetics, bangla_word, part_of_speech, class, english_meaning, sentence, synonyms, and antonyms columns.',
     })
     @UseInterceptors(FileInterceptor('file'))
     @ApiConsumes('multipart/form-data')

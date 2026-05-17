@@ -25,6 +25,10 @@ export class Words {
   @Column({ unique: true, nullable: false })
   english_word: string;
 
+  @ApiProperty({ description: 'Word phonetics', example: '/gud/', required: false })
+  @Column({ unique: false, nullable: true })
+  phonetics: string;
+
   @ApiProperty({ description: 'Bangla word', example: '...' })
   @Column({ unique: false, nullable: false })
   bangla_word: string;

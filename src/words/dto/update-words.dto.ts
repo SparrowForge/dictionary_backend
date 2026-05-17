@@ -19,6 +19,11 @@ export class UpdateWordsDto extends PartialType(CreateWordsDto) {
   @IsNotEmpty()
   english_word: string;
 
+  @ApiProperty({ description: 'Word phonetics', example: '/gud/', required: false })
+  @IsString()
+  @IsOptional()
+  phonetics: string;
+
   @ApiProperty({ description: 'Bangla word', example: '...', required: true })
   @IsString()
   @IsNotEmpty()

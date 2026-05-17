@@ -14,12 +14,12 @@ import { UpdateWordSentencesDto } from './dto/update-word-sentences.dto';
 
 @ApiTags('WordSentences')
 @ApiBearerAuth()
-@Roles(RolesEnum.ADMIN)
 @Controller('api/v1/word-sentences')
 export class WordSentencesController {
     constructor(private readonly WordSentencesService: WordSentencesService) { }
 
     @Post()
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
     @ApiOperation({
         summary: 'Create a new WordSentences', description: 'Creates a new WordSentences with the provided information. Password will be hashed before saving. Requires authentication.',
     })
@@ -75,6 +75,7 @@ export class WordSentencesController {
     }
 
     @Patch(':id')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
     @ApiOperation({ summary: 'Update a WordSentences by id', description: 'Updates an existing WordSentences with the provided information. Only active WordSentences can be updated. Requires authentication.', })
     @ApiParam({ name: 'id', description: 'WordSentences ID (uuid)', example: '45e16f14-b27f-4d20-99df-c1d5535ff9e3', type: 'number', })
     @ApiResponse({ status: 200, description: 'WordSentences updated successfully', type: BaseResponseDto<WordSentences>, })
@@ -87,6 +88,7 @@ export class WordSentencesController {
     }
 
     @Delete(':id')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
     @ApiOperation({
         summary: 'Soft delete a WordSentences by id',
         description: 'Soft deletes a WordSentences by setting the deletedAt timestamp. The WordSentences will not appear in regular queries but can be restored. Requires authentication.',
@@ -101,6 +103,7 @@ export class WordSentencesController {
     }
 
     @Delete(':id/permanent')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
     @ApiOperation({ summary: 'Permanently delete a WordSentences by id', description: 'Permanently deletes a WordSentences from the database. This action cannot be undone. Requires authentication.', })
     @ApiParam({ name: 'id', description: 'WordSentences ID (uuid)', example: 1, type: 'number', })
     @ApiResponse({ status: 200, description: 'WordSentences permanently deleted successfully', type: BaseResponseDto<null>, })
@@ -112,6 +115,7 @@ export class WordSentencesController {
     }
 
     @Post(':id/restore')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
     @ApiOperation({ summary: 'Restore a soft-deleted WordSentences', description: 'Restores a soft-deleted WordSentences.', })
     @ApiParam({ name: 'id', description: 'WordSentences ID (uuid)', example: 1, type: 'number', })
     @ApiResponse({ status: 200, description: 'WordSentences restored successfully', type: BaseResponseDto<null>, })

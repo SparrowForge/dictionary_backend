@@ -23,9 +23,9 @@ import { WordAntonyms } from 'src/word-antonyms/entities/word-antonyms.entity';
 
 type TrimmedWordUploadRow = {
     english_word: string;
+    phonetics: string;
     bangla_word: string;
     part_of_speech: string;
-    description: string;
     class: string;
     english_meaning: string;
     sentence: string;
@@ -122,9 +122,9 @@ export class WordsService {
 
         const expectedHeaders: (keyof WordUploadTemplateDto)[] = [
             'english_word',
+            'phonetics',
             'bangla_word',
             'part_of_speech',
-            'description',
             'class',
             'english_meaning',
             'sentence',
@@ -145,9 +145,9 @@ export class WordsService {
 
         const trimmedRows = rows.map((row) => ({
             english_word: String(row.english_word ?? '').trim(),
+            phonetics: String(row.phonetics ?? '').trim(),
             bangla_word: String(row.bangla_word ?? '').trim(),
             part_of_speech: String(row.part_of_speech ?? '').trim(),
-            description: String(row.description ?? '').trim(),
             class: String(row.class ?? '').trim(),
             english_meaning: String(row.english_meaning ?? '').trim(),
             sentence: String(row.sentence ?? '').trim(),
@@ -303,9 +303,9 @@ export class WordsService {
             const wordsToCreate = rowsToUpload.map((row) => {
                 const wordPayload: Partial<Words> = {
                     english_word: row.english_word,
+                    phonetics: row.phonetics || undefined,
                     bangla_word: row.bangla_word,
                     part_of_speech: row.part_of_speech || undefined,
-                    description: row.description || undefined,
                     english_meaning: row.english_meaning,
                     status: WordStatusEnum.APPROVED,
                     created_by: createdBy,
