@@ -21,7 +21,7 @@ import { FilterFilesDto } from './dto/filter-files.dto';
 import { UploadFileDto } from './dto/upload-file.dto';
 import { Files, FileType } from './entities/file.entity';
 import { FileReference } from './entities/file-reference.entity';
-import { S3Service } from './s3.service';
+import { CloudinaryService } from './cloudinary.service';
 
 // import { Cron } from '@nestjs/schedule'; // Uncomment when @nestjs/schedule is installed
 
@@ -34,7 +34,7 @@ export class FilesService {
     private readonly fileRepository: Repository<Files>,
     @InjectRepository(FileReference)
     private readonly fileReferenceRepository: Repository<FileReference>,
-    private readonly s3Service: S3Service,
+    private readonly cloudinaryService: CloudinaryService,
   ) { }
   async uploadFile(
     file: any, // Using any for now to avoid type issues
@@ -47,58 +47,40 @@ export class FilesService {
     const extension = path.extname(file.originalname || '');
     const fileName = `${timestamp}_${uploadFileDto.entity_type}_${uploadFileDto.entity_id}${extension}`;
 
-    // Create folder structure for S3
+    // Create folder structure for Cloudinary
     const folder = `${uploadFileDto.entity_type}/${uploadFileDto.entity_id}`;
 
     try {
-      // Upload file to S3
-      const uploadResult = await this.s3Service.uploadFile(
+      // Upload file to Cloudinary
+      const uploadResult = await this.cloudinaryService.uploadFile(
         file.buffer,
         fileName,
-        file.mimetype || 'application/octet-stream',
         folder,
       );
       console.log('uploadResult:', uploadResult);
 
-      // Generate thumbnail if it's an image
+      // Generate thumbnail URL if it's an image
       let thumbnailUrl: string | undefined = undefined;
       if (this.isImageFile(file.mimetype)) {
-        const thumbnailFileName = `thumb_${fileName}`;
-        const thumbnailFolder = `${folder}/thumbnails`;
-
-        // Generate thumbnail buffer
-        const thumbnailBuffer = await sharp(file.buffer)
-          .resize(300, 300, { fit: 'inside', withoutEnlargement: true })
-          .jpeg({ quality: 80 })
-          .toBuffer();
-
-        // Upload thumbnail to S3
-        await this.s3Service.uploadFile(
-          thumbnailBuffer,
-          thumbnailFileName,
-          'image/jpeg',
-          thumbnailFolder,
+        // Cloudinary automatically generates thumbnail URL with transformations
+        thumbnailUrl = await this.cloudinaryService.generateThumbnail(
+          uploadResult.public_id,
+          300,
+          300,
         );
-
-        // Generate thumbnail URL
-        const thumbnailKey = `${thumbnailFolder}/${thumbnailFileName}`;
-        thumbnailUrl = await this.s3Service.generatePresignedUrl(
-          thumbnailKey,
-          3600,
-        ); // 1 hour expiry
       }
 
       // Create file record
       const fileRecord = this.fileRepository.create({
         file_name: fileName,
         original_name: file.originalname || '',
-        file_path: uploadResult.key, // Store S3 key instead of local file path
+        file_path: uploadResult.public_id, // Store Cloudinary public_id
         file_size: file.size || 0,
         mime_type: file.mimetype || 'application/octet-stream',
         file_type: uploadFileDto.file_type,
         file_category: uploadFileDto.file_category,
         uploaded_by: uploadFileDto.uploadedBy,
-        public_url: uploadResult.url,
+        public_url: uploadResult.secure_url,
       });
 
       const savedFile = await this.fileRepository.save(fileRecord);
@@ -113,18 +95,11 @@ export class FilesService {
 
       await this.fileReferenceRepository.save(fileReference);
 
-      // Generate presigned URL for file access
-      const fileUrl = await this.s3Service.generatePresignedUrl(
-        uploadResult.key,
-        3600,
-      ); // 1 hour expiry
-
       // Return response
-
       return {
         success: true,
         file_id: savedFile.id,
-        file_url: fileUrl, // S3 presigned URL
+        file_url: uploadResult.secure_url, // Cloudinary secure URL
         thumbnail_url: thumbnailUrl,
         original_name: savedFile.original_name,
         file_name: savedFile.file_name,
@@ -132,12 +107,12 @@ export class FilesService {
         mime_type: savedFile.mime_type,
         file_type: savedFile.file_type,
         file_category: savedFile.file_category,
-        message: 'File uploaded successfully to S3',
-        public_url: uploadResult.url,
+        message: 'File uploaded successfully to Cloudinary',
+        public_url: uploadResult.secure_url,
       };
     } catch (error) {
       throw new BadRequestException(
-        `Failed to upload file to S3: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        `Failed to upload file to Cloudinary: ${error instanceof Error ? error.message : 'Unknown error'}`,
       );
     }
   }
@@ -163,20 +138,20 @@ export class FilesService {
   }
 
   async getFileStream(file: Files) {
-    // For S3 files, use S3Service to get stream
-    return this.s3Service.getFileStream(file.file_path);
+    // For Cloudinary files, return the secure URL for download
+    return this.cloudinaryService.getUrl(file.file_path);
   }
 
   async generateFileUrl(file: Files, expiresIn: number = 3600): Promise<string> {
-    // Generate presigned URL for S3 file access
-    return this.s3Service.generatePresignedUrl(file.file_path, expiresIn);
+    // Generate URL for Cloudinary file access
+    return this.cloudinaryService.getUrl(file.file_path);
   }
 
   async deleteFile(id: number): Promise<void> {
     const file = await this.findOne(id);
 
-    // Delete from S3
-    await this.s3Service.deleteFile(file.file_path);
+    // Delete from Cloudinary
+    await this.cloudinaryService.deleteFile(file.file_path);
 
     // Delete file references
     await this.fileReferenceRepository.delete({ file_id: id });
@@ -302,8 +277,8 @@ export class FilesService {
 
       for (const file of orphanedFiles) {
         try {
-          // Delete physical file
-          await this.deletePhysicalFile(file.file_path);
+          // Delete from Cloudinary
+          await this.cloudinaryService.deleteFile(file.file_path);
 
           // Mark as deleted in database
           file.deleted_at = new Date();
