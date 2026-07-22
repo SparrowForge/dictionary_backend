@@ -20,6 +20,8 @@ import { WordView } from './entities/word-view.entity';
 import { WordSentences } from 'src/word-sentences/entities/word-sentences.entity';
 import { WordSynonyms } from 'src/word-synonyms/entities/word-synonyms.entity';
 import { WordAntonyms } from 'src/word-antonyms/entities/word-antonyms.entity';
+import { WordForms } from 'src/word-forms/entities/word-forms.entity';
+import { WordFormEntryDto } from './dto/word-form-entry.dto';
 
 type TrimmedWordUploadRow = {
     english_word: string;
@@ -70,12 +72,19 @@ export class WordsService {
         private WordSynonymsRepository: Repository<WordSynonyms>,
         @InjectRepository(WordAntonyms)
         private WordAntonymsRepository: Repository<WordAntonyms>,
+        @InjectRepository(WordForms)
+        private WordFormsRepository: Repository<WordForms>,
     ) {}
 
     async create(createWordsDto: CreateWordsDto) {
         await this.ensureEnglishWordIsUnique(createWordsDto.english_word);
 
-        const { class_ids, ...wordData } = createWordsDto;
+        const { class_ids, word_forms, ...wordData } = createWordsDto;
+
+        if (word_forms !== undefined) {
+            this.validateWordForms(createWordsDto.part_of_speech, word_forms);
+        }
+
         const word = this.WordsRepository.create(wordData);
         const savedWord = await this.WordsRepository.save(word);
 
@@ -86,6 +95,15 @@ export class WordsService {
                 createWordsDto.created_by,
             );
             await this.WordDetailsRepository.save(wordDetails);
+        }
+
+        if (word_forms !== undefined) {
+            await this.persistWordForms(
+                savedWord.id,
+                word_forms,
+                createWordsDto.created_by,
+                createWordsDto.created_by,
+            );
         }
 
         return this.findOne(savedWord.id);
@@ -495,6 +513,7 @@ export class WordsService {
                 'updated_by_user',
                 'word_details',
                 'word_details.class',
+                'word_forms',
             ],
             withDeleted: false, // Only get non-deleted Wordss
         });
@@ -565,6 +584,7 @@ export class WordsService {
         await this.WordSynonymsRepository.delete({ word_id: id });
         await this.WordAntonymsRepository.delete({ word_id: id });
         await this.WordSentencesRepository.delete({ word_id: id });
+        await this.WordFormsRepository.delete({ word_id: id });
         return this.WordsRepository.delete(id);
     }
 
@@ -579,7 +599,18 @@ export class WordsService {
     ) {
         await this.ensureEnglishWordIsUnique(updateWordsDto.english_word, id);
 
-        const { class_ids, ...wordData } = updateWordsDto;
+        const { class_ids, word_forms, ...wordData } = updateWordsDto;
+
+        if (word_forms !== undefined) {
+            const partOfSpeech =
+                updateWordsDto.part_of_speech !== undefined
+                    ? updateWordsDto.part_of_speech
+                    : (await this.WordsRepository.findOne({ where: { id } }))
+                          ?.part_of_speech;
+
+            this.validateWordForms(partOfSpeech, word_forms);
+        }
+
         await this.WordsRepository.update(id, wordData);
 
         if (class_ids !== undefined) {
@@ -594,7 +625,67 @@ export class WordsService {
             );
         }
 
+        if (word_forms !== undefined) {
+            await this.persistWordForms(
+                id,
+                word_forms,
+                updateWordsDto.updated_by,
+                updateWordsDto.updated_by,
+            );
+        }
+
         return this.findOne(id);
+    }
+
+    private validateWordForms(
+        partOfSpeech: string | undefined,
+        wordForms: WordFormEntryDto[],
+    ) {
+        const isVerb = partOfSpeech?.trim().toLowerCase() === 'verb';
+
+        if (!isVerb) {
+            if (wordForms.length) {
+                throw new BadRequestException(
+                    'word_forms can only be set when part_of_speech is "verb"',
+                );
+            }
+            return;
+        }
+
+        const seenFormTypes = new Set<string>();
+        wordForms.forEach(({ form_type }) => {
+            if (seenFormTypes.has(form_type)) {
+                throw new BadRequestException(
+                    `Duplicate verb form_type "${form_type}"`,
+                );
+            }
+            seenFormTypes.add(form_type);
+        });
+    }
+
+    private async persistWordForms(
+        wordId: string,
+        wordForms: WordFormEntryDto[],
+        createdBy?: string,
+        updatedBy?: string,
+    ) {
+        await this.WordFormsRepository.delete({ word_id: wordId });
+
+        if (!wordForms.length) {
+            return;
+        }
+
+        const entries = wordForms.map((form) =>
+            this.WordFormsRepository.create({
+                word_id: wordId,
+                form_type: form.form_type,
+                form_value: form.form_value,
+                created_by: createdBy,
+                updated_by: updatedBy,
+            }),
+        );
+
+        await this.WordFormsRepository.save(entries);
     }
 
     private async ensureEnglishWordIsUnique(

@@ -14,6 +14,7 @@ import { User } from 'src/users/entities/user.entity';
 import { WordStatusEnum } from 'src/common/enums/word-status.enum';
 import { WordDetails } from './word-details.entity';
 import { WordView } from './word-view.entity';
+import { WordForms } from 'src/word-forms/entities/word-forms.entity';
 
 @Entity('dc_words')
 export class Words {
@@ -93,6 +94,10 @@ export class Words {
   @ApiProperty({ description: 'Word views', type: () => [WordView] })
   @OneToMany(() => WordView, (wordView) => wordView.word)
   word_views: WordView[];
+
+  @ApiProperty({ description: 'Verb forms', type: () => [WordForms] })
+  @OneToMany(() => WordForms, (wordForm) => wordForm.word)
+  word_forms: WordForms[];
 
   @ApiProperty({ description: 'User object', type: () => User, })
   @ManyToOne(() => User, { nullable: true })

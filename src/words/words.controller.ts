@@ -90,10 +90,14 @@ export class WordsController {
     @Post()
     @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
     @ApiOperation({
-        summary: 'Create a new words', description: 'Creates a new words with the provided information. Password will be hashed before saving. Requires authentication.',
+        summary: 'Create a new words',
+        description:
+            'Creates a new words with the provided information. Requires authentication. ' +
+            'The optional word_forms array (verb conjugations, e.g. past_tense, past_participle, present_participle, third_person_singular, base_form) ' +
+            'is only accepted when part_of_speech is "verb"; sending it for any other part_of_speech returns a 400.',
     })
     @ApiResponse({ status: 201, description: 'Words created successfully', type: BaseResponseDto<Words>, })
-    @ApiResponse({ status: 400, description: 'Bad request - validation error', })
+    @ApiResponse({ status: 400, description: 'Bad request - validation error, or word_forms provided when part_of_speech is not "verb"', })
     @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required', })
     async create(@CurrentUser() user: AuthUser, @Body() createWordsDto: CreateWordsDto) {
         createWordsDto.created_by = user.userId;
@@ -147,9 +151,15 @@ export class WordsController {
 
     @Patch(':id')
     @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER)
-    @ApiOperation({ summary: 'Update a words by id', description: 'Updates an existing words with the provided information. Only active words can be updated. Requires authentication.', })
+    @ApiOperation({
+        summary: 'Update a words by id',
+        description:
+            'Updates an existing words with the provided information. Only active words can be updated. Requires authentication. ' +
+            'If word_forms is included, it replaces all existing verb forms for this word; it is only accepted when the (new or existing) part_of_speech is "verb".',
+    })
     @ApiParam({ name: 'id', description: 'Words ID (uuid)', example: '45e16f14-b27f-4d20-99df-c1d5535ff9e3', type: 'number', })
     @ApiResponse({ status: 200, description: 'Words updated successfully', type: BaseResponseDto<Words>, })
+    @ApiResponse({ status: 400, description: 'Bad request - validation error, or word_forms provided when part_of_speech is not "verb"', })
     @ApiResponse({ status: 404, description: 'Words not found', })
     @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required', })
     async update(@CurrentUser() user: AuthUser, @Param('id') id: string, @Body() updateWordsDto: UpdateWordsDto,) {

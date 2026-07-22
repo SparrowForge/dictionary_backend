@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   ArrayNotEmpty,
   IsArray,
@@ -8,8 +9,10 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  ValidateNested,
 } from 'class-validator';
 import { WordStatusEnum } from 'src/common/enums/word-status.enum';
+import { WordFormEntryDto } from './word-form-entry.dto';
 
 export class CreateWordsDto {
   @ApiProperty({ description: 'English word', example: 'Good', required: true })
@@ -62,6 +65,23 @@ export class CreateWordsDto {
   @ArrayNotEmpty()
   @IsUUID('4', { each: true })
   class_ids: string[];
+
+  @ApiProperty({
+    description: 'Verb forms, only allowed when part_of_speech is "verb"',
+    type: () => [WordFormEntryDto],
+    required: false,
+    example: [
+      { form_type: 'past_tense', form_value: 'ran' },
+      { form_type: 'past_participle', form_value: 'run' },
+      { form_type: 'present_participle', form_value: 'running' },
+      { form_type: 'third_person_singular', form_value: 'runs' },
+    ],
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => WordFormEntryDto)
+  @IsOptional()
+  word_forms?: WordFormEntryDto[];
 
   @ApiProperty({ description: 'Created by user id', example: 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', required: false })
   @IsString()

@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Words } from 'src/words/entities/words.entity';
+import { VerbFormTypeEnum } from 'src/common/enums/verb-form-type.enum';
 
 @Entity('dc_word_forms')
 export class WordForms {
@@ -22,9 +23,9 @@ export class WordForms {
   @Column({ unique: false, nullable: false })
   word_id: string;
 
-  @ApiProperty({ description: 'Word form_type', example: 'form_type', })
-  @Column({ nullable: false })
-  form_type: string;
+  @ApiProperty({ description: 'Word form_type', enum: VerbFormTypeEnum, example: VerbFormTypeEnum.PAST_TENSE, })
+  @Column({ type: 'enum', enum: VerbFormTypeEnum, nullable: false })
+  form_type: VerbFormTypeEnum;
 
   @ApiProperty({ description: 'Word form_value', example: 'form_value', })
   @Column({ nullable: false })

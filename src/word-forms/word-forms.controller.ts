@@ -1,5 +1,5 @@
 import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BaseResponseDto } from 'src/common/dto/base-response.dto';
 import { CurrentUser } from './../common/decorators/current-user.decorator';
 import type AuthUser from 'src/auth/dto/auth-user';
@@ -21,8 +21,10 @@ export class WordFormsController {
 
     @Post()
     @ApiOperation({
-        summary: 'Create a new WordForms', description: 'Creates a new WordForms with the provided information. Password will be hashed before saving. Requires authentication.',
+        summary: 'Create verb forms for a word',
+        description: 'Replaces all verb forms for the given word_id with the provided list. Only applicable to words whose part_of_speech is "verb". Requires authentication.',
     })
+    @ApiBody({ type: [CreateWordFormsDto] })
     @ApiResponse({ status: 201, description: 'WordForms created successfully', type: BaseResponseDto<WordForms>, })
     @ApiResponse({ status: 400, description: 'Bad request - validation error', })
     @ApiResponse({ status: 401, description: 'Unauthorized - Authentication required', })

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString, } from 'class-validator';
+import { VerbFormTypeEnum } from 'src/common/enums/verb-form-type.enum';
 
 export class CreateWordFormsDto {
   @ApiProperty({ description: 'Word id', example: 'class1' })
@@ -7,10 +8,12 @@ export class CreateWordFormsDto {
   @IsNotEmpty()
   word_id: string;
 
-  @ApiProperty({ description: 'Word form_type', example: 'form_type', })
-  @IsString()
+  @ApiProperty({ description: 'Word form_type', enum: VerbFormTypeEnum, example: VerbFormTypeEnum.PAST_TENSE, })
+  @IsEnum(VerbFormTypeEnum, {
+    message: `form_type must be one of: ${Object.values(VerbFormTypeEnum).join(', ')}`,
+  })
   @IsNotEmpty()
-  form_type: string;
+  form_type: VerbFormTypeEnum;
 
   @ApiProperty({ description: 'Word form_value', example: 'form_value', })
   @IsString()

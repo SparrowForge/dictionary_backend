@@ -9,6 +9,7 @@ import { WordView } from './entities/word-view.entity';
 import { WordSentences } from 'src/word-sentences/entities/word-sentences.entity';
 import { WordSynonyms } from 'src/word-synonyms/entities/word-synonyms.entity';
 import { WordAntonyms } from 'src/word-antonyms/entities/word-antonyms.entity';
+import { WordForms } from 'src/word-forms/entities/word-forms.entity';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { WordAntonyms } from 'src/word-antonyms/entities/word-antonyms.entity';
       WordSentences,
       WordSynonyms,
       WordAntonyms,
+      WordForms,
     ]),
   ],
   controllers: [WordsController],
