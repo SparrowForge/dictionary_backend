@@ -42,6 +42,7 @@ export class WordFormsController {
     }
 
     @Get()
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER, RolesEnum.STUDENT)
     @ApiOperation({ summary: 'Get all WordForms with pagination and filters', description: 'Retrieves a paginated list of all active WordForms with optional filtering by role, department, and search terms. Requires authentication.', })
     @ApiResponse({
         status: 200, description: 'Returns paginated list of WordForms', type: BaseResponseDto<PaginatedResponseDto<WordForms>>,
@@ -73,6 +74,7 @@ export class WordFormsController {
     }
 
     @Get(':id')
+    @Roles(RolesEnum.ADMIN, RolesEnum.TEACHER, RolesEnum.STUDENT)
     @ApiOperation({ summary: 'Get a WordForms by id', description: 'Retrieves a specific WordForms by their ID. Only returns active WordForms (soft-deleted WordForms are excluded). Requires authentication.', })
     @ApiParam({ name: 'id', description: 'WordForms ID (uuid)', example: '45e16f14-b27f-4d20-99df-c1d5535ff9e3', type: 'string', })
     @ApiResponse({ status: 200, description: 'WordForms retrieved successfully', type: BaseResponseDto<WordForms>, })
