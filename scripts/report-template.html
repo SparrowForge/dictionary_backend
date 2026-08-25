@@ -1,0 +1,787 @@
+<title>Word Image Coverage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">
+
+<style>
+  :root {
+    --paper: #eef2f1;
+    --surface: #ffffff;
+    --surface-sunk: #f5f8f7;
+    --ink: #111c1b;
+    --muted: #576662;
+    --faint: #7d8b87;
+    --rule: #d3dedb;
+    --rule-soft: #e4ebe9;
+    --accent: #0f5257;
+    --accent-soft: #dbeceb;
+    --gap: #8f5407;
+    --gap-soft: #f6ebda;
+    --dup: #565091;
+    --dup-soft: #e6e5f2;
+    --shadow: 0 1px 2px rgba(17, 28, 27, .06), 0 8px 24px -16px rgba(17, 28, 27, .28);
+
+    --step-0: .875rem;
+    --step-1: 1rem;
+    --step-2: 1.25rem;
+    --step-3: 1.75rem;
+    --step-4: clamp(2rem, 1.4rem + 2.6vw, 3.1rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0d1413;
+      --surface: #141e1d;
+      --surface-sunk: #101917;
+      --ink: #e4ecea;
+      --muted: #93a49f;
+      --faint: #74847f;
+      --rule: #263533;
+      --rule-soft: #1d2a28;
+      --accent: #63b7b1;
+      --accent-soft: #17302f;
+      --gap: #d69a4a;
+      --gap-soft: #2e2415;
+      --dup: #9b93d8;
+      --dup-soft: #211f33;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .8);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #0d1413;
+    --surface: #141e1d;
+    --surface-sunk: #101917;
+    --ink: #e4ecea;
+    --muted: #93a49f;
+    --faint: #74847f;
+    --rule: #263533;
+    --rule-soft: #1d2a28;
+    --accent: #63b7b1;
+    --accent-soft: #17302f;
+    --gap: #d69a4a;
+    --gap-soft: #2e2415;
+    --dup: #9b93d8;
+    --dup-soft: #211f33;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: var(--step-1);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .shell {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 1rem + 2vw, 3.5rem) clamp(1rem, .5rem + 2vw, 2.5rem) 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  /* ---- masthead ---------------------------------------------------- */
+  .masthead { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .7rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .masthead h1 {
+    font-family: Newsreader, ui-serif, Georgia, serif;
+    font-size: var(--step-4);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .lede {
+    margin: 0;
+    max-width: 60ch;
+    color: var(--muted);
+    font-size: var(--step-2);
+    line-height: 1.5;
+  }
+
+  /* ---- coverage bar ------------------------------------------------ */
+  .coverage {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .coverage-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .75rem;
+  }
+
+  .coverage-head h2 {
+    margin: 0;
+    font-family: Newsreader, ui-serif, Georgia, serif;
+    font-size: var(--step-3);
+    font-weight: 500;
+  }
+
+  .coverage-pct {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: var(--step-3);
+    color: var(--accent);
+  }
+
+  .bar {
+    display: flex;
+    height: 12px;
+    border-radius: 2px;
+    overflow: hidden;
+    background: var(--surface-sunk);
+    border: 1px solid var(--rule-soft);
+  }
+  .bar-fill { background: var(--accent); }
+  .bar-rest { background: repeating-linear-gradient(135deg, var(--gap-soft) 0 5px, transparent 5px 10px); }
+
+  .bar-key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    font-size: var(--step-0);
+    color: var(--muted);
+  }
+  .key { display: flex; align-items: center; gap: .45rem; }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+  .key b { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
+
+  /* ---- stat row ---------------------------------------------------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .stat {
+    background: var(--surface);
+    padding: 1rem 1.15rem;
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+  }
+
+  .stat-n {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 1.6rem;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+  .stat-n.is-ok { color: var(--accent); }
+  .stat-n.is-gap { color: var(--gap); }
+
+  .stat-label {
+    font-size: .78rem;
+    letter-spacing: .04em;
+    color: var(--muted);
+  }
+
+  /* ---- tabs -------------------------------------------------------- */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: .1rem;
+  }
+
+  .tab {
+    appearance: none;
+    background: none;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 3px 3px 0 0;
+    padding: .6rem 1rem;
+    margin-bottom: -1px;
+    font: inherit;
+    font-size: var(--step-0);
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tab[aria-selected="true"] {
+    background: var(--surface);
+    border-color: var(--rule);
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .tab-count {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: .72rem;
+    padding: .1rem .4rem;
+    border-radius: 2px;
+    background: var(--surface-sunk);
+    border: 1px solid var(--rule-soft);
+    color: var(--muted);
+  }
+  .tab[aria-selected="true"] .tab-count { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
+
+  /* ---- panel ------------------------------------------------------- */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-top: none;
+    border-radius: 0 0 3px 3px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+  }
+  .panel[hidden] { display: none; }
+
+  .panel-intro {
+    padding: 1.35rem 1.5rem;
+    border-bottom: 1px solid var(--rule-soft);
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+  }
+
+  .panel-intro p { margin: 0; color: var(--muted); font-size: var(--step-0); max-width: 68ch; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+
+  .search {
+    flex: 1 1 16rem;
+    font: inherit;
+    font-size: var(--step-0);
+    padding: .5rem .7rem;
+    color: var(--ink);
+    background: var(--surface-sunk);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+  }
+  .search::placeholder { color: var(--faint); }
+  .search:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+
+  .result-count {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: .78rem;
+    color: var(--muted);
+  }
+
+  .alpha {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .15rem;
+    padding: .85rem 1.5rem;
+    border-bottom: 1px solid var(--rule-soft);
+    background: var(--surface-sunk);
+  }
+
+  .alpha button {
+    appearance: none;
+    border: 1px solid transparent;
+    background: none;
+    border-radius: 2px;
+    cursor: pointer;
+    width: 1.75rem;
+    height: 1.75rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .alpha button:hover:not(:disabled) { color: var(--accent); border-color: var(--rule); }
+  .alpha button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .alpha button:disabled { color: var(--faint); opacity: .35; cursor: default; }
+
+  .panel-body { padding: 1.25rem 1.5rem 2rem; }
+
+  .group { scroll-margin-top: .5rem; }
+  .group + .group { margin-top: 1.6rem; }
+
+  .group-letter {
+    font-family: Newsreader, ui-serif, Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 0 .6rem;
+    padding-bottom: .3rem;
+    border-bottom: 1px solid var(--rule-soft);
+    letter-spacing: .04em;
+  }
+
+  .entries {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: .5rem .9rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .entry {
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+    padding: .45rem .6rem;
+    border-radius: 3px;
+    border: 1px solid var(--rule-soft);
+    background: var(--surface);
+  }
+
+  .entry-word { font-size: var(--step-0); font-weight: 500; }
+
+  .entry-meta {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .7rem;
+    color: var(--faint);
+    word-break: break-word;
+  }
+
+  .entry-link {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .7rem;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-soft);
+    align-self: flex-start;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .entry-link:hover { border-bottom-color: var(--accent); }
+  .entry-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .copy-all {
+    appearance: none;
+    font: inherit;
+    font-size: .78rem;
+    cursor: pointer;
+    padding: .5rem .8rem;
+    border-radius: 3px;
+    border: 1px solid var(--rule);
+    background: var(--surface-sunk);
+    color: var(--ink);
+  }
+  .copy-all:hover { border-color: var(--accent); color: var(--accent); }
+  .copy-all:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .entry-bn {
+    font-size: .8rem;
+    color: var(--muted);
+  }
+
+  .flag {
+    align-self: flex-start;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .64rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: .05rem .35rem;
+    border-radius: 2px;
+    margin-top: .15rem;
+  }
+  .flag.is-multi { background: var(--gap-soft); color: var(--gap); }
+  .flag.is-dup { background: var(--dup-soft); color: var(--dup); }
+  .flag.is-status { background: var(--accent-soft); color: var(--accent); }
+
+  .empty {
+    padding: 2.5rem 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: var(--step-0);
+  }
+
+  /* ---- footnote ---------------------------------------------------- */
+  .notes {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+    color: var(--muted);
+    font-size: var(--step-0);
+    max-width: 70ch;
+  }
+  .notes h2 {
+    font-family: Newsreader, ui-serif, Georgia, serif;
+    font-size: var(--step-2);
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0;
+  }
+  .notes p { margin: 0; }
+  .notes code {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .82em;
+    background: var(--surface-sunk);
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    padding: .05rem .3rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+
+<div class="shell">
+  <header class="masthead">
+    <p class="eyebrow" id="stamp"></p>
+    <h1>Word image coverage</h1>
+    <p class="lede">Every image in <code>WordImage</code> measured against every word in <code>dc_words</code> &mdash; what got linked, what has no word to attach to, and what words are still waiting on a picture.</p>
+  </header>
+
+  <section class="coverage" aria-labelledby="cov-h">
+    <div class="coverage-head">
+      <h2 id="cov-h">Words carrying an image</h2>
+      <span class="coverage-pct" id="cov-pct"></span>
+    </div>
+    <div class="bar" role="img" id="cov-bar-label">
+      <div class="bar-fill" id="cov-fill"></div>
+      <div class="bar-rest" id="cov-rest"></div>
+    </div>
+    <div class="bar-key">
+      <span class="key"><span class="swatch" style="background: var(--accent)"></span> <b id="k-have"></b>&nbsp;with an image</span>
+      <span class="key"><span class="swatch" style="background: var(--gap-soft); border: 1px solid var(--rule)"></span> <b id="k-none"></b>&nbsp;still bare</span>
+      <span class="key"><b id="k-total"></b>&nbsp;words total</span>
+    </div>
+  </section>
+
+  <section class="stats" aria-label="Run summary">
+    <div class="stat"><span class="stat-n is-ok" id="s-up"></span><span class="stat-label">uploaded this run</span></div>
+    <div class="stat"><span class="stat-n" id="s-prev"></span><span class="stat-label">already linked</span></div>
+    <div class="stat"><span class="stat-n" id="s-fail"></span><span class="stat-label">failed</span></div>
+    <div class="stat"><span class="stat-n is-gap" id="s-noword"></span><span class="stat-label">images with no word</span></div>
+    <div class="stat"><span class="stat-n is-gap" id="s-noimg"></span><span class="stat-label">words with no image</span></div>
+    <div class="stat"><span class="stat-n" id="s-dup"></span><span class="stat-label">duplicate files</span></div>
+  </section>
+
+  <section>
+    <div class="tabs" role="tablist" aria-label="Coverage gaps">
+      <button class="tab" role="tab" id="tab-linked" aria-controls="panel-linked" aria-selected="true">
+        Words with an image <span class="tab-count" id="c-linked"></span>
+      </button>
+      <button class="tab" role="tab" id="tab-missing" aria-controls="panel-missing" aria-selected="false" tabindex="-1">
+        Images with no word <span class="tab-count" id="c-missing"></span>
+      </button>
+      <button class="tab" role="tab" id="tab-words" aria-controls="panel-words" aria-selected="false" tabindex="-1">
+        Words with no image <span class="tab-count" id="c-words"></span>
+      </button>
+      <button class="tab" role="tab" id="tab-dups" aria-controls="panel-dups" aria-selected="false" tabindex="-1">
+        Duplicate files <span class="tab-count" id="c-dups"></span>
+      </button>
+    </div>
+
+    <div class="panel" role="tabpanel" id="panel-linked" aria-labelledby="tab-linked" tabindex="0">
+      <div class="panel-intro">
+        <p>Every word currently serving an image, with the Cloudinary URL it resolves to. Open one to check the picture actually suits the word &mdash; filenames matched, but nobody has eyeballed the artwork.</p>
+        <div class="controls">
+          <input class="search" type="search" id="q-linked" placeholder="Filter by English, Bangla, or file&hellip;" aria-label="Filter words with an image">
+          <span class="result-count" id="n-linked"></span>
+          <button class="copy-all" type="button" id="copy-linked">Copy all URLs</button>
+        </div>
+      </div>
+      <nav class="alpha" id="alpha-linked" aria-label="Jump to letter"></nav>
+      <div class="panel-body" id="body-linked"></div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="panel-missing" aria-labelledby="tab-missing" tabindex="0" hidden>
+      <div class="panel-intro">
+        <p>These image files matched no <code>english_word</code>, so nothing was uploaded for them. Add the word to the dictionary, then re-run the upload script &mdash; it picks them up automatically. Names come straight from the filename, so check spelling before adding.</p>
+        <div class="controls">
+          <input class="search" type="search" id="q-missing" placeholder="Filter by word or filename&hellip;" aria-label="Filter images with no word">
+          <span class="result-count" id="n-missing"></span>
+        </div>
+      </div>
+      <nav class="alpha" id="alpha-missing" aria-label="Jump to letter"></nav>
+      <div class="panel-body" id="body-missing"></div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="panel-words" aria-labelledby="tab-words" tabindex="0" hidden>
+      <div class="panel-intro">
+        <p>Words already in the dictionary that still have no image linked. The folder holds no file matching these names &mdash; each one needs artwork sourced and dropped into <code>WordImage</code> under the exact word.</p>
+        <div class="controls">
+          <input class="search" type="search" id="q-words" placeholder="Filter by English or Bangla&hellip;" aria-label="Filter words with no image">
+          <span class="result-count" id="n-words"></span>
+        </div>
+      </div>
+      <nav class="alpha" id="alpha-words" aria-label="Jump to letter"></nav>
+      <div class="panel-body" id="body-words"></div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="panel-dups" aria-labelledby="tab-dups" tabindex="0" hidden>
+      <div class="panel-intro">
+        <p>Two files named the same word. A word holds one image, so the first file won and these were left on disk untouched &mdash; delete the loser, or rename it if it was meant for a different word.</p>
+        <div class="controls">
+          <input class="search" type="search" id="q-dups" placeholder="Filter duplicates&hellip;" aria-label="Filter duplicate files">
+          <span class="result-count" id="n-dups"></span>
+        </div>
+      </div>
+      <div class="panel-body" id="body-dups"></div>
+    </div>
+  </section>
+
+  <footer class="notes">
+    <h2>How the matching works</h2>
+    <p>A file links to a word when its basename equals the word's <code>english_word</code>, compared case-insensitively with runs of whitespace collapsed. No fuzzy or stem matching &mdash; <code>Zinni.jpeg</code> will not find <em>Zinnia</em>.</p>
+    <p>Uploads land in Cloudinary under <code>words/{word_id}</code>. Each one writes a <code>dc_files</code> row and points <code>dc_word_media.image_id</code> at it. Words that already have an image are never overwritten, so <code>node scripts/upload-word-images.js</code> is safe to run again after you close gaps.</p>
+  </footer>
+</div>
+
+<script>
+  const DATA = __DATA__;
+
+  const fmt = (n) => n.toLocaleString('en-US');
+  const letterOf = (s) => {
+    const c = (s || '?').trim().charAt(0).toUpperCase();
+    return c >= 'A' && c <= 'Z' ? c : '#';
+  };
+  const el = (id) => document.getElementById(id);
+
+  // --- summary ---------------------------------------------------------
+  const S = DATA.summary;
+  const pct = Math.round((S.words_with_image / S.words_total) * 100);
+
+  el('stamp').textContent = 'Generated ' + new Date(S.generated_at).toLocaleString('en-US', {
+    dateStyle: 'long', timeStyle: 'short',
+  });
+  el('cov-pct').textContent = pct + '%';
+  el('cov-fill').style.flex = String(S.words_with_image);
+  el('cov-rest').style.flex = String(S.words_without_image);
+  el('cov-bar-label').setAttribute(
+    'aria-label',
+    S.words_with_image + ' of ' + S.words_total + ' words have an image (' + pct + '%)',
+  );
+  el('k-have').textContent = fmt(S.words_with_image);
+  el('k-none').textContent = fmt(S.words_without_image);
+  el('k-total').textContent = fmt(S.words_total);
+
+  el('s-up').textContent = fmt(S.images_uploaded_this_run);
+  el('s-prev').textContent = fmt(S.images_already_linked);
+  el('s-fail').textContent = fmt(S.images_failed_this_run);
+  el('s-noword').textContent = fmt(S.images_without_word_unique_names);
+  el('s-noimg').textContent = fmt(S.words_without_image);
+  el('s-dup').textContent = fmt(S.images_duplicate_skipped);
+
+  el('c-linked').textContent = fmt(DATA.linked.length);
+  el('c-missing').textContent = fmt(DATA.missing.length);
+  el('c-words').textContent = fmt(DATA.wordsWithoutImage.length);
+  el('c-dups').textContent = fmt(DATA.duplicates.length);
+
+  // --- renderers -------------------------------------------------------
+  function renderGrouped(container, alphaNav, rows, keyOf, rowHtml, countEl, query) {
+    const q = query.trim().toLowerCase();
+    const shown = q ? rows.filter((r) => r.haystack.includes(q)) : rows;
+
+    countEl.textContent = shown.length === rows.length
+      ? fmt(rows.length) + ' entries'
+      : fmt(shown.length) + ' of ' + fmt(rows.length);
+
+    if (!shown.length) {
+      container.innerHTML = '<p class="empty">Nothing matches &ldquo;' + escapeHtml(query.trim()) + '&rdquo;.</p>';
+      if (alphaNav) [...alphaNav.querySelectorAll('button')].forEach((b) => (b.disabled = true));
+      return;
+    }
+
+    const groups = new Map();
+    for (const row of shown) {
+      const k = keyOf(row);
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(row);
+    }
+
+    const letters = [...groups.keys()].sort();
+    container.innerHTML = letters
+      .map((letter) =>
+        '<section class="group" id="' + container.id + '-' + letter.replace('#', 'sym') + '">' +
+        '<h3 class="group-letter">' + letter + '</h3>' +
+        '<ul class="entries">' + groups.get(letter).map(rowHtml).join('') + '</ul>' +
+        '</section>',
+      )
+      .join('');
+
+    if (alphaNav) {
+      const live = new Set(letters);
+      [...alphaNav.querySelectorAll('button')].forEach((b) => (b.disabled = !live.has(b.dataset.letter)));
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => (
+      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
+  }
+
+  function buildAlpha(nav, containerId) {
+    const letters = ['#'].concat([...Array(26)].map((_, i) => String.fromCharCode(65 + i)));
+    nav.innerHTML = letters
+      .map((l) => '<button type="button" data-letter="' + l + '" aria-label="Jump to ' + l + '">' + l + '</button>')
+      .join('');
+    nav.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn || btn.disabled) return;
+      const target = document.getElementById(containerId + '-' + btn.dataset.letter.replace('#', 'sym'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  // --- panel: words with an image ---------------------------------------
+  const linked = DATA.linked.map((r) => ({
+    ...r,
+    haystack: (r.english_word + ' ' + (r.bangla_word || '') + ' ' + (r.original_name || '')).toLowerCase(),
+  }));
+
+  const linkedRow = (r) =>
+    '<li class="entry">' +
+    '<span class="entry-word">' + escapeHtml(r.english_word) + '</span>' +
+    (r.bangla_word ? '<span class="entry-bn">' + escapeHtml(r.bangla_word) + '</span>' : '') +
+    '<a class="entry-link" href="' + escapeHtml(r.public_url) + '" target="_blank" rel="noopener noreferrer">' +
+    'open image &#8599;</a>' +
+    '<span class="entry-meta">' + escapeHtml(r.original_name || '') + '</span>' +
+    '</li>';
+
+  // --- panel: images with no word --------------------------------------
+  const missing = DATA.missing.map((m) => ({
+    ...m,
+    haystack: (m.name + ' ' + m.files.join(' ')).toLowerCase(),
+  }));
+
+  const missingRow = (m) =>
+    '<li class="entry">' +
+    '<span class="entry-word">' + escapeHtml(m.name) + '</span>' +
+    '<span class="entry-meta">' + escapeHtml(m.files.join(', ')) + '</span>' +
+    (m.files.length > 1 ? '<span class="flag is-multi">' + m.files.length + ' files</span>' : '') +
+    '</li>';
+
+  // --- panel: words with no image --------------------------------------
+  const bareWords = DATA.wordsWithoutImage.map((w) => ({
+    ...w,
+    haystack: (w.english_word + ' ' + (w.bangla_word || '') + ' ' + (w.part_of_speech || '')).toLowerCase(),
+  }));
+
+  const wordRow = (w) =>
+    '<li class="entry">' +
+    '<span class="entry-word">' + escapeHtml(w.english_word) + '</span>' +
+    (w.bangla_word ? '<span class="entry-bn">' + escapeHtml(w.bangla_word) + '</span>' : '') +
+    '<span class="entry-meta">' + escapeHtml(w.part_of_speech || 'no part of speech') + '</span>' +
+    (w.status && w.status !== 'APPROVED'
+      ? '<span class="flag is-status">' + escapeHtml(w.status.toLowerCase()) + '</span>'
+      : '') +
+    '</li>';
+
+  // --- panel: duplicates -----------------------------------------------
+  const dups = DATA.duplicates.map((d) => ({
+    ...d,
+    haystack: (d.english_word + ' ' + d.file + ' ' + d.used_instead).toLowerCase(),
+  }));
+
+  function renderDups(query) {
+    const q = query.trim().toLowerCase();
+    const shown = q ? dups.filter((d) => d.haystack.includes(q)) : dups;
+    el('n-dups').textContent = shown.length === dups.length
+      ? fmt(dups.length) + ' entries'
+      : fmt(shown.length) + ' of ' + fmt(dups.length);
+    el('body-dups').innerHTML = shown.length
+      ? '<ul class="entries">' + shown.map((d) =>
+          '<li class="entry">' +
+          '<span class="entry-word">' + escapeHtml(d.english_word) + '</span>' +
+          '<span class="entry-meta">kept ' + escapeHtml(d.used_instead) + '</span>' +
+          '<span class="flag is-dup">skipped ' + escapeHtml(d.file) + '</span>' +
+          '</li>').join('') + '</ul>'
+      : '<p class="empty">Nothing matches &ldquo;' + escapeHtml(query.trim()) + '&rdquo;.</p>';
+  }
+
+  // --- wire up ----------------------------------------------------------
+  buildAlpha(el('alpha-linked'), 'body-linked');
+  buildAlpha(el('alpha-missing'), 'body-missing');
+  buildAlpha(el('alpha-words'), 'body-words');
+
+  const drawLinked = () =>
+    renderGrouped(el('body-linked'), el('alpha-linked'), linked,
+      (r) => letterOf(r.english_word), linkedRow, el('n-linked'), el('q-linked').value);
+
+  const drawMissing = () =>
+    renderGrouped(el('body-missing'), el('alpha-missing'), missing,
+      (m) => letterOf(m.name), missingRow, el('n-missing'), el('q-missing').value);
+
+  const drawWords = () =>
+    renderGrouped(el('body-words'), el('alpha-words'), bareWords,
+      (w) => letterOf(w.english_word), wordRow, el('n-words'), el('q-words').value);
+
+  el('q-linked').addEventListener('input', drawLinked);
+  el('q-missing').addEventListener('input', drawMissing);
+  el('q-words').addEventListener('input', drawWords);
+  el('q-dups').addEventListener('input', () => renderDups(el('q-dups').value));
+
+  el('copy-linked').addEventListener('click', async (e) => {
+    const q = el('q-linked').value.trim().toLowerCase();
+    const rows = q ? linked.filter((r) => r.haystack.includes(q)) : linked;
+    const text = rows.map((r) => r.english_word + '\t' + r.public_url).join('\n');
+    const button = e.currentTarget;
+    try {
+      await navigator.clipboard.writeText(text);
+      button.textContent = 'Copied ' + rows.length;
+    } catch {
+      button.textContent = 'Clipboard blocked';
+    }
+    setTimeout(() => { button.textContent = 'Copy all URLs'; }, 2000);
+  });
+
+  drawLinked();
+  drawMissing();
+  drawWords();
+  renderDups('');
+
+  // --- tabs -------------------------------------------------------------
+  const tabs = [...document.querySelectorAll('.tab')];
+
+  function selectTab(tab) {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => selectTab(tab));
+    tab.addEventListener('keydown', (e) => {
+      const i = tabs.indexOf(tab);
+      const next = e.key === 'ArrowRight' ? tabs[(i + 1) % tabs.length]
+        : e.key === 'ArrowLeft' ? tabs[(i - 1 + tabs.length) % tabs.length]
+        : null;
+      if (next) { e.preventDefault(); next.focus(); selectTab(next); }
+    });
+  });
+</script>

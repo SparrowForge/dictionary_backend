@@ -1,0 +1,5158 @@
+{
+  "summary": {
+    "generated_at": "2026-08-25T17:35:36.089Z",
+    "words_total": 494,
+    "words_with_image": 257,
+    "words_without_image": 237,
+    "images_uploaded_this_run": 162,
+    "images_failed_this_run": 0,
+    "images_already_linked": 123,
+    "images_duplicate_skipped": 7,
+    "images_without_word_files": 653,
+    "images_without_word_unique_names": 613
+  },
+  "missing": [
+    {
+      "name": "About",
+      "files": [
+        "About.jpg"
+      ]
+    },
+    {
+      "name": "Academic",
+      "files": [
+        "Academic.jpg"
+      ]
+    },
+    {
+      "name": "According to",
+      "files": [
+        "According to.jpg"
+      ]
+    },
+    {
+      "name": "Act",
+      "files": [
+        "Act.jpg"
+      ]
+    },
+    {
+      "name": "Activities",
+      "files": [
+        "Activities.png"
+      ]
+    },
+    {
+      "name": "Against",
+      "files": [
+        "Against.jpeg"
+      ]
+    },
+    {
+      "name": "Ahed",
+      "files": [
+        "Ahed.png"
+      ]
+    },
+    {
+      "name": "Along",
+      "files": [
+        "Along.jpg"
+      ]
+    },
+    {
+      "name": "Aloud",
+      "files": [
+        "Aloud.jpg"
+      ]
+    },
+    {
+      "name": "An",
+      "files": [
+        "An.jpg"
+      ]
+    },
+    {
+      "name": "And",
+      "files": [
+        "And.png"
+      ]
+    },
+    {
+      "name": "Answering",
+      "files": [
+        "Answering.jpg"
+      ]
+    },
+    {
+      "name": "Appear",
+      "files": [
+        "Appear.png"
+      ]
+    },
+    {
+      "name": "Apple",
+      "files": [
+        "Apple.jpg",
+        "Apple.png"
+      ]
+    },
+    {
+      "name": "Are",
+      "files": [
+        "Are.png"
+      ]
+    },
+    {
+      "name": "Arm",
+      "files": [
+        "Arm.jpg",
+        "Arm.png"
+      ]
+    },
+    {
+      "name": "Around",
+      "files": [
+        "Around.png"
+      ]
+    },
+    {
+      "name": "Arrow",
+      "files": [
+        "Arrow.png"
+      ]
+    },
+    {
+      "name": "As",
+      "files": [
+        "As.jpg"
+      ]
+    },
+    {
+      "name": "Ash",
+      "files": [
+        "Ash.jpg"
+      ]
+    },
+    {
+      "name": "Ask",
+      "files": [
+        "Ask.jpg"
+      ]
+    },
+    {
+      "name": "Asking",
+      "files": [
+        "Asking.jpg"
+      ]
+    },
+    {
+      "name": "Aunt",
+      "files": [
+        "Aunt.jpg"
+      ]
+    },
+    {
+      "name": "Away",
+      "files": [
+        "Away.png"
+      ]
+    },
+    {
+      "name": "Baby",
+      "files": [
+        "Baby.jpg"
+      ]
+    },
+    {
+      "name": "Bad",
+      "files": [
+        "Bad.png"
+      ]
+    },
+    {
+      "name": "Bangladesh",
+      "files": [
+        "Bangladesh.jpg"
+      ]
+    },
+    {
+      "name": "Basket",
+      "files": [
+        "Basket.png"
+      ]
+    },
+    {
+      "name": "Bat",
+      "files": [
+        "Bat.jpg",
+        "Bat.png"
+      ]
+    },
+    {
+      "name": "Be",
+      "files": [
+        "Be.jpg"
+      ]
+    },
+    {
+      "name": "Beak",
+      "files": [
+        "Beak.jpg"
+      ]
+    },
+    {
+      "name": "Become",
+      "files": [
+        "Become.png"
+      ]
+    },
+    {
+      "name": "Begin",
+      "files": [
+        "Begin.png"
+      ]
+    },
+    {
+      "name": "Bell",
+      "files": [
+        "Bell.jpg"
+      ]
+    },
+    {
+      "name": "Beside",
+      "files": [
+        "Beside.png"
+      ]
+    },
+    {
+      "name": "Best",
+      "files": [
+        "Best.jpg"
+      ]
+    },
+    {
+      "name": "Bird",
+      "files": [
+        "Bird.png"
+      ]
+    },
+    {
+      "name": "Black",
+      "files": [
+        "Black.jpg"
+      ]
+    },
+    {
+      "name": "Blackbird",
+      "files": [
+        "Blackbird.jpg"
+      ]
+    },
+    {
+      "name": "Blank",
+      "files": [
+        "Blank.png"
+      ]
+    },
+    {
+      "name": "Blue",
+      "files": [
+        "Blue.png"
+      ]
+    },
+    {
+      "name": "Body",
+      "files": [
+        "Body.png"
+      ]
+    },
+    {
+      "name": "Bottom",
+      "files": [
+        "Bottom.png"
+      ]
+    },
+    {
+      "name": "Bow",
+      "files": [
+        "Bow.png"
+      ]
+    },
+    {
+      "name": "Box",
+      "files": [
+        "Box.jpg",
+        "Box.png"
+      ]
+    },
+    {
+      "name": "Boy",
+      "files": [
+        "Boy.png"
+      ]
+    },
+    {
+      "name": "Branch",
+      "files": [
+        "Branch.jpg"
+      ]
+    },
+    {
+      "name": "Brave",
+      "files": [
+        "Brave.jpg"
+      ]
+    },
+    {
+      "name": "Bright",
+      "files": [
+        "Bright.jpg"
+      ]
+    },
+    {
+      "name": "Brim",
+      "files": [
+        "Brim.png"
+      ]
+    },
+    {
+      "name": "Brown",
+      "files": [
+        "Brown.png"
+      ]
+    },
+    {
+      "name": "Bus",
+      "files": [
+        "Bus.jpg"
+      ]
+    },
+    {
+      "name": "By",
+      "files": [
+        "By.jpg"
+      ]
+    },
+    {
+      "name": "Cabbage",
+      "files": [
+        "Cabbage.png"
+      ]
+    },
+    {
+      "name": "Cage",
+      "files": [
+        "Cage.jpg"
+      ]
+    },
+    {
+      "name": "Cake",
+      "files": [
+        "Cake.png"
+      ]
+    },
+    {
+      "name": "Can",
+      "files": [
+        "Can.png"
+      ]
+    },
+    {
+      "name": "Cap",
+      "files": [
+        "Cap.jpg"
+      ]
+    },
+    {
+      "name": "Card",
+      "files": [
+        "Card.jpg"
+      ]
+    },
+    {
+      "name": "Care",
+      "files": [
+        "Care.jpg"
+      ]
+    },
+    {
+      "name": "Chain",
+      "files": [
+        "Chain.jpg"
+      ]
+    },
+    {
+      "name": "Choose",
+      "files": [
+        "Choose.png"
+      ]
+    },
+    {
+      "name": "Chores",
+      "files": [
+        "Chores.jpg"
+      ]
+    },
+    {
+      "name": "Chorus",
+      "files": [
+        "Chorus.jpg"
+      ]
+    },
+    {
+      "name": "Clap",
+      "files": [
+        "Clap.png"
+      ]
+    },
+    {
+      "name": "Clapping",
+      "files": [
+        "Clapping.jpg"
+      ]
+    },
+    {
+      "name": "Classroom",
+      "files": [
+        "Classroom.png"
+      ]
+    },
+    {
+      "name": "Clean up",
+      "files": [
+        "Clean up.png"
+      ]
+    },
+    {
+      "name": "Clock",
+      "files": [
+        "Clock.png"
+      ]
+    },
+    {
+      "name": "Comma",
+      "files": [
+        "Comma.png"
+      ]
+    },
+    {
+      "name": "Community",
+      "files": [
+        "Community.jpg"
+      ]
+    },
+    {
+      "name": "Connect",
+      "files": [
+        "Connect.png"
+      ]
+    },
+    {
+      "name": "Continue",
+      "files": [
+        "Continue.jpg"
+      ]
+    },
+    {
+      "name": "Copy",
+      "files": [
+        "Copy.png"
+      ]
+    },
+    {
+      "name": "Cot",
+      "files": [
+        "Cot.png"
+      ]
+    },
+    {
+      "name": "Could",
+      "files": [
+        "Could.png"
+      ]
+    },
+    {
+      "name": "Cousin",
+      "files": [
+        "Cousin.jpg"
+      ]
+    },
+    {
+      "name": "Cowshed",
+      "files": [
+        "Cowshed.jpg"
+      ]
+    },
+    {
+      "name": "Craft",
+      "files": [
+        "Craft.jpg"
+      ]
+    },
+    {
+      "name": "Cricket",
+      "files": [
+        "Cricket.png"
+      ]
+    },
+    {
+      "name": "Cries",
+      "files": [
+        "Cries.jpg"
+      ]
+    },
+    {
+      "name": "Crocodile",
+      "files": [
+        "Crocodile.png"
+      ]
+    },
+    {
+      "name": "Cross",
+      "files": [
+        "Cross.jpg"
+      ]
+    },
+    {
+      "name": "Cruel",
+      "files": [
+        "Cruel.png"
+      ]
+    },
+    {
+      "name": "Cultivate",
+      "files": [
+        "Cultivate.jpg"
+      ]
+    },
+    {
+      "name": "Curriculum",
+      "files": [
+        "Curriculum.jpg"
+      ]
+    },
+    {
+      "name": "Cut",
+      "files": [
+        "Cut.jpg"
+      ]
+    },
+    {
+      "name": "Cutter",
+      "files": [
+        "Cutter.png"
+      ]
+    },
+    {
+      "name": "Danced",
+      "files": [
+        "Danced.png"
+      ]
+    },
+    {
+      "name": "Dead",
+      "files": [
+        "Dead.jpeg"
+      ]
+    },
+    {
+      "name": "Dear",
+      "files": [
+        "Dear.jpg"
+      ]
+    },
+    {
+      "name": "Death",
+      "files": [
+        "Death.png"
+      ]
+    },
+    {
+      "name": "Den",
+      "files": [
+        "Den.jpg"
+      ]
+    },
+    {
+      "name": "Diddle",
+      "files": [
+        "Diddle.jpg"
+      ]
+    },
+    {
+      "name": "Difficult",
+      "files": [
+        "Difficult.png"
+      ]
+    },
+    {
+      "name": "Dinosaur",
+      "files": [
+        "Dinosaur.png"
+      ]
+    },
+    {
+      "name": "Discuss",
+      "files": [
+        "Discuss.png"
+      ]
+    },
+    {
+      "name": "Display",
+      "files": [
+        "Display.jpg"
+      ]
+    },
+    {
+      "name": "Distribute",
+      "files": [
+        "Distribute.png"
+      ]
+    },
+    {
+      "name": "Distribution",
+      "files": [
+        "Distribution.jpg"
+      ]
+    },
+    {
+      "name": "Divide",
+      "files": [
+        "Divide.png"
+      ]
+    },
+    {
+      "name": "Do",
+      "files": [
+        "Do.jpg"
+      ]
+    },
+    {
+      "name": "Does",
+      "files": [
+        "Does.png"
+      ]
+    },
+    {
+      "name": "Dog house",
+      "files": [
+        "Dog house.png"
+      ]
+    },
+    {
+      "name": "Doing",
+      "files": [
+        "Doing.jpg"
+      ]
+    },
+    {
+      "name": "Domestic",
+      "files": [
+        "Domestic.png"
+      ]
+    },
+    {
+      "name": "Done",
+      "files": [
+        "Done.png"
+      ]
+    },
+    {
+      "name": "Dots",
+      "files": [
+        "Dots.png"
+      ]
+    },
+    {
+      "name": "Drill",
+      "files": [
+        "Drill.jpg",
+        "Drill.png"
+      ]
+    },
+    {
+      "name": "Drop",
+      "files": [
+        "Drop.png"
+      ]
+    },
+    {
+      "name": "Eagle",
+      "files": [
+        "Eagle.jpg"
+      ]
+    },
+    {
+      "name": "Eating",
+      "files": [
+        "Eating.jpeg"
+      ]
+    },
+    {
+      "name": "Eggs",
+      "files": [
+        "Eggs.jpg"
+      ]
+    },
+    {
+      "name": "Eight",
+      "files": [
+        "Eight.jpg"
+      ]
+    },
+    {
+      "name": "Ending",
+      "files": [
+        "Ending.jpg"
+      ]
+    },
+    {
+      "name": "Enjoy",
+      "files": [
+        "Enjoy.jpg"
+      ]
+    },
+    {
+      "name": "Enter",
+      "files": [
+        "Enter.png"
+      ]
+    },
+    {
+      "name": "Envelop",
+      "files": [
+        "Envelop.jpg"
+      ]
+    },
+    {
+      "name": "Eraser",
+      "files": [
+        "Eraser.jpg"
+      ]
+    },
+    {
+      "name": "Ever",
+      "files": [
+        "Ever.jpg"
+      ]
+    },
+    {
+      "name": "Every",
+      "files": [
+        "Every.jpg"
+      ]
+    },
+    {
+      "name": "Everyone",
+      "files": [
+        "Everyone.jpg"
+      ]
+    },
+    {
+      "name": "Example",
+      "files": [
+        "Example.png"
+      ]
+    },
+    {
+      "name": "Excuse",
+      "files": [
+        "Excuse.jpg"
+      ]
+    },
+    {
+      "name": "Excuse me",
+      "files": [
+        "Excuse me.jpg"
+      ]
+    },
+    {
+      "name": "Exit",
+      "files": [
+        "Exit.jpg"
+      ]
+    },
+    {
+      "name": "Eye",
+      "files": [
+        "Eye.jpg"
+      ]
+    },
+    {
+      "name": "Face",
+      "files": [
+        "Face.jpg"
+      ]
+    },
+    {
+      "name": "fall",
+      "files": [
+        "fall.jpg"
+      ]
+    },
+    {
+      "name": "Falling",
+      "files": [
+        "Falling.jpg"
+      ]
+    },
+    {
+      "name": "fan",
+      "files": [
+        "fan.jpg",
+        "Fan.png"
+      ]
+    },
+    {
+      "name": "far",
+      "files": [
+        "far.jpg"
+      ]
+    },
+    {
+      "name": "fast",
+      "files": [
+        "fast.jpg"
+      ]
+    },
+    {
+      "name": "Fast Foods",
+      "files": [
+        "Fast Foods.jpg"
+      ]
+    },
+    {
+      "name": "Fat",
+      "files": [
+        "Fat.jpg"
+      ]
+    },
+    {
+      "name": "feather",
+      "files": [
+        "feather.jpg"
+      ]
+    },
+    {
+      "name": "Feet",
+      "files": [
+        "Feet.jpg"
+      ]
+    },
+    {
+      "name": "female",
+      "files": [
+        "female.jpg"
+      ]
+    },
+    {
+      "name": "fiday",
+      "files": [
+        "fiday.jpg"
+      ]
+    },
+    {
+      "name": "Fiddle",
+      "files": [
+        "Fiddle.jpg"
+      ]
+    },
+    {
+      "name": "fill",
+      "files": [
+        "fill.jpg",
+        "Fill.png"
+      ]
+    },
+    {
+      "name": "Final",
+      "files": [
+        "Final.png"
+      ]
+    },
+    {
+      "name": "finger",
+      "files": [
+        "finger.jpg"
+      ]
+    },
+    {
+      "name": "fingers",
+      "files": [
+        "fingers.jpg"
+      ]
+    },
+    {
+      "name": "fire",
+      "files": [
+        "fire.jpg"
+      ]
+    },
+    {
+      "name": "First",
+      "files": [
+        "First.jpg"
+      ]
+    },
+    {
+      "name": "Five",
+      "files": [
+        "Five.jpg"
+      ]
+    },
+    {
+      "name": "fix",
+      "files": [
+        "fix.jpg"
+      ]
+    },
+    {
+      "name": "flap",
+      "files": [
+        "flap.jpg"
+      ]
+    },
+    {
+      "name": "Flash",
+      "files": [
+        "Flash.png"
+      ]
+    },
+    {
+      "name": "Flew",
+      "files": [
+        "Flew.JPG"
+      ]
+    },
+    {
+      "name": "Flies",
+      "files": [
+        "Flies.JPG"
+      ]
+    },
+    {
+      "name": "floating",
+      "files": [
+        "floating.jpg"
+      ]
+    },
+    {
+      "name": "Flower",
+      "files": [
+        "Flower.jpg"
+      ]
+    },
+    {
+      "name": "fluency",
+      "files": [
+        "fluency.jpg"
+      ]
+    },
+    {
+      "name": "Follow",
+      "files": [
+        "Follow.JPG"
+      ]
+    },
+    {
+      "name": "Following",
+      "files": [
+        "Following.JPG"
+      ]
+    },
+    {
+      "name": "foot",
+      "files": [
+        "foot.jpg",
+        "Foot.png"
+      ]
+    },
+    {
+      "name": "for",
+      "files": [
+        "for.jpg"
+      ]
+    },
+    {
+      "name": "Forest",
+      "files": [
+        "Forest.jpg"
+      ]
+    },
+    {
+      "name": "forget",
+      "files": [
+        "forget.jpg"
+      ]
+    },
+    {
+      "name": "fork",
+      "files": [
+        "fork.jpg"
+      ]
+    },
+    {
+      "name": "forth",
+      "files": [
+        "forth.jpg"
+      ]
+    },
+    {
+      "name": "four",
+      "files": [
+        "four.jpg",
+        "Four.png"
+      ]
+    },
+    {
+      "name": "Free",
+      "files": [
+        "Free.jpg"
+      ]
+    },
+    {
+      "name": "friends",
+      "files": [
+        "friends.jpg"
+      ]
+    },
+    {
+      "name": "Game",
+      "files": [
+        "Game.jpg"
+      ]
+    },
+    {
+      "name": "gate",
+      "files": [
+        "gate.jpg"
+      ]
+    },
+    {
+      "name": "gently",
+      "files": [
+        "gently.jpg"
+      ]
+    },
+    {
+      "name": "germs",
+      "files": [
+        "germs.jpg"
+      ]
+    },
+    {
+      "name": "gib",
+      "files": [
+        "gib.jpg"
+      ]
+    },
+    {
+      "name": "giraffe",
+      "files": [
+        "giraffe.jpg"
+      ]
+    },
+    {
+      "name": "glass",
+      "files": [
+        "glass.jpg"
+      ]
+    },
+    {
+      "name": "glove",
+      "files": [
+        "glove.jpg"
+      ]
+    },
+    {
+      "name": "glue",
+      "files": [
+        "glue.jpg"
+      ]
+    },
+    {
+      "name": "goes",
+      "files": [
+        "goes.jpg"
+      ]
+    },
+    {
+      "name": "Golden",
+      "files": [
+        "Golden.jpeg"
+      ]
+    },
+    {
+      "name": "got",
+      "files": [
+        "got.jpg"
+      ]
+    },
+    {
+      "name": "Government",
+      "files": [
+        "Government.jpg"
+      ]
+    },
+    {
+      "name": "Grain",
+      "files": [
+        "Grain.jpg"
+      ]
+    },
+    {
+      "name": "grandfather",
+      "files": [
+        "grandfather.jpg"
+      ]
+    },
+    {
+      "name": "Grandma",
+      "files": [
+        "Grandma.JPG"
+      ]
+    },
+    {
+      "name": "grandmother",
+      "files": [
+        "grandmother.jpg"
+      ]
+    },
+    {
+      "name": "Grandpa",
+      "files": [
+        "Grandpa.jpg"
+      ]
+    },
+    {
+      "name": "grape",
+      "files": [
+        "grape.jpg"
+      ]
+    },
+    {
+      "name": "grasshoper",
+      "files": [
+        "grasshoper.jpg"
+      ]
+    },
+    {
+      "name": "gray",
+      "files": [
+        "gray.jpg"
+      ]
+    },
+    {
+      "name": "greatful",
+      "files": [
+        "greatful.jpg"
+      ]
+    },
+    {
+      "name": "Green",
+      "files": [
+        "Green.JPG"
+      ]
+    },
+    {
+      "name": "Ground",
+      "files": [
+        "Ground.jpg"
+      ]
+    },
+    {
+      "name": "growing",
+      "files": [
+        "growing.jpg"
+      ]
+    },
+    {
+      "name": "guide",
+      "files": [
+        "guide.jpg"
+      ]
+    },
+    {
+      "name": "gum",
+      "files": [
+        "gum.jpg"
+      ]
+    },
+    {
+      "name": "gun",
+      "files": [
+        "gun.jpg"
+      ]
+    },
+    {
+      "name": "gurgle",
+      "files": [
+        "gurgle.jpg"
+      ]
+    },
+    {
+      "name": "gym",
+      "files": [
+        "gym.jpg"
+      ]
+    },
+    {
+      "name": "hair",
+      "files": [
+        "hair.jpg"
+      ]
+    },
+    {
+      "name": "hammer",
+      "files": [
+        "hammer.jpg"
+      ]
+    },
+    {
+      "name": "Hanger",
+      "files": [
+        "Hanger.jpeg"
+      ]
+    },
+    {
+      "name": "Hard",
+      "files": [
+        "Hard.jpg"
+      ]
+    },
+    {
+      "name": "Hare",
+      "files": [
+        "Hare.jpg"
+      ]
+    },
+    {
+      "name": "Has",
+      "files": [
+        "Has.jpg"
+      ]
+    },
+    {
+      "name": "Hat",
+      "files": [
+        "Hat.JPG"
+      ]
+    },
+    {
+      "name": "Hay",
+      "files": [
+        "Hay.jpg"
+      ]
+    },
+    {
+      "name": "Heart",
+      "files": [
+        "Heart.jpg"
+      ]
+    },
+    {
+      "name": "Helicopter",
+      "files": [
+        "Helicopter.jpg"
+      ]
+    },
+    {
+      "name": "Hickory",
+      "files": [
+        "Hickory.jpeg",
+        "Hickory.jpg"
+      ]
+    },
+    {
+      "name": "Hippo",
+      "files": [
+        "Hippo.jpg"
+      ]
+    },
+    {
+      "name": "Hold",
+      "files": [
+        "Hold.jpg"
+      ]
+    },
+    {
+      "name": "Hole",
+      "files": [
+        "Hole.jpg"
+      ]
+    },
+    {
+      "name": "Hook",
+      "files": [
+        "Hook.jpg"
+      ]
+    },
+    {
+      "name": "Hopped",
+      "files": [
+        "Hopped.jpg"
+      ]
+    },
+    {
+      "name": "Horn",
+      "files": [
+        "Horn.JPG",
+        "Horn.png"
+      ]
+    },
+    {
+      "name": "Hour",
+      "files": [
+        "Hour.jpg"
+      ]
+    },
+    {
+      "name": "Hug",
+      "files": [
+        "Hug.jpg"
+      ]
+    },
+    {
+      "name": "Humpty",
+      "files": [
+        "Humpty.jpg"
+      ]
+    },
+    {
+      "name": "Hungry",
+      "files": [
+        "Hungry.jpg"
+      ]
+    },
+    {
+      "name": "Hurray",
+      "files": [
+        "Hurray.jpg"
+      ]
+    },
+    {
+      "name": "Hut",
+      "files": [
+        "Hut.jpg"
+      ]
+    },
+    {
+      "name": "Ice",
+      "files": [
+        "Ice.jpg"
+      ]
+    },
+    {
+      "name": "Ice Cream",
+      "files": [
+        "Ice Cream.jpg"
+      ]
+    },
+    {
+      "name": "Infant",
+      "files": [
+        "Infant.jpg"
+      ]
+    },
+    {
+      "name": "Ink",
+      "files": [
+        "Ink.jpg"
+      ]
+    },
+    {
+      "name": "Inky",
+      "files": [
+        "Inky.jpg"
+      ]
+    },
+    {
+      "name": "Insect",
+      "files": [
+        "Insect.jpg"
+      ]
+    },
+    {
+      "name": "Iron",
+      "files": [
+        "Iron.jpg"
+      ]
+    },
+    {
+      "name": "Jacket",
+      "files": [
+        "Jacket.jpg"
+      ]
+    },
+    {
+      "name": "Jail",
+      "files": [
+        "Jail.jpg"
+      ]
+    },
+    {
+      "name": "Jam",
+      "files": [
+        "Jam.jpg"
+      ]
+    },
+    {
+      "name": "Jeans",
+      "files": [
+        "Jeans.jpg"
+      ]
+    },
+    {
+      "name": "Jeep",
+      "files": [
+        "Jeep.jpg"
+      ]
+    },
+    {
+      "name": "Jelly",
+      "files": [
+        "Jelly.jpg"
+      ]
+    },
+    {
+      "name": "Jellyfish",
+      "files": [
+        "Jellyfish.jpg"
+      ]
+    },
+    {
+      "name": "Jet",
+      "files": [
+        "Jet.jpg"
+      ]
+    },
+    {
+      "name": "Jug",
+      "files": [
+        "Jug.jpg"
+      ]
+    },
+    {
+      "name": "Juice",
+      "files": [
+        "Juice.jpg"
+      ]
+    },
+    {
+      "name": "Juicy",
+      "files": [
+        "Juicy.jpg"
+      ]
+    },
+    {
+      "name": "Jump",
+      "files": [
+        "Jump.jpg"
+      ]
+    },
+    {
+      "name": "Kabaddi",
+      "files": [
+        "Kabaddi.JPG"
+      ]
+    },
+    {
+      "name": "Kangaroo",
+      "files": [
+        "Kangaroo.jpg"
+      ]
+    },
+    {
+      "name": "Kennel",
+      "files": [
+        "Kennel.jpg"
+      ]
+    },
+    {
+      "name": "Kid",
+      "files": [
+        "Kid.jpg"
+      ]
+    },
+    {
+      "name": "King",
+      "files": [
+        "King.jpg"
+      ]
+    },
+    {
+      "name": "Kingfisher",
+      "files": [
+        "Kingfisher.jpg"
+      ]
+    },
+    {
+      "name": "Kit",
+      "files": [
+        "Kit.jpg"
+      ]
+    },
+    {
+      "name": "Kiwi",
+      "files": [
+        "Kiwi.jpg"
+      ]
+    },
+    {
+      "name": "Knee",
+      "files": [
+        "Knee.jpg"
+      ]
+    },
+    {
+      "name": "Knock",
+      "files": [
+        "Knock.jpg"
+      ]
+    },
+    {
+      "name": "Koala",
+      "files": [
+        "Koala.jpg"
+      ]
+    },
+    {
+      "name": "Ladybug",
+      "files": [
+        "Ladybug.jpg"
+      ]
+    },
+    {
+      "name": "Lair",
+      "files": [
+        "Lair.JPG"
+      ]
+    },
+    {
+      "name": "Land",
+      "files": [
+        "Land.jpg"
+      ]
+    },
+    {
+      "name": "Late Autumn",
+      "files": [
+        "Late Autumn.jpg"
+      ]
+    },
+    {
+      "name": "Leaves",
+      "files": [
+        "Leaves.jpg"
+      ]
+    },
+    {
+      "name": "Leg",
+      "files": [
+        "Leg.jpg"
+      ]
+    },
+    {
+      "name": "Lemon",
+      "files": [
+        "Lemon.jpg"
+      ]
+    },
+    {
+      "name": "Lesson",
+      "files": [
+        "Lesson.jpg"
+      ]
+    },
+    {
+      "name": "Library1",
+      "files": [
+        "Library1.jpg"
+      ]
+    },
+    {
+      "name": "Lid",
+      "files": [
+        "Lid.jpg"
+      ]
+    },
+    {
+      "name": "Light",
+      "files": [
+        "Light.jpg"
+      ]
+    },
+    {
+      "name": "Lighthouse",
+      "files": [
+        "Lighthouse.jpg"
+      ]
+    },
+    {
+      "name": "Lightning",
+      "files": [
+        "Lightning.jpg"
+      ]
+    },
+    {
+      "name": "Lip",
+      "files": [
+        "Lip.jpg"
+      ]
+    },
+    {
+      "name": "Lipstick",
+      "files": [
+        "Lipstick.jpg"
+      ]
+    },
+    {
+      "name": "Lizard",
+      "files": [
+        "Lizard.jpg"
+      ]
+    },
+    {
+      "name": "Log",
+      "files": [
+        "Log.jpg"
+      ]
+    },
+    {
+      "name": "Lollipop",
+      "files": [
+        "Lollipop.jpg"
+      ]
+    },
+    {
+      "name": "Lotus",
+      "files": [
+        "Lotus.jpg"
+      ]
+    },
+    {
+      "name": "Lowercase",
+      "files": [
+        "Lowercase.jpg"
+      ]
+    },
+    {
+      "name": "Map",
+      "files": [
+        "Map.png"
+      ]
+    },
+    {
+      "name": "Mark",
+      "files": [
+        "Mark.jpg"
+      ]
+    },
+    {
+      "name": "Mask",
+      "files": [
+        "Mask.jpg"
+      ]
+    },
+    {
+      "name": "Mat",
+      "files": [
+        "Mat.jpg"
+      ]
+    },
+    {
+      "name": "Match",
+      "files": [
+        "Match.jfif"
+      ]
+    },
+    {
+      "name": "Meal",
+      "files": [
+        "Meal.jpg"
+      ]
+    },
+    {
+      "name": "Meat",
+      "files": [
+        "Meat.jpg"
+      ]
+    },
+    {
+      "name": "Member",
+      "files": [
+        "Member.jpg"
+      ]
+    },
+    {
+      "name": "Meow.jgp",
+      "files": [
+        "Meow.jgp.jfif"
+      ]
+    },
+    {
+      "name": "Mess",
+      "files": [
+        "Mess.jpg"
+      ]
+    },
+    {
+      "name": "Mitten",
+      "files": [
+        "Mitten.jpg"
+      ]
+    },
+    {
+      "name": "Mix",
+      "files": [
+        "Mix.jpg"
+      ]
+    },
+    {
+      "name": "Model",
+      "files": [
+        "Model.jpg"
+      ]
+    },
+    {
+      "name": "Money",
+      "files": [
+        "Money.JPG"
+      ]
+    },
+    {
+      "name": "Mop",
+      "files": [
+        "Mop.jpg"
+      ]
+    },
+    {
+      "name": "Moth",
+      "files": [
+        "Moth.jpg"
+      ]
+    },
+    {
+      "name": "Motorbike",
+      "files": [
+        "Motorbike.jpg"
+      ]
+    },
+    {
+      "name": "Mouse",
+      "files": [
+        "Mouse.jpg"
+      ]
+    },
+    {
+      "name": "Move",
+      "files": [
+        "Move.jpg"
+      ]
+    },
+    {
+      "name": "Mud",
+      "files": [
+        "Mud.jpg"
+      ]
+    },
+    {
+      "name": "Muffin",
+      "files": [
+        "Muffin.jpg"
+      ]
+    },
+    {
+      "name": "Mug",
+      "files": [
+        "Mug.jpg"
+      ]
+    },
+    {
+      "name": "Mum",
+      "files": [
+        "Mum.jpg"
+      ]
+    },
+    {
+      "name": "Mushroom",
+      "files": [
+        "Mushroom.jpg"
+      ]
+    },
+    {
+      "name": "Music",
+      "files": [
+        "Music.jpg"
+      ]
+    },
+    {
+      "name": "Muslim",
+      "files": [
+        "Muslim.jpg"
+      ]
+    },
+    {
+      "name": "Nail1",
+      "files": [
+        "Nail1.jpg"
+      ]
+    },
+    {
+      "name": "Nap",
+      "files": [
+        "Nap.jpg"
+      ]
+    },
+    {
+      "name": "Neck",
+      "files": [
+        "Neck.jpg"
+      ]
+    },
+    {
+      "name": "Necklace",
+      "files": [
+        "Necklace.jpg"
+      ]
+    },
+    {
+      "name": "Needle",
+      "files": [
+        "Needle.jpg"
+      ]
+    },
+    {
+      "name": "Nib",
+      "files": [
+        "Nib.jpg"
+      ]
+    },
+    {
+      "name": "Nine",
+      "files": [
+        "Nine.jpg"
+      ]
+    },
+    {
+      "name": "Nose",
+      "files": [
+        "Nose.jpg"
+      ]
+    },
+    {
+      "name": "Note",
+      "files": [
+        "Note.jpg"
+      ]
+    },
+    {
+      "name": "Nurse",
+      "files": [
+        "Nurse.jpg"
+      ]
+    },
+    {
+      "name": "Nut",
+      "files": [
+        "Nut.jpg"
+      ]
+    },
+    {
+      "name": "Object",
+      "files": [
+        "Object.jpg"
+      ]
+    },
+    {
+      "name": "Octagon",
+      "files": [
+        "Octagon.jpg"
+      ]
+    },
+    {
+      "name": "Octopus",
+      "files": [
+        "Octopus.jpg"
+      ]
+    },
+    {
+      "name": "Oil",
+      "files": [
+        "Oil.jpg"
+      ]
+    },
+    {
+      "name": "One",
+      "files": [
+        "One.jpg",
+        "One.png"
+      ]
+    },
+    {
+      "name": "Onion",
+      "files": [
+        "Onion.jpg"
+      ]
+    },
+    {
+      "name": "Orchid",
+      "files": [
+        "Orchid.jpg"
+      ]
+    },
+    {
+      "name": "Ostrich",
+      "files": [
+        "Ostrich.jpg"
+      ]
+    },
+    {
+      "name": "Oven",
+      "files": [
+        "Oven.jpg"
+      ]
+    },
+    {
+      "name": "Owl",
+      "files": [
+        "Owl.png"
+      ]
+    },
+    {
+      "name": "Ox",
+      "files": [
+        "Ox.jpg"
+      ]
+    },
+    {
+      "name": "Paint",
+      "files": [
+        "Paint.jpg"
+      ]
+    },
+    {
+      "name": "Pair",
+      "files": [
+        "Pair.jpg"
+      ]
+    },
+    {
+      "name": "Pancake",
+      "files": [
+        "Pancake.jpg"
+      ]
+    },
+    {
+      "name": "Pane",
+      "files": [
+        "Pane.jpg"
+      ]
+    },
+    {
+      "name": "paper",
+      "files": [
+        "paper.png"
+      ]
+    },
+    {
+      "name": "Park",
+      "files": [
+        "Park.jpg"
+      ]
+    },
+    {
+      "name": "Parking",
+      "files": [
+        "Parking.jpg"
+      ]
+    },
+    {
+      "name": "Parrot",
+      "files": [
+        "Parrot.png"
+      ]
+    },
+    {
+      "name": "Passing",
+      "files": [
+        "Passing.png"
+      ]
+    },
+    {
+      "name": "Path",
+      "files": [
+        "Path.jpg"
+      ]
+    },
+    {
+      "name": "Pear",
+      "files": [
+        "Pear.jpg"
+      ]
+    },
+    {
+      "name": "Peas",
+      "files": [
+        "Peas.jpg"
+      ]
+    },
+    {
+      "name": "Pebble",
+      "files": [
+        "Pebble.png"
+      ]
+    },
+    {
+      "name": "Penguin",
+      "files": [
+        "Penguin.jpg"
+      ]
+    },
+    {
+      "name": "Pet",
+      "files": [
+        "Pet.png"
+      ]
+    },
+    {
+      "name": "Petals",
+      "files": [
+        "Petals.jpg"
+      ]
+    },
+    {
+      "name": "Phone",
+      "files": [
+        "Phone.png"
+      ]
+    },
+    {
+      "name": "Pick",
+      "files": [
+        "Pick.png"
+      ]
+    },
+    {
+      "name": "Pig",
+      "files": [
+        "Pig.jpg"
+      ]
+    },
+    {
+      "name": "Pin",
+      "files": [
+        "Pin.jpg"
+      ]
+    },
+    {
+      "name": "Pink",
+      "files": [
+        "Pink.jpg"
+      ]
+    },
+    {
+      "name": "Pizza",
+      "files": [
+        "Pizza.jpg"
+      ]
+    },
+    {
+      "name": "Place",
+      "files": [
+        "Place .jpg"
+      ]
+    },
+    {
+      "name": "Plastic",
+      "files": [
+        "Plastic.png"
+      ]
+    },
+    {
+      "name": "Plate",
+      "files": [
+        "Plate.jpg"
+      ]
+    },
+    {
+      "name": "Plural",
+      "files": [
+        "Plural.jpg"
+      ]
+    },
+    {
+      "name": "Point",
+      "files": [
+        "Point.jpg"
+      ]
+    },
+    {
+      "name": "Polar Bear",
+      "files": [
+        "Polar Bear.png"
+      ]
+    },
+    {
+      "name": "Police",
+      "files": [
+        "Police.jfif",
+        "Police.jpg"
+      ]
+    },
+    {
+      "name": "Policy",
+      "files": [
+        "Policy .jpg"
+      ]
+    },
+    {
+      "name": "Politely",
+      "files": [
+        "Politely.jpg"
+      ]
+    },
+    {
+      "name": "Postman",
+      "files": [
+        "Postman.jpg"
+      ]
+    },
+    {
+      "name": "Potato",
+      "files": [
+        "Potato.jpg"
+      ]
+    },
+    {
+      "name": "Power",
+      "files": [
+        "Power .jpg"
+      ]
+    },
+    {
+      "name": "Practice",
+      "files": [
+        "Practice.jpg"
+      ]
+    },
+    {
+      "name": "pray",
+      "files": [
+        "pray.jpeg"
+      ]
+    },
+    {
+      "name": "Pretend",
+      "files": [
+        "Pretend.jpg"
+      ]
+    },
+    {
+      "name": "Pretty",
+      "files": [
+        "Pretty.jpg"
+      ]
+    },
+    {
+      "name": "Profession",
+      "files": [
+        "Profession.jfif"
+      ]
+    },
+    {
+      "name": "Project",
+      "files": [
+        "Project.jpg"
+      ]
+    },
+    {
+      "name": "Properly",
+      "files": [
+        "Properly.png"
+      ]
+    },
+    {
+      "name": "Pull",
+      "files": [
+        "Pull.jpg"
+      ]
+    },
+    {
+      "name": "Pumpkin",
+      "files": [
+        "Pumpkin.jpg"
+      ]
+    },
+    {
+      "name": "Punctuation",
+      "files": [
+        "Punctuation.png"
+      ]
+    },
+    {
+      "name": "Puppy",
+      "files": [
+        "Puppy.jpg"
+      ]
+    },
+    {
+      "name": "Purple",
+      "files": [
+        "Purple.jpg"
+      ]
+    },
+    {
+      "name": "Puzzle",
+      "files": [
+        "Puzzle.jpg"
+      ]
+    },
+    {
+      "name": "Quarter",
+      "files": [
+        "Quarter.jpg"
+      ]
+    },
+    {
+      "name": "Queen",
+      "files": [
+        "Queen.png"
+      ]
+    },
+    {
+      "name": "Quickly",
+      "files": [
+        "Quickly.png"
+      ]
+    },
+    {
+      "name": "Quince",
+      "files": [
+        "Quince.jpg"
+      ]
+    },
+    {
+      "name": "Quize",
+      "files": [
+        "Quize.jpg"
+      ]
+    },
+    {
+      "name": "Quran",
+      "files": [
+        "Quran.jpg"
+      ]
+    },
+    {
+      "name": "Rabbit",
+      "files": [
+        "Rabbit.jpg"
+      ]
+    },
+    {
+      "name": "Rack",
+      "files": [
+        "Rack.jpg"
+      ]
+    },
+    {
+      "name": "Raddish",
+      "files": [
+        "Raddish.jpg"
+      ]
+    },
+    {
+      "name": "Rag",
+      "files": [
+        "Rag.jpg"
+      ]
+    },
+    {
+      "name": "Rail",
+      "files": [
+        "Rail.jpg"
+      ]
+    },
+    {
+      "name": "Rainbow",
+      "files": [
+        "Rainbow .jpg"
+      ]
+    },
+    {
+      "name": "Raindrop",
+      "files": [
+        "Raindrop .jpg",
+        "Raindrop.jfif"
+      ]
+    },
+    {
+      "name": "Rainy",
+      "files": [
+        "Rainy.jpg"
+      ]
+    },
+    {
+      "name": "Ram",
+      "files": [
+        "Ram.jpg"
+      ]
+    },
+    {
+      "name": "Ran",
+      "files": [
+        "Ran.jfif"
+      ]
+    },
+    {
+      "name": "Ready",
+      "files": [
+        "Ready.jpg"
+      ]
+    },
+    {
+      "name": "Real",
+      "files": [
+        "Real.png"
+      ]
+    },
+    {
+      "name": "Rearrange",
+      "files": [
+        "Rearrange.png"
+      ]
+    },
+    {
+      "name": "Recite",
+      "files": [
+        "Recite.png"
+      ]
+    },
+    {
+      "name": "Rectangle",
+      "files": [
+        "Rectangle.png"
+      ]
+    },
+    {
+      "name": "Red",
+      "files": [
+        "Red.jfif"
+      ]
+    },
+    {
+      "name": "Repeat",
+      "files": [
+        "Repeat.jfif"
+      ]
+    },
+    {
+      "name": "Reply",
+      "files": [
+        "Reply.jfif"
+      ]
+    },
+    {
+      "name": "Represent",
+      "files": [
+        "Represent.jpg"
+      ]
+    },
+    {
+      "name": "Review",
+      "files": [
+        "Review.jpg"
+      ]
+    },
+    {
+      "name": "Rib",
+      "files": [
+        "Rib.jpg"
+      ]
+    },
+    {
+      "name": "Ride",
+      "files": [
+        "Ride.jfif",
+        "Ride.jpg"
+      ]
+    },
+    {
+      "name": "Right",
+      "files": [
+        "Right.jfif",
+        "Right.jpg"
+      ]
+    },
+    {
+      "name": "Ring",
+      "files": [
+        "Ring.jpg"
+      ]
+    },
+    {
+      "name": "Rip",
+      "files": [
+        "Rip.png"
+      ]
+    },
+    {
+      "name": "Rise",
+      "files": [
+        "Rise.jfif"
+      ]
+    },
+    {
+      "name": "Road",
+      "files": [
+        "Road.jfif"
+      ]
+    },
+    {
+      "name": "Robot",
+      "files": [
+        "Robot.jfif"
+      ]
+    },
+    {
+      "name": "Rocket",
+      "files": [
+        "Rocket.jfif"
+      ]
+    },
+    {
+      "name": "Rod",
+      "files": [
+        "Rod.jfif"
+      ]
+    },
+    {
+      "name": "Role",
+      "files": [
+        "Role.jpg"
+      ]
+    },
+    {
+      "name": "Roleplay",
+      "files": [
+        "Roleplay.jfif"
+      ]
+    },
+    {
+      "name": "Roof",
+      "files": [
+        "Roof.jpg"
+      ]
+    },
+    {
+      "name": "Rooster",
+      "files": [
+        "Rooster.png"
+      ]
+    },
+    {
+      "name": "Rose",
+      "files": [
+        "Rose.jpg"
+      ]
+    },
+    {
+      "name": "Round",
+      "files": [
+        "Round.jfif",
+        "Round.png"
+      ]
+    },
+    {
+      "name": "Rub",
+      "files": [
+        "Rub.png"
+      ]
+    },
+    {
+      "name": "Rug",
+      "files": [
+        "Rug.jpg"
+      ]
+    },
+    {
+      "name": "Rule",
+      "files": [
+        "Rule.png"
+      ]
+    },
+    {
+      "name": "Ruler",
+      "files": [
+        "Ruler.jpg"
+      ]
+    },
+    {
+      "name": "Run",
+      "files": [
+        "Run.png"
+      ]
+    },
+    {
+      "name": "Sat",
+      "files": [
+        "Sat.png"
+      ]
+    },
+    {
+      "name": "Saw",
+      "files": [
+        "Saw.png"
+      ]
+    },
+    {
+      "name": "saw(1)",
+      "files": [
+        "saw(1).png"
+      ]
+    },
+    {
+      "name": "Say",
+      "files": [
+        "Say.jpg",
+        "Say.png"
+      ]
+    },
+    {
+      "name": "Sea",
+      "files": [
+        "Sea.jpg"
+      ]
+    },
+    {
+      "name": "Seahorse",
+      "files": [
+        "Seahorse.jpg"
+      ]
+    },
+    {
+      "name": "Second",
+      "files": [
+        "Second.jpg"
+      ]
+    },
+    {
+      "name": "Seven",
+      "files": [
+        "Seven.jpg"
+      ]
+    },
+    {
+      "name": "Shade",
+      "files": [
+        "Shade.png"
+      ]
+    },
+    {
+      "name": "Shake",
+      "files": [
+        "Shake.jpg"
+      ]
+    },
+    {
+      "name": "Shape",
+      "files": [
+        "Shape.jfif",
+        "Shape.png"
+      ]
+    },
+    {
+      "name": "Share",
+      "files": [
+        "Share.jfif",
+        "Share.png"
+      ]
+    },
+    {
+      "name": "Shark",
+      "files": [
+        "Shark.png"
+      ]
+    },
+    {
+      "name": "Sharpener",
+      "files": [
+        "Sharpener.jpg"
+      ]
+    },
+    {
+      "name": "She",
+      "files": [
+        "She.jfif",
+        "She.png"
+      ]
+    },
+    {
+      "name": "Shop",
+      "files": [
+        "Shop.jfif"
+      ]
+    },
+    {
+      "name": "Short",
+      "files": [
+        "Short.jfif",
+        "Short.jpg"
+      ]
+    },
+    {
+      "name": "Shortest",
+      "files": [
+        "Shortest.png"
+      ]
+    },
+    {
+      "name": "Shoulder",
+      "files": [
+        "Shoulder.jpg"
+      ]
+    },
+    {
+      "name": "Shout",
+      "files": [
+        "Shout.jfif",
+        "Shout.png"
+      ]
+    },
+    {
+      "name": "Shriek",
+      "files": [
+        "Shriek.png"
+      ]
+    },
+    {
+      "name": "Side",
+      "files": [
+        "Side.jpg",
+        "Side.png"
+      ]
+    },
+    {
+      "name": "Sign",
+      "files": [
+        "Sign.jfif"
+      ]
+    },
+    {
+      "name": "Signal",
+      "files": [
+        "Signal.jfif"
+      ]
+    },
+    {
+      "name": "Silent",
+      "files": [
+        "Silent.jfif",
+        "Silent.png"
+      ]
+    },
+    {
+      "name": "Singular",
+      "files": [
+        "Singular.png"
+      ]
+    },
+    {
+      "name": "Sip",
+      "files": [
+        "Sip.jpg"
+      ]
+    },
+    {
+      "name": "Six",
+      "files": [
+        "Six.jpg",
+        "Six.png"
+      ]
+    },
+    {
+      "name": "Size",
+      "files": [
+        "Size.jfif"
+      ]
+    },
+    {
+      "name": "Skip",
+      "files": [
+        "Skip.jpg"
+      ]
+    },
+    {
+      "name": "Skirt",
+      "files": [
+        "Skirt.png"
+      ]
+    },
+    {
+      "name": "Slipac",
+      "files": [
+        "Slipac.jfif"
+      ]
+    },
+    {
+      "name": "Smart",
+      "files": [
+        "Smart.jfif"
+      ]
+    },
+    {
+      "name": "Smell",
+      "files": [
+        "Smell.png"
+      ]
+    },
+    {
+      "name": "Snake",
+      "files": [
+        "Snake.jpg"
+      ]
+    },
+    {
+      "name": "Snap",
+      "files": [
+        "Snap.png"
+      ]
+    },
+    {
+      "name": "Sneaker",
+      "files": [
+        "Sneaker.png"
+      ]
+    },
+    {
+      "name": "Snowball",
+      "files": [
+        "Snowball.jpg"
+      ]
+    },
+    {
+      "name": "Soon",
+      "files": [
+        "Soon.jfif"
+      ]
+    },
+    {
+      "name": "Spend",
+      "files": [
+        "Spend.png"
+      ]
+    },
+    {
+      "name": "Spider",
+      "files": [
+        "Spider.jpg"
+      ]
+    },
+    {
+      "name": "Spoon",
+      "files": [
+        "Spoon.jfif"
+      ]
+    },
+    {
+      "name": "Sport",
+      "files": [
+        "Sport.jfif"
+      ]
+    },
+    {
+      "name": "Squack",
+      "files": [
+        "Squack.jpg"
+      ]
+    },
+    {
+      "name": "Stage",
+      "files": [
+        "Stage.jfif"
+      ]
+    },
+    {
+      "name": "Strength",
+      "files": [
+        "Strength.jpg"
+      ]
+    },
+    {
+      "name": "Strong",
+      "files": [
+        "Strong.png"
+      ]
+    },
+    {
+      "name": "Study",
+      "files": [
+        "Study.jfif"
+      ]
+    },
+    {
+      "name": "Sunlight",
+      "files": [
+        "Sunlight.jfif"
+      ]
+    },
+    {
+      "name": "Survive",
+      "files": [
+        "Survive.jfif"
+      ]
+    },
+    {
+      "name": "Table",
+      "files": [
+        "Table.jpg"
+      ]
+    },
+    {
+      "name": "tall",
+      "files": [
+        "tall.jfif"
+      ]
+    },
+    {
+      "name": "Tap",
+      "files": [
+        "Tap.jfif"
+      ]
+    },
+    {
+      "name": "Telescop",
+      "files": [
+        "Telescop.jfif"
+      ]
+    },
+    {
+      "name": "Ten",
+      "files": [
+        "Ten.jpg"
+      ]
+    },
+    {
+      "name": "Textbook",
+      "files": [
+        "Textbook.jfif"
+      ]
+    },
+    {
+      "name": "Thin",
+      "files": [
+        "Thin.jfif"
+      ]
+    },
+    {
+      "name": "Thing",
+      "files": [
+        "Thing.png"
+      ]
+    },
+    {
+      "name": "Third",
+      "files": [
+        "Third.jpg"
+      ]
+    },
+    {
+      "name": "Thirsty",
+      "files": [
+        "Thirsty.jfif"
+      ]
+    },
+    {
+      "name": "Three",
+      "files": [
+        "Three.jpg"
+      ]
+    },
+    {
+      "name": "Ticket",
+      "files": [
+        "Ticket.jfif"
+      ]
+    },
+    {
+      "name": "Tired",
+      "files": [
+        "Tired.jfif"
+      ]
+    },
+    {
+      "name": "Toes",
+      "files": [
+        "Toes.jpg"
+      ]
+    },
+    {
+      "name": "Together",
+      "files": [
+        "Together.jfif"
+      ]
+    },
+    {
+      "name": "Too",
+      "files": [
+        "Too.png"
+      ]
+    },
+    {
+      "name": "tooth",
+      "files": [
+        "tooth.jpeg"
+      ]
+    },
+    {
+      "name": "Toothbrush",
+      "files": [
+        "Toothbrush.jpeg"
+      ]
+    },
+    {
+      "name": "top",
+      "files": [
+        "top.jpeg"
+      ]
+    },
+    {
+      "name": "tour",
+      "files": [
+        "tour.jfif"
+      ]
+    },
+    {
+      "name": "Town",
+      "files": [
+        "Town.jfif"
+      ]
+    },
+    {
+      "name": "track",
+      "files": [
+        "track.jpeg"
+      ]
+    },
+    {
+      "name": "track 2",
+      "files": [
+        "track 2.jpeg"
+      ]
+    },
+    {
+      "name": "traffic jam",
+      "files": [
+        "traffic jam.jpeg"
+      ]
+    },
+    {
+      "name": "traffic light",
+      "files": [
+        "traffic light.jpeg"
+      ]
+    },
+    {
+      "name": "traffic police",
+      "files": [
+        "traffic police.jpeg"
+      ]
+    },
+    {
+      "name": "train",
+      "files": [
+        "train.jpeg"
+      ]
+    },
+    {
+      "name": "Tree hole",
+      "files": [
+        "Tree hole.jfif"
+      ]
+    },
+    {
+      "name": "truck",
+      "files": [
+        "truck.jpeg"
+      ]
+    },
+    {
+      "name": "tub",
+      "files": [
+        "tub.jpeg"
+      ]
+    },
+    {
+      "name": "tummy",
+      "files": [
+        "tummy .jpeg"
+      ]
+    },
+    {
+      "name": "tune",
+      "files": [
+        "tune.jpeg"
+      ]
+    },
+    {
+      "name": "turkey",
+      "files": [
+        "turkey.jpeg"
+      ]
+    },
+    {
+      "name": "Turn",
+      "files": [
+        "Turn.jfif",
+        "turn.jpeg"
+      ]
+    },
+    {
+      "name": "Turn left",
+      "files": [
+        "Turn left.jfif"
+      ]
+    },
+    {
+      "name": "Turn off",
+      "files": [
+        "Turn off.png"
+      ]
+    },
+    {
+      "name": "Turn right",
+      "files": [
+        "Turn right.png"
+      ]
+    },
+    {
+      "name": "Turns",
+      "files": [
+        "Turns.png"
+      ]
+    },
+    {
+      "name": "Turtle",
+      "files": [
+        "Turtle.jfif",
+        "Turtle.jpg"
+      ]
+    },
+    {
+      "name": "turtle 2",
+      "files": [
+        "turtle 2.jpeg"
+      ]
+    },
+    {
+      "name": "twinkle",
+      "files": [
+        "twinkle.jpeg"
+      ]
+    },
+    {
+      "name": "Two",
+      "files": [
+        "Two.png"
+      ]
+    },
+    {
+      "name": "U-Turn",
+      "files": [
+        "U-Turn.jfif"
+      ]
+    },
+    {
+      "name": "Uncle",
+      "files": [
+        "Uncle.jfif"
+      ]
+    },
+    {
+      "name": "Underline",
+      "files": [
+        "Underline.jpg"
+      ]
+    },
+    {
+      "name": "Understand",
+      "files": [
+        "Understand.jpg"
+      ]
+    },
+    {
+      "name": "Unicorn",
+      "files": [
+        "Unicorn.jpeg"
+      ]
+    },
+    {
+      "name": "Unicycle",
+      "files": [
+        "Unicycle.jpeg"
+      ]
+    },
+    {
+      "name": "Unique",
+      "files": [
+        "Unique.jpeg"
+      ]
+    },
+    {
+      "name": "Unit",
+      "files": [
+        "Unit.png"
+      ]
+    },
+    {
+      "name": "Unity",
+      "files": [
+        "Unity.jpeg",
+        "Unity.jpg"
+      ]
+    },
+    {
+      "name": "university",
+      "files": [
+        "university.jpeg"
+      ]
+    },
+    {
+      "name": "unscramble",
+      "files": [
+        "unscramble.jpeg"
+      ]
+    },
+    {
+      "name": "Until",
+      "files": [
+        "Until.jpg"
+      ]
+    },
+    {
+      "name": "Up",
+      "files": [
+        "Up.jpg",
+        "Up.png"
+      ]
+    },
+    {
+      "name": "Us",
+      "files": [
+        "Us.jpg",
+        "Us.png"
+      ]
+    },
+    {
+      "name": "used",
+      "files": [
+        "used.jpg"
+      ]
+    },
+    {
+      "name": "using",
+      "files": [
+        "using.jpg"
+      ]
+    },
+    {
+      "name": "van",
+      "files": [
+        "van.jpeg",
+        "Van.jpg",
+        "Van.png"
+      ]
+    },
+    {
+      "name": "Various",
+      "files": [
+        "Various.jpg"
+      ]
+    },
+    {
+      "name": "Vat",
+      "files": [
+        "Vat.jpg"
+      ]
+    },
+    {
+      "name": "vegetable",
+      "files": [
+        "vegetable.jpeg",
+        "Vegetable.jpg"
+      ]
+    },
+    {
+      "name": "vest",
+      "files": [
+        "vest.jpeg"
+      ]
+    },
+    {
+      "name": "vet",
+      "files": [
+        "vet.jpeg"
+      ]
+    },
+    {
+      "name": "village",
+      "files": [
+        "village .jpeg",
+        "Village.jpg"
+      ]
+    },
+    {
+      "name": "vines",
+      "files": [
+        "vines.jpeg"
+      ]
+    },
+    {
+      "name": "vines 2",
+      "files": [
+        "vines 2.jpeg"
+      ]
+    },
+    {
+      "name": "violet",
+      "files": [
+        "violet.jpeg"
+      ]
+    },
+    {
+      "name": "Violin",
+      "files": [
+        "Violin.jpeg"
+      ]
+    },
+    {
+      "name": "vowel",
+      "files": [
+        "vowel.jpeg"
+      ]
+    },
+    {
+      "name": "waifer",
+      "files": [
+        "waifer.jpeg"
+      ]
+    },
+    {
+      "name": "waiter",
+      "files": [
+        "waiter.jpeg"
+      ]
+    },
+    {
+      "name": "Wake up",
+      "files": [
+        "Wake up.jpeg"
+      ]
+    },
+    {
+      "name": "Walk",
+      "files": [
+        "Walk.png"
+      ]
+    },
+    {
+      "name": "Wall",
+      "files": [
+        "Wall .jpeg",
+        "wall.jpg",
+        "Wall.png"
+      ]
+    },
+    {
+      "name": "wand",
+      "files": [
+        "wand.jpeg"
+      ]
+    },
+    {
+      "name": "warm",
+      "files": [
+        "warm.jpeg"
+      ]
+    },
+    {
+      "name": "Warm up",
+      "files": [
+        "Warm up.jpg"
+      ]
+    },
+    {
+      "name": "Waterfall",
+      "files": [
+        "Waterfall .jpeg"
+      ]
+    },
+    {
+      "name": "Watermelon",
+      "files": [
+        "Watermelon.jpeg"
+      ]
+    },
+    {
+      "name": "wave",
+      "files": [
+        "wave.jpg"
+      ]
+    },
+    {
+      "name": "Way",
+      "files": [
+        "Way.jpeg",
+        "way.jpg"
+      ]
+    },
+    {
+      "name": "We",
+      "files": [
+        "We.jpg"
+      ]
+    },
+    {
+      "name": "weather",
+      "files": [
+        "weather.jpeg"
+      ]
+    },
+    {
+      "name": "Weave",
+      "files": [
+        "Weave.jpeg"
+      ]
+    },
+    {
+      "name": "web",
+      "files": [
+        "web.jpeg",
+        "Web.png"
+      ]
+    },
+    {
+      "name": "wed",
+      "files": [
+        "wed.jpeg"
+      ]
+    },
+    {
+      "name": "welcome",
+      "files": [
+        "welcome.jpg"
+      ]
+    },
+    {
+      "name": "well",
+      "files": [
+        "well.jpg"
+      ]
+    },
+    {
+      "name": "well done",
+      "files": [
+        "well done.jpg"
+      ]
+    },
+    {
+      "name": "wet",
+      "files": [
+        "wet.jpeg"
+      ]
+    },
+    {
+      "name": "Whale",
+      "files": [
+        "Whale.jpeg",
+        "whale.jpg"
+      ]
+    },
+    {
+      "name": "Wheel",
+      "files": [
+        "Wheel.jpeg"
+      ]
+    },
+    {
+      "name": "when",
+      "files": [
+        "when.jpg"
+      ]
+    },
+    {
+      "name": "whisker",
+      "files": [
+        "whisker.jpeg"
+      ]
+    },
+    {
+      "name": "White",
+      "files": [
+        "White.jpg"
+      ]
+    },
+    {
+      "name": "whole",
+      "files": [
+        "whole.jpg"
+      ]
+    },
+    {
+      "name": "why",
+      "files": [
+        "why.jpg"
+      ]
+    },
+    {
+      "name": "Wide",
+      "files": [
+        "Wide.jpg"
+      ]
+    },
+    {
+      "name": "wig",
+      "files": [
+        "wig.jpeg"
+      ]
+    },
+    {
+      "name": "wiggling 2",
+      "files": [
+        "wiggling 2.jpeg"
+      ]
+    },
+    {
+      "name": "Will",
+      "files": [
+        "Will.jpg"
+      ]
+    },
+    {
+      "name": "win",
+      "files": [
+        "win.jpeg"
+      ]
+    },
+    {
+      "name": "wind",
+      "files": [
+        "wind.jpeg"
+      ]
+    },
+    {
+      "name": "windy",
+      "files": [
+        "windy.jpeg"
+      ]
+    },
+    {
+      "name": "wing",
+      "files": [
+        "wing.jpeg"
+      ]
+    },
+    {
+      "name": "wink",
+      "files": [
+        "wink.jpeg"
+      ]
+    },
+    {
+      "name": "Winner",
+      "files": [
+        "Winner.jpg"
+      ]
+    },
+    {
+      "name": "winter",
+      "files": [
+        "winter .jpeg"
+      ]
+    },
+    {
+      "name": "with",
+      "files": [
+        "with.jpg"
+      ]
+    },
+    {
+      "name": "wobble",
+      "files": [
+        "wobble.jpeg"
+      ]
+    },
+    {
+      "name": "wolf",
+      "files": [
+        "wolf.jpeg"
+      ]
+    },
+    {
+      "name": "woman",
+      "files": [
+        "woman.jpeg"
+      ]
+    },
+    {
+      "name": "women",
+      "files": [
+        "women.jpg"
+      ]
+    },
+    {
+      "name": "wonder",
+      "files": [
+        "wonder.jpeg"
+      ]
+    },
+    {
+      "name": "wonder - surprise",
+      "files": [
+        "wonder - surprise.jpeg"
+      ]
+    },
+    {
+      "name": "wooden",
+      "files": [
+        "wooden.jpg"
+      ]
+    },
+    {
+      "name": "Woof",
+      "files": [
+        "Woof.jpg"
+      ]
+    },
+    {
+      "name": "woollen",
+      "files": [
+        "woollen.jpeg"
+      ]
+    },
+    {
+      "name": "word 2",
+      "files": [
+        "word 2.jpeg"
+      ]
+    },
+    {
+      "name": "worker",
+      "files": [
+        "worker.jpg"
+      ]
+    },
+    {
+      "name": "world",
+      "files": [
+        "world.jpeg"
+      ]
+    },
+    {
+      "name": "worm",
+      "files": [
+        "worm.jpeg"
+      ]
+    },
+    {
+      "name": "wrong",
+      "files": [
+        "wrong.jpeg"
+      ]
+    },
+    {
+      "name": "x ray",
+      "files": [
+        "x ray.jpeg"
+      ]
+    },
+    {
+      "name": "X ray fish",
+      "files": [
+        "X ray fish.jpeg"
+      ]
+    },
+    {
+      "name": "xray",
+      "files": [
+        "xray.jpg"
+      ]
+    },
+    {
+      "name": "Xylophone",
+      "files": [
+        "Xylophone.jpeg"
+      ]
+    },
+    {
+      "name": "Yacht",
+      "files": [
+        "Yacht.jpeg"
+      ]
+    },
+    {
+      "name": "Yak",
+      "files": [
+        "Yak.jpeg"
+      ]
+    },
+    {
+      "name": "Yam",
+      "files": [
+        "Yam.jpeg"
+      ]
+    },
+    {
+      "name": "Yarn",
+      "files": [
+        "Yarn.jpeg"
+      ]
+    },
+    {
+      "name": "Yawn",
+      "files": [
+        "Yawn.jpeg"
+      ]
+    },
+    {
+      "name": "Yell",
+      "files": [
+        "Yell .jpeg"
+      ]
+    },
+    {
+      "name": "Yellow",
+      "files": [
+        "Yellow.jpeg"
+      ]
+    },
+    {
+      "name": "yes",
+      "files": [
+        "yes.jpg"
+      ]
+    },
+    {
+      "name": "yo yo",
+      "files": [
+        "yo yo.jpg"
+      ]
+    },
+    {
+      "name": "yogurt",
+      "files": [
+        "yogurt.jpeg"
+      ]
+    },
+    {
+      "name": "yoke",
+      "files": [
+        "yoke.jpg"
+      ]
+    },
+    {
+      "name": "Yolk",
+      "files": [
+        "Yolk.jpeg"
+      ]
+    },
+    {
+      "name": "you",
+      "files": [
+        "you.jpg"
+      ]
+    },
+    {
+      "name": "your",
+      "files": [
+        "your.jpg"
+      ]
+    },
+    {
+      "name": "yourselves",
+      "files": [
+        "yourselves.jpg"
+      ]
+    },
+    {
+      "name": "Yoyo",
+      "files": [
+        "Yoyo.jpeg"
+      ]
+    },
+    {
+      "name": "yummy",
+      "files": [
+        "yummy.jpg"
+      ]
+    },
+    {
+      "name": "Zero",
+      "files": [
+        "Zero.jpeg"
+      ]
+    },
+    {
+      "name": "Zigzag",
+      "files": [
+        "Zigzag.jpeg"
+      ]
+    },
+    {
+      "name": "Zinni",
+      "files": [
+        "Zinni.jpeg"
+      ]
+    },
+    {
+      "name": "Zip",
+      "files": [
+        "Zip.jpeg"
+      ]
+    },
+    {
+      "name": "Zipper",
+      "files": [
+        "Zipper.jpeg"
+      ]
+    },
+    {
+      "name": "Zombie",
+      "files": [
+        "Zombie.jpeg"
+      ]
+    },
+    {
+      "name": "Zuccine",
+      "files": [
+        "Zuccine.jpeg"
+      ]
+    }
+  ],
+  "wordsWithoutImage": [
+    {
+      "english_word": "Anthem",
+      "bangla_word": "জাতীয় গান",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Anything",
+      "bangla_word": "যেকোনো কিছু",
+      "part_of_speech": "Pronoun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "August",
+      "bangla_word": "আগস্ট",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Bark",
+      "bangla_word": "ঘেউ ঘেউ করা",
+      "part_of_speech": "Verb/Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Bean",
+      "bangla_word": "শিম",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Behind",
+      "bangla_word": "পেছনে",
+      "part_of_speech": "Preposition/Adverb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Bigger",
+      "bangla_word": "আরও বড়",
+      "part_of_speech": "Adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Bin",
+      "bangla_word": "ময়লার পাত্র",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Biographies",
+      "bangla_word": "জীবনীমূলক বই",
+      "part_of_speech": "noun (plural)",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Blacksmith",
+      "bangla_word": "কামার",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Bleat",
+      "bangla_word": "মে মে করা",
+      "part_of_speech": "Verb/Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Bookshelves",
+      "bangla_word": "বুকশেলভ্‌স; বইয়ের তাক",
+      "part_of_speech": "noun (plural)",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Borrowed",
+      "bangla_word": "ধার নিয়েছে",
+      "part_of_speech": "verb (past)",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Bread",
+      "bangla_word": "রুটি",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Burger",
+      "bangla_word": "বার্গার",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Busy",
+      "bangla_word": "ব্যস্ত",
+      "part_of_speech": "Adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Catch",
+      "bangla_word": "ধরা",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Caw",
+      "bangla_word": "কা কা ডাক",
+      "part_of_speech": "Verb/Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Change",
+      "bangla_word": "পরিবর্তন করা",
+      "part_of_speech": "Verb/Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Check",
+      "bangla_word": "পরীক্ষা করা",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Chicken",
+      "bangla_word": "মুরগি",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Chips",
+      "bangla_word": "চিপস",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Chocolate",
+      "bangla_word": "চকলেট",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Choice",
+      "bangla_word": "পছন্দ; নির্বাচন",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Clip",
+      "bangla_word": "ছাঁটা",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Cloth",
+      "bangla_word": "কাপড়",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Cluck",
+      "bangla_word": "কক্ কক্ ডাক",
+      "part_of_speech": "Verb/Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Cobbler",
+      "bangla_word": "মুচি",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Complete",
+      "bangla_word": "সম্পূর্ণ করা",
+      "part_of_speech": "Verb/Adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Compost",
+      "bangla_word": "কম্পোস্ট; জৈব সার",
+      "part_of_speech": "noun/verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Coo",
+      "bangla_word": "কুউ কুউ ডাক",
+      "part_of_speech": "Verb/Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Cook",
+      "bangla_word": "রান্না করা",
+      "part_of_speech": "Verb/Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Corn",
+      "bangla_word": "ভুট্টা",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Corner",
+      "bangla_word": "কোণ",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Cornfield",
+      "bangla_word": "ভুট্টাক্ষেত",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Cough",
+      "bangla_word": "কাশি",
+      "part_of_speech": "Noun/Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Country",
+      "bangla_word": "দেশ",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Cucumber",
+      "bangla_word": "শসা",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Cup",
+      "bangla_word": "কাপ",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Dab",
+      "bangla_word": "হালকা চাপ দিয়ে স্পর্শ করা",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Dad",
+      "bangla_word": "বাবা",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "December",
+      "bangla_word": "ডিসেম্বর",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Did",
+      "bangla_word": "করেছিল (অতীত)",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Dirty",
+      "bangla_word": "ময়লা",
+      "part_of_speech": "Adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Ditch",
+      "bangla_word": "নালা/খাল; ফেলে দেওয়া",
+      "part_of_speech": "noun/verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Doctor",
+      "bangla_word": "ডাক্তার",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Dot",
+      "bangla_word": "ছোট গোল দাগ",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Driver",
+      "bangla_word": "চালক",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Duster",
+      "bangla_word": "ডাস্টার",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Elephant",
+      "bangla_word": "হাতি",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Elicit",
+      "bangla_word": "বের করে আনা",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Emphasis",
+      "bangla_word": "গুরুত্ব; জোর",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Encloses",
+      "bangla_word": "ঘিরে রাখে",
+      "part_of_speech": "verb (present)",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Example-word-2",
+      "bangla_word": "exmple-word",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Famous",
+      "bangla_word": "বিখ্যাত; সুপরিচিত",
+      "part_of_speech": "adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Far from",
+      "bangla_word": "দূরে",
+      "part_of_speech": "Phrase",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Farm",
+      "bangla_word": "খামার",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Feel",
+      "bangla_word": "অনুভব করা",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Fence",
+      "bangla_word": "বেড়া; বেড়া দেওয়া",
+      "part_of_speech": "noun/verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Fertile",
+      "bangla_word": "উর্বর",
+      "part_of_speech": "adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Field",
+      "bangla_word": "মাঠ / ক্ষেত",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Fit",
+      "bangla_word": "ফিট/সুস্থ; মাপসই; মানানসই হওয়া",
+      "part_of_speech": "adj/verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Flock",
+      "bangla_word": "ঝাঁক; দল বেঁধে আসা",
+      "part_of_speech": "noun/verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Fog",
+      "bangla_word": "কুয়াশা",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Fond of",
+      "bangla_word": "খুব পছন্দ করা",
+      "part_of_speech": "adjective phrase",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "From",
+      "bangla_word": "থেকে",
+      "part_of_speech": "Preposition",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Front",
+      "bangla_word": "সামনে",
+      "part_of_speech": "Noun/Adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Gap",
+      "bangla_word": "ফাঁক; ব্যবধান",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Gardening",
+      "bangla_word": "বাগান করা",
+      "part_of_speech": "noun/verb (gerund)",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Get",
+      "bangla_word": "পাওয়া",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Get out",
+      "bangla_word": "বের হওয়া",
+      "part_of_speech": "Phrasal verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Go Ahead",
+      "bangla_word": "এগিয়ে যাও",
+      "part_of_speech": "Phrase/Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Happen",
+      "bangla_word": "ঘটা",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Happiness",
+      "bangla_word": "সুখ; আনন্দ",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Healthy",
+      "bangla_word": "স্বাস্থ্যবান",
+      "part_of_speech": "Adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Hello",
+      "bangla_word": "হ্যালো",
+      "part_of_speech": "Interjection",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Here",
+      "bangla_word": "এখানে",
+      "part_of_speech": "Adverb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Himself",
+      "bangla_word": "নিজেই",
+      "part_of_speech": "Pronoun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Hopefully",
+      "bangla_word": "আশাবাদীভাবে; আশা করে",
+      "part_of_speech": "adverb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Ice-cream",
+      "bangla_word": "আইসক্রিম",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Idea",
+      "bangla_word": "ধারণা",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Igloo",
+      "bangla_word": "ইগলু",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "In front of",
+      "bangla_word": "সামনে",
+      "part_of_speech": "Preposition phrase",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Interesting",
+      "bangla_word": "মজাদার; আকর্ষণীয়",
+      "part_of_speech": "adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Introduce",
+      "bangla_word": "পরিচয় করানো",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Introduced",
+      "bangla_word": "পরিচিত করিয়ে দেওয়া; প্রবর্তন করা",
+      "part_of_speech": "verb (past)",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Invite",
+      "bangla_word": "আমন্ত্রণ করা",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Itself",
+      "bangla_word": "নিজে/নিজেই",
+      "part_of_speech": "Pronoun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "January",
+      "bangla_word": "জানুয়ারি",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Job",
+      "bangla_word": "কাজ",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "July",
+      "bangla_word": "জুলাই",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "June",
+      "bangla_word": "জুন",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Just",
+      "bangla_word": "শুধু/ঠিক",
+      "part_of_speech": "Adverb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Keep",
+      "bangla_word": "রাখা",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Kettle",
+      "bangla_word": "কেটলি",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Kitchen",
+      "bangla_word": "রান্নাঘর",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Know",
+      "bangla_word": "জানা",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Late",
+      "bangla_word": "দেরি",
+      "part_of_speech": "Adjective/Adverb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Lazy",
+      "bangla_word": "অলস",
+      "part_of_speech": "Adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Leap year",
+      "bangla_word": "অধিবর্ষ",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Leave",
+      "bangla_word": "ছেড়ে যাওয়া",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Lentils",
+      "bangla_word": "ডাল",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Lettuce",
+      "bangla_word": "লেটুস পাতা",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Listen",
+      "bangla_word": "শোনা",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Look",
+      "bangla_word": "দেখা",
+      "part_of_speech": "Verb/Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Lot",
+      "bangla_word": "অনেক পরিমাণ",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Lovely",
+      "bangla_word": "সুন্দর; মনোরম",
+      "part_of_speech": "adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Machine",
+      "bangla_word": "যন্ত্র",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Make",
+      "bangla_word": "তৈরি করা",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Many",
+      "bangla_word": "অনেক",
+      "part_of_speech": "Determiner/Adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "March",
+      "bangla_word": "মার্চ",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Marigolds",
+      "bangla_word": "গাঁদা ফুল",
+      "part_of_speech": "noun (plural)",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "May",
+      "bangla_word": "মে",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Meeting",
+      "bangla_word": "সভা; সাক্ষাৎ",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Men",
+      "bangla_word": "পুরুষেরা",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Mend",
+      "bangla_word": "মেরামত করা",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Metal",
+      "bangla_word": "ধাতু",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Mew",
+      "bangla_word": "মিউ মিউ করা",
+      "part_of_speech": "Verb/Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Middle",
+      "bangla_word": "মাঝখান",
+      "part_of_speech": "Noun/Adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Mollify",
+      "bangla_word": "শান্ত করা, প্রশমিত করা",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Monday",
+      "bangla_word": "সোমবার",
+      "part_of_speech": "n",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Month",
+      "bangla_word": "মাস",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "More",
+      "bangla_word": "আরও বেশি",
+      "part_of_speech": "Adjective/Adverb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Must",
+      "bangla_word": "অবশ্যই",
+      "part_of_speech": "Modal Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Myself",
+      "bangla_word": "নিজে",
+      "part_of_speech": "Pronoun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "National Anthem",
+      "bangla_word": "জাতীয় সংগীত",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Need",
+      "bangla_word": "প্রয়োজন",
+      "part_of_speech": "Verb/Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Neigh",
+      "bangla_word": "হ্রেষাধ্বনি করা",
+      "part_of_speech": "Verb/Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Neighbourhood",
+      "bangla_word": "পাড়া; প্রতিবেশি এলাকা",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "New",
+      "bangla_word": "নতুন",
+      "part_of_speech": "Adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Next",
+      "bangla_word": "পরবর্তী; পাশের",
+      "part_of_speech": "adjective/adverb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "November",
+      "bangla_word": "নভেম্বর",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Now",
+      "bangla_word": "এখন",
+      "part_of_speech": "adverb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Occupation",
+      "bangla_word": "পেশা",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "October",
+      "bangla_word": "অক্টোবর",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Of course",
+      "bangla_word": "অবশ্যই",
+      "part_of_speech": "phrase",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Office",
+      "bangla_word": "অফিস; কার্যালয়",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Order",
+      "bangla_word": "আদেশ; ক্রম",
+      "part_of_speech": "noun/verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Our",
+      "bangla_word": "আমাদের",
+      "part_of_speech": "determiner",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Pairwork",
+      "bangla_word": "জোড়ায় কাজ",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Paragraph",
+      "bangla_word": "অনুচ্ছেদ",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Peer",
+      "bangla_word": "সমবয়সী; সঙ্গী",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "People",
+      "bangla_word": "মানুষজন",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Picture",
+      "bangla_word": "ছবি",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Pigeon",
+      "bangla_word": "কবুতর",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Pilot",
+      "bangla_word": "পাইলট; বিমানচালক",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Plane",
+      "bangla_word": "বিমান",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Playground",
+      "bangla_word": "খেলার মাঠ",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Primary School",
+      "bangla_word": "প্রাথমিক বিদ্যালয়",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Pronunciation",
+      "bangla_word": "উচ্চারণ",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Public",
+      "bangla_word": "সার্বজনীন/জনসাধারণ",
+      "part_of_speech": "adjective/noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Question",
+      "bangla_word": "প্রশ্ন",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Quick",
+      "bangla_word": "দ্রুত",
+      "part_of_speech": "adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Regularly",
+      "bangla_word": "নিয়মিতভাবে",
+      "part_of_speech": "adverb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Remove",
+      "bangla_word": "সরিয়ে ফেলা; অপসারণ করা",
+      "part_of_speech": "verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Rest",
+      "bangla_word": "বিশ্রাম",
+      "part_of_speech": "noun/verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Ripe",
+      "bangla_word": "পাকা",
+      "part_of_speech": "adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Roar",
+      "bangla_word": "গর্জন করা",
+      "part_of_speech": "verb/noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Science fiction",
+      "bangla_word": "সায়েন্স ফিকশন; কল্পবিজ্ঞান",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Selected",
+      "bangla_word": "নির্বাচিত; বাছাইকৃত",
+      "part_of_speech": "adjective/verb (past)",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Sentence",
+      "bangla_word": "বাক্য",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Sew",
+      "bangla_word": "সেলাই করা",
+      "part_of_speech": "verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Shower",
+      "bangla_word": "গোসল; ঝরনা",
+      "part_of_speech": "noun/verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Sickles",
+      "bangla_word": "কাস্তে",
+      "part_of_speech": "noun (plural)",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Sleep",
+      "bangla_word": "ঘুমানো",
+      "part_of_speech": "verb/noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Slip",
+      "bangla_word": "পিছলে পড়া",
+      "part_of_speech": "verb/noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Soap",
+      "bangla_word": "সাবান",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Some",
+      "bangla_word": "কিছু",
+      "part_of_speech": "determiner/pronoun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Sometimes",
+      "bangla_word": "মাঝে মাঝে",
+      "part_of_speech": "adverb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Song",
+      "bangla_word": "গান",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Spades",
+      "bangla_word": "কোদাল",
+      "part_of_speech": "noun (plural)",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Stick",
+      "bangla_word": "লাঠি; কাঠি",
+      "part_of_speech": "noun/verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Stitch",
+      "bangla_word": "সেলাই করা",
+      "part_of_speech": "verb/noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Strange",
+      "bangla_word": "অদ্ভুত",
+      "part_of_speech": "adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Stream",
+      "bangla_word": "স্রোত; ঝরনা",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Stressed",
+      "bangla_word": "চাপগ্রস্ত; জোর দেওয়া হয়েছে",
+      "part_of_speech": "adjective/verb (past)",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Sunday",
+      "bangla_word": "রবিবার",
+      "part_of_speech": "n",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Swarm",
+      "bangla_word": "ঝাঁক; ঝাঁকে ঝাঁকে চলা",
+      "part_of_speech": "noun/verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Swim",
+      "bangla_word": "সাঁতার কাটা",
+      "part_of_speech": "verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Syllables",
+      "bangla_word": "শব্দাংশ",
+      "part_of_speech": "noun (plural)",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "TRUE",
+      "bangla_word": "সত্য",
+      "part_of_speech": "adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Tailor",
+      "bangla_word": "দর্জি",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Tea",
+      "bangla_word": "চা",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Tell",
+      "bangla_word": "বলা",
+      "part_of_speech": "verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Thanks",
+      "bangla_word": "ধন্যবাদ",
+      "part_of_speech": "noun/interjection",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "That",
+      "bangla_word": "ওটা; যে",
+      "part_of_speech": "pronoun/determiner",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "There",
+      "bangla_word": "সেখানে",
+      "part_of_speech": "adverb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Things",
+      "bangla_word": "জিনিসপত্র",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Think",
+      "bangla_word": "চিন্তা করা",
+      "part_of_speech": "verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Thursday",
+      "bangla_word": "বৃহস্পতিবার",
+      "part_of_speech": "n",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Tiger",
+      "bangla_word": "বাঘ",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Toilet",
+      "bangla_word": "শৌচাগার",
+      "part_of_speech": "noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Tomorrow",
+      "bangla_word": "আগামীকাল",
+      "part_of_speech": "noun/adverb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Tools",
+      "bangla_word": "যন্ত্রপাতি; সরঞ্জাম",
+      "part_of_speech": "noun (plural)",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Tube well",
+      "bangla_word": "নলকূপ",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Unhealthy",
+      "bangla_word": "অস্বাস্থ্যকর",
+      "part_of_speech": "adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Vegetables",
+      "bangla_word": "শাকসবজি",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Want",
+      "bangla_word": "চাওয়া",
+      "part_of_speech": "Verb",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Weeds",
+      "bangla_word": "আগাছা",
+      "part_of_speech": "noun (plural)",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Wonderful",
+      "bangla_word": "চমৎকার; দারুণ",
+      "part_of_speech": "adjective",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Work place",
+      "bangla_word": "কর্মস্থল",
+      "part_of_speech": "Noun phrase",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "X-ray",
+      "bangla_word": "এক্স-রে",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Yard",
+      "bangla_word": "আঙিনা / উঠান",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Yesterday",
+      "bangla_word": "গতকাল",
+      "part_of_speech": "Adverb/Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "Yo-yo",
+      "bangla_word": "ইয়ো-ইয়ো",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "alphabet",
+      "bangla_word": "বর্ণমালা",
+      "part_of_speech": "n.",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "be quiet",
+      "bangla_word": "চুপ থাকা",
+      "part_of_speech": "v phr",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "brush teeth",
+      "bangla_word": "দাঁত মাজা",
+      "part_of_speech": "v. phrase",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "building",
+      "bangla_word": "ভবন",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "clap hands",
+      "bangla_word": "হাততালি দেওয়া",
+      "part_of_speech": "v phr",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "come here",
+      "bangla_word": "এখানে আসো",
+      "part_of_speech": "v phr",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "early",
+      "bangla_word": "ভোরে/আগে",
+      "part_of_speech": "adv./adj.",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "flower pot",
+      "bangla_word": "ফুলের টব",
+      "part_of_speech": "n",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "go back",
+      "bangla_word": "ফিরে যাওয়া",
+      "part_of_speech": "v phr",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "go to bed",
+      "bangla_word": "বিছানায় যাওয়া",
+      "part_of_speech": "v. phrase",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "habit",
+      "bangla_word": "অভ্যাস",
+      "part_of_speech": "n.",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "have breakfast",
+      "bangla_word": "নাশতা করা",
+      "part_of_speech": "v. phrase",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "how",
+      "bangla_word": "কিভাবে",
+      "part_of_speech": "adv.",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "how many",
+      "bangla_word": "কতগুলো",
+      "part_of_speech": "phr",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "instruction",
+      "bangla_word": "নির্দেশনা",
+      "part_of_speech": "n",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "introduction",
+      "bangla_word": "পরিচয়",
+      "part_of_speech": "n.",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "like",
+      "bangla_word": "পছন্দ করা",
+      "part_of_speech": "v.",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "live",
+      "bangla_word": "বাস করা",
+      "part_of_speech": "v.",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "long",
+      "bangla_word": "দীর্ঘ",
+      "part_of_speech": "adj.",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "name",
+      "bangla_word": "নাম",
+      "part_of_speech": "n.",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "near",
+      "bangla_word": "কাছের/কাছে",
+      "part_of_speech": "adj./prep.",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "pen",
+      "bangla_word": "কলম",
+      "part_of_speech": "n.",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "pleasure",
+      "bangla_word": "আনন্দ",
+      "part_of_speech": "n",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "quite",
+      "bangla_word": "খুব/সম্পূর্ণ",
+      "part_of_speech": "adv.",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "raise hand",
+      "bangla_word": "হাত তোলা",
+      "part_of_speech": "v phr",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "sit down",
+      "bangla_word": "বসে পড়া",
+      "part_of_speech": "v phr",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "stand up",
+      "bangla_word": "উঠে দাঁড়ানো",
+      "part_of_speech": "v phr",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "study tour",
+      "bangla_word": "শিক্ষাসফর",
+      "part_of_speech": "n. phrase",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "sure",
+      "bangla_word": "নিশ্চিত",
+      "part_of_speech": "adj",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "take care",
+      "bangla_word": "খেয়াল রাখা",
+      "part_of_speech": "v. phrase",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "today",
+      "bangla_word": "আজ",
+      "part_of_speech": "n./adv.",
+      "status": "APPROVED"
+    },
+    {
+      "english_word": "tubewell",
+      "bangla_word": "নলকূপ",
+      "part_of_speech": "Noun",
+      "status": "APPROVED"
+    }
+  ]
+}

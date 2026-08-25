@@ -1,0 +1,506 @@
+[
+  {
+    "file": "End.jpg",
+    "word_id": "f6a65b98-ef5a-4d80-a9ff-84aa6902c29f",
+    "english_word": "End",
+    "ambiguous": false
+  },
+  {
+    "file": "Evening.jpg",
+    "word_id": "281c6130-94da-4e39-bff1-e99e83a0f1df",
+    "english_word": "evening",
+    "ambiguous": false
+  },
+  {
+    "file": "Everyday.jpg",
+    "word_id": "68749cf4-279d-47dc-bffe-3ab5233340d2",
+    "english_word": "Everyday",
+    "ambiguous": false
+  },
+  {
+    "file": "farmer.jpg",
+    "word_id": "b2181e49-4895-4fe8-bfa2-9a660ddf9c8b",
+    "english_word": "Farmer",
+    "ambiguous": false
+  },
+  {
+    "file": "Father.jpg",
+    "word_id": "8e666d1f-4678-4394-8dee-3b8c0aa7a722",
+    "english_word": "Father",
+    "ambiguous": false
+  },
+  {
+    "file": "february.jpg",
+    "word_id": "bdc0f433-9041-4b0b-beec-10e7bd7d8661",
+    "english_word": "February",
+    "ambiguous": false
+  },
+  {
+    "file": "fig.jpg",
+    "word_id": "03ec83e8-7e98-411c-8b84-8d79083da3fb",
+    "english_word": "Fig",
+    "ambiguous": false
+  },
+  {
+    "file": "fin.jpg",
+    "word_id": "4573f28a-156d-4587-8fad-341ebade1f4d",
+    "english_word": "Fin",
+    "ambiguous": false
+  },
+  {
+    "file": "find.jpg",
+    "word_id": "dec4ff9b-47ee-4c29-81f6-bb3711fc1e8d",
+    "english_word": "Find",
+    "ambiguous": false
+  },
+  {
+    "file": "fine.jpg",
+    "word_id": "0cbc62de-7d1f-45c6-9bef-ab94c220d693",
+    "english_word": "Fine",
+    "ambiguous": false
+  },
+  {
+    "file": "fish.jpg",
+    "word_id": "a6796b4e-aabf-4787-9b0c-87990bd09045",
+    "english_word": "Fish",
+    "ambiguous": false
+  },
+  {
+    "file": "fly.jpg",
+    "word_id": "0b3273b1-90e3-41cc-a926-35bebf606cfc",
+    "english_word": "Fly",
+    "ambiguous": false
+  },
+  {
+    "file": "food.jpg",
+    "word_id": "46b85e6c-b249-40c6-93ae-0a05083216e9",
+    "english_word": "Food",
+    "ambiguous": false
+  },
+  {
+    "file": "football.jpg",
+    "word_id": "b1f242e3-3f9a-4b8e-b77f-88efbd52f2b1",
+    "english_word": "football",
+    "ambiguous": false
+  },
+  {
+    "file": "fox.jpg",
+    "word_id": "94fbd548-0bd5-4a09-b269-0c213f134c3b",
+    "english_word": "Fox",
+    "ambiguous": false
+  },
+  {
+    "file": "frog.jpg",
+    "word_id": "d7781f43-856b-4c3c-85fc-8e6b39d4f37e",
+    "english_word": "frog",
+    "ambiguous": false
+  },
+  {
+    "file": "fruit.jpg",
+    "word_id": "39f615d2-5675-4bbe-b003-b89931b8558c",
+    "english_word": "Fruit",
+    "ambiguous": false
+  },
+  {
+    "file": "fun.jpg",
+    "word_id": "691e6c9b-085e-4b9a-804d-a03c40afe335",
+    "english_word": "Fun",
+    "ambiguous": false
+  },
+  {
+    "file": "garlic.jpg",
+    "word_id": "46e07270-59b4-4ee4-beea-8150b0812260",
+    "english_word": "garlic",
+    "ambiguous": false
+  },
+  {
+    "file": "gas.jpg",
+    "word_id": "123bcc1f-b313-42d5-84a0-65526555868f",
+    "english_word": "Gas",
+    "ambiguous": false
+  },
+  {
+    "file": "girl.jpg",
+    "word_id": "b78cadc3-ce09-4dce-b934-6bebd0e4f31d",
+    "english_word": "Girl",
+    "ambiguous": false
+  },
+  {
+    "file": "go.jpg",
+    "word_id": "3bf02ea5-a0ba-4186-b4b7-8491851c630f",
+    "english_word": "Go",
+    "ambiguous": false
+  },
+  {
+    "file": "goat.jpg",
+    "word_id": "c41739d2-ffaf-4604-bb4b-a27a4576526a",
+    "english_word": "Goat",
+    "ambiguous": false
+  },
+  {
+    "file": "good.jpg",
+    "word_id": "8875ac50-4f2d-41e1-8e14-8cfb825af972",
+    "english_word": "good",
+    "ambiguous": false
+  },
+  {
+    "file": "grass.jpg",
+    "word_id": "68db00bb-240d-4046-a8b4-2c6e972b4707",
+    "english_word": "Grass",
+    "ambiguous": false
+  },
+  {
+    "file": "great.jpg",
+    "word_id": "4dbf7c70-77b6-48e5-8ac6-35689d815325",
+    "english_word": "great",
+    "ambiguous": false
+  },
+  {
+    "file": "greeting.jpg",
+    "word_id": "ff1fd414-70e2-4abb-a053-da45ce7e811e",
+    "english_word": "greeting",
+    "ambiguous": false
+  },
+  {
+    "file": "grow.jpg",
+    "word_id": "993ba4b3-6134-4cdb-8ab7-8c26f3a3ef20",
+    "english_word": "Grow",
+    "ambiguous": false
+  },
+  {
+    "file": "Hand.jpg",
+    "word_id": "90790299-16f9-4553-8efb-c549ffeb7f1e",
+    "english_word": "Hand",
+    "ambiguous": false
+  },
+  {
+    "file": "Happy.jpg",
+    "word_id": "c6d73835-4666-4209-a243-50a15371d825",
+    "english_word": "Happy",
+    "ambiguous": false
+  },
+  {
+    "file": "Horse.jpg",
+    "word_id": "8bf40bf2-804b-443b-a869-d1a21f477f3e",
+    "english_word": "Horse",
+    "ambiguous": false
+  },
+  {
+    "file": "Hot.jpeg",
+    "word_id": "5fba96df-0601-4aeb-8fdc-3b4ec0a6bacc",
+    "english_word": "Hot",
+    "ambiguous": false
+  },
+  {
+    "file": "Island.jpg",
+    "word_id": "06790b64-e7c9-49a0-8bdb-d9b48492706b",
+    "english_word": "island",
+    "ambiguous": false
+  },
+  {
+    "file": "Ladder.jpg",
+    "word_id": "e28ccf75-6e0b-4c0e-b01a-26ae78afe2ca",
+    "english_word": "ladder",
+    "ambiguous": false
+  },
+  {
+    "file": "Lamp.jpg",
+    "word_id": "57e0c296-a8b0-4492-8223-20621590a4c9",
+    "english_word": "Lamp",
+    "ambiguous": false
+  },
+  {
+    "file": "Lion.jpg",
+    "word_id": "40a0e052-2436-4e91-bcc6-cfda831637e0",
+    "english_word": "Lion",
+    "ambiguous": false
+  },
+  {
+    "file": "Milk.jpg",
+    "word_id": "3e58348a-5b99-4e27-802c-b2517dcec7e2",
+    "english_word": "Milk",
+    "ambiguous": false
+  },
+  {
+    "file": "Moon.jpg",
+    "word_id": "e1956d8d-5c0f-41be-9dd2-cb4fd66a3ee0",
+    "english_word": "Moon",
+    "ambiguous": false
+  },
+  {
+    "file": "Mother.jpg",
+    "word_id": "d32c79b5-0592-48ef-aeeb-753c4248e2f3",
+    "english_word": "Mother",
+    "ambiguous": false
+  },
+  {
+    "file": "Night.jpg",
+    "word_id": "e72626f7-652d-4254-a06e-842316c4b15c",
+    "english_word": "Night",
+    "ambiguous": false
+  },
+  {
+    "file": "Notebook.jpg",
+    "word_id": "aae8f356-facd-44d3-bab6-19a4ca969ae4",
+    "english_word": "Notebook",
+    "ambiguous": false
+  },
+  {
+    "file": "Old.jpg",
+    "word_id": "f9af7495-09ea-4ce9-b821-4c3b3ac62f59",
+    "english_word": "Old",
+    "ambiguous": false
+  },
+  {
+    "file": "Orange.jpg",
+    "word_id": "4bf4e5c4-e2f7-4d16-a8f1-ffee097b2c3a",
+    "english_word": "orange",
+    "ambiguous": false
+  },
+  {
+    "file": "Pencil.jpg",
+    "word_id": "3c100f0f-cd01-408b-90c1-fb0b7e971d01",
+    "english_word": "Pencil",
+    "ambiguous": false
+  },
+  {
+    "file": "Pineapple.jpg",
+    "word_id": "af3e7887-517d-4269-8449-a111e3c76e7c",
+    "english_word": "Pineapple",
+    "ambiguous": false
+  },
+  {
+    "file": "Play.jpg",
+    "word_id": "816c3af0-9cbb-4db6-a4a5-d03be477c4d3",
+    "english_word": "Play",
+    "ambiguous": false
+  },
+  {
+    "file": "Rice.jpg",
+    "word_id": "2a3a0384-6cec-4558-ade9-3422419e0806",
+    "english_word": "Rice",
+    "ambiguous": false
+  },
+  {
+    "file": "Row.png",
+    "word_id": "fbccae77-43e9-424e-b849-2471ce4fcf00",
+    "english_word": "row",
+    "ambiguous": false
+  },
+  {
+    "file": "Sad.png",
+    "word_id": "30514af3-8fb6-467c-8e05-ffbfa22f78a1",
+    "english_word": "Sad",
+    "ambiguous": false
+  },
+  {
+    "file": "Same.png",
+    "word_id": "c257c379-149a-46e4-ba05-dab1bbd3350f",
+    "english_word": "Same",
+    "ambiguous": false
+  },
+  {
+    "file": "Saturday.jpg",
+    "word_id": "7d14882b-fee4-4f8a-9043-67635d78e55a",
+    "english_word": "Saturday",
+    "ambiguous": false
+  },
+  {
+    "file": "School.jpg",
+    "word_id": "07493703-eff5-4ac5-a50e-f79da23d4ef1",
+    "english_word": "School",
+    "ambiguous": false
+  },
+  {
+    "file": "See.jpg",
+    "word_id": "9c068291-83b1-406d-a7a6-2a859305cb01",
+    "english_word": "see",
+    "ambiguous": false
+  },
+  {
+    "file": "September.png",
+    "word_id": "fb31c843-27ed-4497-8d7b-5887577af231",
+    "english_word": "September",
+    "ambiguous": false
+  },
+  {
+    "file": "Sheep.png",
+    "word_id": "873c1a0f-cffe-4f8b-8503-59d9e5598954",
+    "english_word": "Sheep",
+    "ambiguous": false
+  },
+  {
+    "file": "Ship.png",
+    "word_id": "ccb0f239-a119-4281-bf91-bbf54c95398d",
+    "english_word": "Ship",
+    "ambiguous": false
+  },
+  {
+    "file": "Shoe.png",
+    "word_id": "53e8e3a7-fb44-4dc2-9ff9-0d8dff3dd30b",
+    "english_word": "Shoe",
+    "ambiguous": false
+  },
+  {
+    "file": "Sing.png",
+    "word_id": "cae1b657-5227-4544-b935-ae1770e095a1",
+    "english_word": "Sing",
+    "ambiguous": false
+  },
+  {
+    "file": "Sister.jpg",
+    "word_id": "baa11402-9820-4956-893b-8aeaed0fec1b",
+    "english_word": "Sister",
+    "ambiguous": false
+  },
+  {
+    "file": "Sit.png",
+    "word_id": "c0c7448c-d486-4f68-b185-a498f112cf23",
+    "english_word": "Sit",
+    "ambiguous": false
+  },
+  {
+    "file": "Sky.png",
+    "word_id": "8cb07739-281f-450a-b27b-e4c69cabc0fd",
+    "english_word": "Sky",
+    "ambiguous": false
+  },
+  {
+    "file": "Slow.jpg",
+    "word_id": "751a0b8d-fd86-463a-8dd8-79240e59bb51",
+    "english_word": "Slow",
+    "ambiguous": false
+  },
+  {
+    "file": "Small.jpg",
+    "word_id": "0b26fd57-0281-4642-8316-c9ed6239c654",
+    "english_word": "Small",
+    "ambiguous": false
+  },
+  {
+    "file": "Summer.jpg",
+    "word_id": "cf590978-25c1-422d-9a0b-5f7ec556df29",
+    "english_word": "Summer",
+    "ambiguous": false
+  },
+  {
+    "file": "tomato.jpeg",
+    "word_id": "9dd826db-20c9-47a8-a9ee-af26d0539772",
+    "english_word": "Tomato",
+    "ambiguous": false
+  },
+  {
+    "file": "touch.jpeg",
+    "word_id": "2a934393-a148-480b-849e-52184be83c18",
+    "english_word": "Touch",
+    "ambiguous": false
+  },
+  {
+    "file": "tree.jpeg",
+    "word_id": "822c5a81-f867-4582-bded-8c13b4524370",
+    "english_word": "Tree",
+    "ambiguous": false
+  },
+  {
+    "file": "tuesday.jpeg",
+    "word_id": "797206a2-e6cb-46ac-b220-670994c2c744",
+    "english_word": "Tuesday",
+    "ambiguous": false
+  },
+  {
+    "file": "Umbrella.jpeg",
+    "word_id": "1c79e1e9-1b3c-47ac-bb53-c81293b3316f",
+    "english_word": "Umbrella",
+    "ambiguous": false
+  },
+  {
+    "file": "under.jpeg",
+    "word_id": "dad350f2-fabd-43e1-9e1a-2603fea644b9",
+    "english_word": "Under",
+    "ambiguous": false
+  },
+  {
+    "file": "Uniform.jpeg",
+    "word_id": "4bb3bf1c-faa4-4ce0-9f09-40a546dd8466",
+    "english_word": "Uniform",
+    "ambiguous": false
+  },
+  {
+    "file": "vase.jpeg",
+    "word_id": "9906e8fa-8847-4dff-aaed-50f9b4fd8493",
+    "english_word": "Vase",
+    "ambiguous": false
+  },
+  {
+    "file": "Wait.jpeg",
+    "word_id": "5ce4e5d8-8198-4c88-a1f0-22cd321fd247",
+    "english_word": "Wait",
+    "ambiguous": false
+  },
+  {
+    "file": "watch.jpeg",
+    "word_id": "afd19ed9-e93b-43da-8d17-2286714bad52",
+    "english_word": "Watch",
+    "ambiguous": false
+  },
+  {
+    "file": "Water.jpeg",
+    "word_id": "2376fc89-2ba8-4bdb-b219-0c26d3ddbe58",
+    "english_word": "Water",
+    "ambiguous": false
+  },
+  {
+    "file": "Week.jpeg",
+    "word_id": "e8d87b14-bb20-497e-bab5-3590d852c207",
+    "english_word": "week",
+    "ambiguous": false
+  },
+  {
+    "file": "What.jpeg",
+    "word_id": "abe06582-eeaf-479d-95a7-a7beb4dd8526",
+    "english_word": "What",
+    "ambiguous": false
+  },
+  {
+    "file": "window.jpeg",
+    "word_id": "267c01e5-7b2c-4358-9b8c-29114e7c9809",
+    "english_word": "Window",
+    "ambiguous": false
+  },
+  {
+    "file": "word.jpeg",
+    "word_id": "35873b32-7053-4da1-8364-54cc329bad7f",
+    "english_word": "word",
+    "ambiguous": false
+  },
+  {
+    "file": "Write.jpeg",
+    "word_id": "78f3a17e-755e-45b9-a995-295c4377333c",
+    "english_word": "write",
+    "ambiguous": false
+  },
+  {
+    "file": "year.jpeg",
+    "word_id": "c3856f2a-a489-4a9c-b57e-a982625f70c4",
+    "english_word": "Year",
+    "ambiguous": false
+  },
+  {
+    "file": "young.jpeg",
+    "word_id": "0db38339-e649-47bf-9d1d-bc209538b4ed",
+    "english_word": "Young",
+    "ambiguous": false
+  },
+  {
+    "file": "Zebra.jpeg",
+    "word_id": "e17c04a9-7a7c-407c-a3da-a6893bf913cb",
+    "english_word": "Zebra",
+    "ambiguous": false
+  },
+  {
+    "file": "Zoo.jpeg",
+    "word_id": "a4a0a6d3-b747-430a-9b85-9cd1a882da9d",
+    "english_word": "Zoo",
+    "ambiguous": false
+  }
+]

@@ -1,0 +1,787 @@
+<title>Word Image Coverage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">
+
+<style>
+  :root {
+    --paper: #eef2f1;
+    --surface: #ffffff;
+    --surface-sunk: #f5f8f7;
+    --ink: #111c1b;
+    --muted: #576662;
+    --faint: #7d8b87;
+    --rule: #d3dedb;
+    --rule-soft: #e4ebe9;
+    --accent: #0f5257;
+    --accent-soft: #dbeceb;
+    --gap: #8f5407;
+    --gap-soft: #f6ebda;
+    --dup: #565091;
+    --dup-soft: #e6e5f2;
+    --shadow: 0 1px 2px rgba(17, 28, 27, .06), 0 8px 24px -16px rgba(17, 28, 27, .28);
+
+    --step-0: .875rem;
+    --step-1: 1rem;
+    --step-2: 1.25rem;
+    --step-3: 1.75rem;
+    --step-4: clamp(2rem, 1.4rem + 2.6vw, 3.1rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0d1413;
+      --surface: #141e1d;
+      --surface-sunk: #101917;
+      --ink: #e4ecea;
+      --muted: #93a49f;
+      --faint: #74847f;
+      --rule: #263533;
+      --rule-soft: #1d2a28;
+      --accent: #63b7b1;
+      --accent-soft: #17302f;
+      --gap: #d69a4a;
+      --gap-soft: #2e2415;
+      --dup: #9b93d8;
+      --dup-soft: #211f33;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .8);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #0d1413;
+    --surface: #141e1d;
+    --surface-sunk: #101917;
+    --ink: #e4ecea;
+    --muted: #93a49f;
+    --faint: #74847f;
+    --rule: #263533;
+    --rule-soft: #1d2a28;
+    --accent: #63b7b1;
+    --accent-soft: #17302f;
+    --gap: #d69a4a;
+    --gap-soft: #2e2415;
+    --dup: #9b93d8;
+    --dup-soft: #211f33;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -16px rgba(0, 0, 0, .8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: var(--step-1);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .shell {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 1rem + 2vw, 3.5rem) clamp(1rem, .5rem + 2vw, 2.5rem) 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  /* ---- masthead ---------------------------------------------------- */
+  .masthead { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .7rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .masthead h1 {
+    font-family: Newsreader, ui-serif, Georgia, serif;
+    font-size: var(--step-4);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .lede {
+    margin: 0;
+    max-width: 60ch;
+    color: var(--muted);
+    font-size: var(--step-2);
+    line-height: 1.5;
+  }
+
+  /* ---- coverage bar ------------------------------------------------ */
+  .coverage {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .coverage-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .75rem;
+  }
+
+  .coverage-head h2 {
+    margin: 0;
+    font-family: Newsreader, ui-serif, Georgia, serif;
+    font-size: var(--step-3);
+    font-weight: 500;
+  }
+
+  .coverage-pct {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: var(--step-3);
+    color: var(--accent);
+  }
+
+  .bar {
+    display: flex;
+    height: 12px;
+    border-radius: 2px;
+    overflow: hidden;
+    background: var(--surface-sunk);
+    border: 1px solid var(--rule-soft);
+  }
+  .bar-fill { background: var(--accent); }
+  .bar-rest { background: repeating-linear-gradient(135deg, var(--gap-soft) 0 5px, transparent 5px 10px); }
+
+  .bar-key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    font-size: var(--step-0);
+    color: var(--muted);
+  }
+  .key { display: flex; align-items: center; gap: .45rem; }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+  .key b { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
+
+  /* ---- stat row ---------------------------------------------------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .stat {
+    background: var(--surface);
+    padding: 1rem 1.15rem;
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+  }
+
+  .stat-n {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 1.6rem;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+  .stat-n.is-ok { color: var(--accent); }
+  .stat-n.is-gap { color: var(--gap); }
+
+  .stat-label {
+    font-size: .78rem;
+    letter-spacing: .04em;
+    color: var(--muted);
+  }
+
+  /* ---- tabs -------------------------------------------------------- */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: .1rem;
+  }
+
+  .tab {
+    appearance: none;
+    background: none;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 3px 3px 0 0;
+    padding: .6rem 1rem;
+    margin-bottom: -1px;
+    font: inherit;
+    font-size: var(--step-0);
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tab[aria-selected="true"] {
+    background: var(--surface);
+    border-color: var(--rule);
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .tab-count {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: .72rem;
+    padding: .1rem .4rem;
+    border-radius: 2px;
+    background: var(--surface-sunk);
+    border: 1px solid var(--rule-soft);
+    color: var(--muted);
+  }
+  .tab[aria-selected="true"] .tab-count { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
+
+  /* ---- panel ------------------------------------------------------- */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-top: none;
+    border-radius: 0 0 3px 3px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+  }
+  .panel[hidden] { display: none; }
+
+  .panel-intro {
+    padding: 1.35rem 1.5rem;
+    border-bottom: 1px solid var(--rule-soft);
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+  }
+
+  .panel-intro p { margin: 0; color: var(--muted); font-size: var(--step-0); max-width: 68ch; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+
+  .search {
+    flex: 1 1 16rem;
+    font: inherit;
+    font-size: var(--step-0);
+    padding: .5rem .7rem;
+    color: var(--ink);
+    background: var(--surface-sunk);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+  }
+  .search::placeholder { color: var(--faint); }
+  .search:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+
+  .result-count {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: .78rem;
+    color: var(--muted);
+  }
+
+  .alpha {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .15rem;
+    padding: .85rem 1.5rem;
+    border-bottom: 1px solid var(--rule-soft);
+    background: var(--surface-sunk);
+  }
+
+  .alpha button {
+    appearance: none;
+    border: 1px solid transparent;
+    background: none;
+    border-radius: 2px;
+    cursor: pointer;
+    width: 1.75rem;
+    height: 1.75rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .alpha button:hover:not(:disabled) { color: var(--accent); border-color: var(--rule); }
+  .alpha button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .alpha button:disabled { color: var(--faint); opacity: .35; cursor: default; }
+
+  .panel-body { padding: 1.25rem 1.5rem 2rem; }
+
+  .group { scroll-margin-top: .5rem; }
+  .group + .group { margin-top: 1.6rem; }
+
+  .group-letter {
+    font-family: Newsreader, ui-serif, Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 0 .6rem;
+    padding-bottom: .3rem;
+    border-bottom: 1px solid var(--rule-soft);
+    letter-spacing: .04em;
+  }
+
+  .entries {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: .5rem .9rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .entry {
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+    padding: .45rem .6rem;
+    border-radius: 3px;
+    border: 1px solid var(--rule-soft);
+    background: var(--surface);
+  }
+
+  .entry-word { font-size: var(--step-0); font-weight: 500; }
+
+  .entry-meta {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .7rem;
+    color: var(--faint);
+    word-break: break-word;
+  }
+
+  .entry-link {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .7rem;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-soft);
+    align-self: flex-start;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .entry-link:hover { border-bottom-color: var(--accent); }
+  .entry-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .copy-all {
+    appearance: none;
+    font: inherit;
+    font-size: .78rem;
+    cursor: pointer;
+    padding: .5rem .8rem;
+    border-radius: 3px;
+    border: 1px solid var(--rule);
+    background: var(--surface-sunk);
+    color: var(--ink);
+  }
+  .copy-all:hover { border-color: var(--accent); color: var(--accent); }
+  .copy-all:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .entry-bn {
+    font-size: .8rem;
+    color: var(--muted);
+  }
+
+  .flag {
+    align-self: flex-start;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .64rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: .05rem .35rem;
+    border-radius: 2px;
+    margin-top: .15rem;
+  }
+  .flag.is-multi { background: var(--gap-soft); color: var(--gap); }
+  .flag.is-dup { background: var(--dup-soft); color: var(--dup); }
+  .flag.is-status { background: var(--accent-soft); color: var(--accent); }
+
+  .empty {
+    padding: 2.5rem 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: var(--step-0);
+  }
+
+  /* ---- footnote ---------------------------------------------------- */
+  .notes {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+    color: var(--muted);
+    font-size: var(--step-0);
+    max-width: 70ch;
+  }
+  .notes h2 {
+    font-family: Newsreader, ui-serif, Georgia, serif;
+    font-size: var(--step-2);
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0;
+  }
+  .notes p { margin: 0; }
+  .notes code {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .82em;
+    background: var(--surface-sunk);
+    border: 1px solid var(--rule-soft);
+    border-radius: 2px;
+    padding: .05rem .3rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+
+<div class="shell">
+  <header class="masthead">
+    <p class="eyebrow" id="stamp"></p>
+    <h1>Word image coverage</h1>
+    <p class="lede">Every image in <code>WordImage</code> measured against every word in <code>dc_words</code> &mdash; what got linked, what has no word to attach to, and what words are still waiting on a picture.</p>
+  </header>
+
+  <section class="coverage" aria-labelledby="cov-h">
+    <div class="coverage-head">
+      <h2 id="cov-h">Words carrying an image</h2>
+      <span class="coverage-pct" id="cov-pct"></span>
+    </div>
+    <div class="bar" role="img" id="cov-bar-label">
+      <div class="bar-fill" id="cov-fill"></div>
+      <div class="bar-rest" id="cov-rest"></div>
+    </div>
+    <div class="bar-key">
+      <span class="key"><span class="swatch" style="background: var(--accent)"></span> <b id="k-have"></b>&nbsp;with an image</span>
+      <span class="key"><span class="swatch" style="background: var(--gap-soft); border: 1px solid var(--rule)"></span> <b id="k-none"></b>&nbsp;still bare</span>
+      <span class="key"><b id="k-total"></b>&nbsp;words total</span>
+    </div>
+  </section>
+
+  <section class="stats" aria-label="Run summary">
+    <div class="stat"><span class="stat-n is-ok" id="s-up"></span><span class="stat-label">uploaded this run</span></div>
+    <div class="stat"><span class="stat-n" id="s-prev"></span><span class="stat-label">already linked</span></div>
+    <div class="stat"><span class="stat-n" id="s-fail"></span><span class="stat-label">failed</span></div>
+    <div class="stat"><span class="stat-n is-gap" id="s-noword"></span><span class="stat-label">images with no word</span></div>
+    <div class="stat"><span class="stat-n is-gap" id="s-noimg"></span><span class="stat-label">words with no image</span></div>
+    <div class="stat"><span class="stat-n" id="s-dup"></span><span class="stat-label">duplicate files</span></div>
+  </section>
+
+  <section>
+    <div class="tabs" role="tablist" aria-label="Coverage gaps">
+      <button class="tab" role="tab" id="tab-linked" aria-controls="panel-linked" aria-selected="true">
+        Words with an image <span class="tab-count" id="c-linked"></span>
+      </button>
+      <button class="tab" role="tab" id="tab-missing" aria-controls="panel-missing" aria-selected="false" tabindex="-1">
+        Images with no word <span class="tab-count" id="c-missing"></span>
+      </button>
+      <button class="tab" role="tab" id="tab-words" aria-controls="panel-words" aria-selected="false" tabindex="-1">
+        Words with no image <span class="tab-count" id="c-words"></span>
+      </button>
+      <button class="tab" role="tab" id="tab-dups" aria-controls="panel-dups" aria-selected="false" tabindex="-1">
+        Duplicate files <span class="tab-count" id="c-dups"></span>
+      </button>
+    </div>
+
+    <div class="panel" role="tabpanel" id="panel-linked" aria-labelledby="tab-linked" tabindex="0">
+      <div class="panel-intro">
+        <p>Every word currently serving an image, with the Cloudinary URL it resolves to. Open one to check the picture actually suits the word &mdash; filenames matched, but nobody has eyeballed the artwork.</p>
+        <div class="controls">
+          <input class="search" type="search" id="q-linked" placeholder="Filter by English, Bangla, or file&hellip;" aria-label="Filter words with an image">
+          <span class="result-count" id="n-linked"></span>
+          <button class="copy-all" type="button" id="copy-linked">Copy all URLs</button>
+        </div>
+      </div>
+      <nav class="alpha" id="alpha-linked" aria-label="Jump to letter"></nav>
+      <div class="panel-body" id="body-linked"></div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="panel-missing" aria-labelledby="tab-missing" tabindex="0" hidden>
+      <div class="panel-intro">
+        <p>These image files matched no <code>english_word</code>, so nothing was uploaded for them. Add the word to the dictionary, then re-run the upload script &mdash; it picks them up automatically. Names come straight from the filename, so check spelling before adding.</p>
+        <div class="controls">
+          <input class="search" type="search" id="q-missing" placeholder="Filter by word or filename&hellip;" aria-label="Filter images with no word">
+          <span class="result-count" id="n-missing"></span>
+        </div>
+      </div>
+      <nav class="alpha" id="alpha-missing" aria-label="Jump to letter"></nav>
+      <div class="panel-body" id="body-missing"></div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="panel-words" aria-labelledby="tab-words" tabindex="0" hidden>
+      <div class="panel-intro">
+        <p>Words already in the dictionary that still have no image linked. The folder holds no file matching these names &mdash; each one needs artwork sourced and dropped into <code>WordImage</code> under the exact word.</p>
+        <div class="controls">
+          <input class="search" type="search" id="q-words" placeholder="Filter by English or Bangla&hellip;" aria-label="Filter words with no image">
+          <span class="result-count" id="n-words"></span>
+        </div>
+      </div>
+      <nav class="alpha" id="alpha-words" aria-label="Jump to letter"></nav>
+      <div class="panel-body" id="body-words"></div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="panel-dups" aria-labelledby="tab-dups" tabindex="0" hidden>
+      <div class="panel-intro">
+        <p>Two files named the same word. A word holds one image, so the first file won and these were left on disk untouched &mdash; delete the loser, or rename it if it was meant for a different word.</p>
+        <div class="controls">
+          <input class="search" type="search" id="q-dups" placeholder="Filter duplicates&hellip;" aria-label="Filter duplicate files">
+          <span class="result-count" id="n-dups"></span>
+        </div>
+      </div>
+      <div class="panel-body" id="body-dups"></div>
+    </div>
+  </section>
+
+  <footer class="notes">
+    <h2>How the matching works</h2>
+    <p>A file links to a word when its basename equals the word's <code>english_word</code>, compared case-insensitively with runs of whitespace collapsed. No fuzzy or stem matching &mdash; <code>Zinni.jpeg</code> will not find <em>Zinnia</em>.</p>
+    <p>Uploads land in Cloudinary under <code>words/{word_id}</code>. Each one writes a <code>dc_files</code> row and points <code>dc_word_media.image_id</code> at it. Words that already have an image are never overwritten, so <code>node scripts/upload-word-images.js</code> is safe to run again after you close gaps.</p>
+  </footer>
+</div>
+
+<script>
+  const DATA = {"summary":{"generated_at":"2026-08-25T17:35:36.089Z","words_total":494,"words_with_image":257,"words_without_image":237,"images_uploaded_this_run":162,"images_failed_this_run":0,"images_already_linked":123,"images_duplicate_skipped":7,"images_without_word_files":653,"images_without_word_unique_names":613},"linked":[{"english_word":"Abate","bangla_word":"কমে যাওয়া, হ্রাস পাওয়া","original_name":"images (1).jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1785597661/words/1/1785597660671_words_1.jpg.jpg"},{"english_word":"Above","bangla_word":"উপরে","original_name":"Above.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679240/words/10a9dfee-6665-4263-89c4-838300146c5c/1787679237294_words_10a9dfee-6665-4263-89c4-838300146c5c.jpg.jpg"},{"english_word":"Active","bangla_word":"সক্রিয়","original_name":"images.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1782752758/words/1/1782752757153_words_1.jpeg.jpg"},{"english_word":"Activity","bangla_word":"কাজ/কার্যকলাপ","original_name":"Activity.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679240/words/d8858c69-309a-4d68-8b82-8ac7447dfc2c/1787679237383_words_d8858c69-309a-4d68-8b82-8ac7447dfc2c.png.png"},{"english_word":"Afraid","bangla_word":"ভীত","original_name":"Afraid.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679240/words/361acf4b-a505-49c4-bb38-0f8976162019/1787679237386_words_361acf4b-a505-49c4-bb38-0f8976162019.png.png"},{"english_word":"after","bangla_word":"পরে","original_name":"After.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679239/words/a2b3cf3b-49c2-4837-96db-3de94749b0f2/1787679237389_words_a2b3cf3b-49c2-4837-96db-3de94749b0f2.jpg.jpg"},{"english_word":"afternoon","bangla_word":"বিকাল","original_name":"Afternoon.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679242/words/6e16e78d-ea73-4fd4-914e-667e726ff927/1787679240086_words_6e16e78d-ea73-4fd4-914e-667e726ff927.png.png"},{"english_word":"again","bangla_word":"আবার","original_name":"Again.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679241/words/e603d965-47c1-42ea-98fc-0c7e6851df3f/1787679240910_words_e603d965-47c1-42ea-98fc-0c7e6851df3f.png.png"},{"english_word":"age","bangla_word":"বয়স","original_name":"Age.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679242/words/6db4c600-5d1a-4e5e-8f9e-bd83e5efa327/1787679241042_words_6db4c600-5d1a-4e5e-8f9e-bd83e5efa327.png.png"},{"english_word":"Air","bangla_word":"বাতাস","original_name":"Air.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679242/words/c0c093dc-907c-406e-bda2-770bc0b2eb94/1787679241114_words_c0c093dc-907c-406e-bda2-770bc0b2eb94.jpg.jpg"},{"english_word":"Angry","bangla_word":"রাগী","original_name":"Angry.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679243/words/651cfa7a-766d-45e4-9651-ec4be1c296fa/1787679242040_words_651cfa7a-766d-45e4-9651-ec4be1c296fa.png.png"},{"english_word":"Animal","bangla_word":"প্রাণী","original_name":"cow.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1782751527/words/1/1782751525747_words_1.jpg.jpg"},{"english_word":"Another","bangla_word":"আরেকটি","original_name":"Another.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679243/words/9175dc1d-ec19-4083-81eb-489afb497bb4/1787679242361_words_9175dc1d-ec19-4083-81eb-489afb497bb4.png.png"},{"english_word":"Answer","bangla_word":"উত্তর","original_name":"Answer.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679243/words/9a58ed2e-07c3-4460-8604-1921501204ef/1787679242419_words_9a58ed2e-07c3-4460-8604-1921501204ef.jpg.jpg"},{"english_word":"Ant","bangla_word":"পিঁপড়া","original_name":"download.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1782296237/words/1/1782296235880_words_1.jpg.jpg"},{"english_word":"April","bangla_word":"এপ্রিল","original_name":"April.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679243/words/73bd9fce-772b-4780-a79d-772a983e63c9/1787679242745_words_73bd9fce-772b-4780-a79d-772a983e63c9.png.png"},{"english_word":"Back","bangla_word":"পেছন/ফিরে","original_name":"Back.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679244/words/0c7a2a5c-f44c-44d8-8e1c-ba30a17c22c5/1787679243515_words_0c7a2a5c-f44c-44d8-8e1c-ba30a17c22c5.png.png"},{"english_word":"Bag","bangla_word":"ব্যাগ","original_name":"Bag.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679244/words/2c663e32-3876-42d4-8652-f5a4543e77cf/1787679243644_words_2c663e32-3876-42d4-8652-f5a4543e77cf.jpg.jpg"},{"english_word":"Ball","bangla_word":"বল","original_name":"Ball.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679244/words/8aa19bdd-b63f-4064-80a9-fe5ed302e213/1787679243945_words_8aa19bdd-b63f-4064-80a9-fe5ed302e213.jpg.jpg"},{"english_word":"banana","bangla_word":"কলা","original_name":"download (1).jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1782296422/words/1/1782296421172_words_1.jpg.jpg"},{"english_word":"Bed","bangla_word":"বিছানা","original_name":"Bed.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679244/words/966ba4bb-03ac-4881-8ecf-c2e7a269cbb8/1787679243999_words_966ba4bb-03ac-4881-8ecf-c2e7a269cbb8.jpg.jpg"},{"english_word":"Before","bangla_word":"আগে","original_name":"Before.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679245/words/a2614ac7-465e-4cf9-826a-c1a0302f4f19/1787679244541_words_a2614ac7-465e-4cf9-826a-c1a0302f4f19.jpg.jpg"},{"english_word":"Below","bangla_word":"নিচে","original_name":"Below.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679245/words/f156b0a1-6d39-4fff-8faf-fd51fd4b326d/1787679245106_words_f156b0a1-6d39-4fff-8faf-fd51fd4b326d.png.png"},{"english_word":"Between","bangla_word":"মধ্যে","original_name":"Between.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679246/words/d7cdb54c-5804-4869-8086-ab8727347440/1787679245161_words_d7cdb54c-5804-4869-8086-ab8727347440.png.png"},{"english_word":"Big","bangla_word":"বড়","original_name":"Big.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679246/words/d76798d9-7269-4fb4-8562-bfaffa03e652/1787679245276_words_d76798d9-7269-4fb4-8562-bfaffa03e652.png.png"},{"english_word":"Board","bangla_word":"বোর্ড","original_name":"Board.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679246/words/efedc704-f5ae-4c64-9cab-ea3982d7a434/1787679245536_words_efedc704-f5ae-4c64-9cab-ea3982d7a434.jpg.jpg"},{"english_word":"boat","bangla_word":"নৌকা","original_name":"StockCake-Sunset_Boat_Serenity-1181356-small.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1782296478/words/1/1782296477601_words_1.jpg.jpg"},{"english_word":"Book","bangla_word":"বই","original_name":"Book.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679247/words/d61276ef-22c3-4ebe-961a-9c79f186382d/1787679246165_words_d61276ef-22c3-4ebe-961a-9c79f186382d.jpg.jpg"},{"english_word":"borrow","bangla_word":"ধার করা","original_name":"Borrow.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679247/words/6839e088-4f84-48d7-a9d4-84d918ed42df/1787679246447_words_6839e088-4f84-48d7-a9d4-84d918ed42df.jpg.jpg"},{"english_word":"Breakfast","bangla_word":"সকালের খাবার","original_name":"Breakfast.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679247/words/69910170-dbdf-49e0-8674-480dfbf75999/1787679246505_words_69910170-dbdf-49e0-8674-480dfbf75999.jpg.jpg"},{"english_word":"Brother","bangla_word":"ভাই","original_name":"Brother.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679247/words/f5e6fdc2-f008-43d6-9826-9582cf7f1979/1787679246805_words_f5e6fdc2-f008-43d6-9826-9582cf7f1979.png.png"},{"english_word":"Brush","bangla_word":"ব্রাশ","original_name":"Brush.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679248/words/6d7ad279-3919-4c25-9b9a-c32f540fec08/1787679247183_words_6d7ad279-3919-4c25-9b9a-c32f540fec08.jpg.jpg"},{"english_word":"But","bangla_word":"কিন্তু","original_name":"But.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679248/words/ecfdfe40-4385-43fe-918f-c78c7f5ef2b0/1787679247515_words_ecfdfe40-4385-43fe-918f-c78c7f5ef2b0.png.png"},{"english_word":"calendar","bangla_word":"পঞ্জিকা/ক্যালেন্ডার","original_name":"images.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1782296671/words/1/1782296670006_words_1.jpg.jpg"},{"english_word":"Capital","bangla_word":"বড় হাতের অক্ষর","original_name":"Capital.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679248/words/703c21d0-01a9-4b86-817d-bb7394fd1fda/1787679247687_words_703c21d0-01a9-4b86-817d-bb7394fd1fda.jpg.jpg"},{"english_word":"Car","bangla_word":"গাড়ি","original_name":"Car.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679249/words/377d798c-ca05-433d-9dc5-b922b1a960f9/1787679248253_words_377d798c-ca05-433d-9dc5-b922b1a960f9.jpg.jpg"},{"english_word":"carefully","bangla_word":"সাবধানে","original_name":"Carefully.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679249/words/89d73d41-7c71-4b52-8bbd-ec81dc2e207d/1787679248313_words_89d73d41-7c71-4b52-8bbd-ec81dc2e207d.png.png"},{"english_word":"Carrot","bangla_word":"গাজর","original_name":"Carrot.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679249/words/37fc58ea-decd-42b9-a1d2-f91b8d83791f/1787679248704_words_37fc58ea-decd-42b9-a1d2-f91b8d83791f.jpg.jpg"},{"english_word":"Cat","bangla_word":"বিড়াল","original_name":"Cat.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679249/words/d7e83225-a372-43df-8ae2-0f2332e02e24/1787679248949_words_d7e83225-a372-43df-8ae2-0f2332e02e24.jpg.jpg"},{"english_word":"Children","bangla_word":"শিশুরা","original_name":"Children.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679250/words/cefdd1e4-0e7e-4ab1-ab51-16941404104b/1787679249342_words_cefdd1e4-0e7e-4ab1-ab51-16941404104b.jpg.jpg"},{"english_word":"circle","bangla_word":"বৃত্ত; ঘিরে চলা","original_name":"Circle.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679250/words/f0a04957-d051-4d6d-9f6c-ae2fc73ff5b8/1787679249576_words_f0a04957-d051-4d6d-9f6c-ae2fc73ff5b8.jpg.jpg"},{"english_word":"City","bangla_word":"শহর","original_name":"City.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679250/words/d04b57cd-ca1d-4927-99a4-74b555b1436a/1787679249772_words_d04b57cd-ca1d-4927-99a4-74b555b1436a.jpg.jpg"},{"english_word":"Class","bangla_word":"শ্রেণি / ক্লাস","original_name":"Class.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679251/words/749c523e-e58c-4883-a35b-66c610b0000d/1787679250303_words_749c523e-e58c-4883-a35b-66c610b0000d.jpg.jpg"},{"english_word":"clean","bangla_word":"পরিষ্কার; পরিষ্কার করা","original_name":"Clean.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679251/words/eb3ed609-d17f-4c1f-a8dd-be02de683a65/1787679250472_words_eb3ed609-d17f-4c1f-a8dd-be02de683a65.jpg.jpg"},{"english_word":"Close","bangla_word":"বন্ধ করা","original_name":"Close.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679251/words/a6ffc2ad-0b86-4b0e-8d06-8bd4303dae66/1787679250678_words_a6ffc2ad-0b86-4b0e-8d06-8bd4303dae66.jpg.jpg"},{"english_word":"Coerce","bangla_word":"জোরপূর্বক বাধ্য করা","original_name":"images.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1785592902/words/1/1785592900863_words_1.jpg.jpg"},{"english_word":"Colour","bangla_word":"রং","original_name":"Colour.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679251/words/30f3442a-db72-4033-bf0e-12cd377b2d22/1787679250845_words_30f3442a-db72-4033-bf0e-12cd377b2d22.png.png"},{"english_word":"Come","bangla_word":"আসা","original_name":"Come.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679252/words/e8486f4b-a484-40ba-b6a8-608a47c8f08c/1787679251540_words_e8486f4b-a484-40ba-b6a8-608a47c8f08c.png.png"},{"english_word":"command","bangla_word":"আদেশ","original_name":"Command.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679252/words/0ce9a8fc-a9b2-4bc6-95d4-eee742273d16/1787679251823_words_0ce9a8fc-a9b2-4bc6-95d4-eee742273d16.png.png"},{"english_word":"Conversation","bangla_word":"আলাপ; কথোপকথন","original_name":"Conversation.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679253/words/f45d6f68-ebe8-4f16-bded-55f9b39e87af/1787679252093_words_f45d6f68-ebe8-4f16-bded-55f9b39e87af.png.png"},{"english_word":"Correct","bangla_word":"সঠিক","original_name":"Correct.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679253/words/e1ea5bb9-7780-4d2a-8189-b64436dc6ec5/1787679252664_words_e1ea5bb9-7780-4d2a-8189-b64436dc6ec5.jpg.jpg"},{"english_word":"Count","bangla_word":"গণনা করা","original_name":"Count.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679254/words/d9bfa5af-ffcb-4797-9f78-fb8a005716a6/1787679252722_words_d9bfa5af-ffcb-4797-9f78-fb8a005716a6.png.png"},{"english_word":"Cover","bangla_word":"ঢেকে রাখা","original_name":"images.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787160536/words/1/1787160536045_words_1.jpg.jpg"},{"english_word":"Cow","bangla_word":"গরু","original_name":"Cow.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679254/words/447e9786-379c-46ba-a7ef-00aa3422f524/1787679253239_words_447e9786-379c-46ba-a7ef-00aa3422f524.jpg.jpg"},{"english_word":"crow","bangla_word":"কাক","original_name":"Crow.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679254/words/fb71dbf5-f025-459d-9c07-b812fd5106fc/1787679253317_words_fb71dbf5-f025-459d-9c07-b812fd5106fc.jpeg.jpg"},{"english_word":"dancing","bangla_word":"নাচ","original_name":"Dancing.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679254/words/6e24b31a-d85b-4661-afa1-8e3fab06a035/1787679253781_words_6e24b31a-d85b-4661-afa1-8e3fab06a035.jpg.jpg"},{"english_word":"Day","bangla_word":"দিন","original_name":"Day.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679255/words/8c652c9e-72ff-4e7c-8090-ce5ab6f57ff5/1787679254262_words_8c652c9e-72ff-4e7c-8090-ce5ab6f57ff5.jpg.jpg"},{"english_word":"deer","bangla_word":"হরিণ","original_name":"Deer.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679255/words/82eda707-6b42-49b9-8445-b1f2d7c09524/1787679254481_words_82eda707-6b42-49b9-8445-b1f2d7c09524.jpg.jpg"},{"english_word":"Dialogue","bangla_word":"সংলাপ","original_name":"Dialogue.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679255/words/820092c2-0af6-4015-a7da-314bfca7578f/1787679254770_words_820092c2-0af6-4015-a7da-314bfca7578f.png.png"},{"english_word":"Different","bangla_word":"ভিন্ন / আলাদা","original_name":"Different.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679255/words/f0c44bbc-10b2-48bd-9b25-a4cbda627746/1787679254960_words_f0c44bbc-10b2-48bd-9b25-a4cbda627746.jpg.jpg"},{"english_word":"dinner","bangla_word":"রাতের খাবার","original_name":"Dinner.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679256/words/2f0d521c-ce28-49a0-b56c-d9d5541f6d0f/1787679255292_words_2f0d521c-ce28-49a0-b56c-d9d5541f6d0f.jpg.jpg"},{"english_word":"Dish","bangla_word":"থালা","original_name":"Dish.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679256/words/332f6709-1167-44d9-8234-87939a788a01/1787679255870_words_332f6709-1167-44d9-8234-87939a788a01.png.png"},{"english_word":"Dog","bangla_word":"কুকুর","original_name":"Dog.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679256/words/c8bda4d8-5cff-4fd5-8615-ec488ba6d1a0/1787679255979_words_c8bda4d8-5cff-4fd5-8615-ec488ba6d1a0.jpg.jpg"},{"english_word":"door","bangla_word":"দরজা","original_name":"Door.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679256/words/e632cd11-c485-4e8a-b595-687264191ab9/1787679256087_words_e632cd11-c485-4e8a-b595-687264191ab9.jpg.jpg"},{"english_word":"Down","bangla_word":"নিচে","original_name":"Down.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679257/words/d41bafe9-9d56-4c76-9c66-94cbfcfe1058/1787679256581_words_d41bafe9-9d56-4c76-9c66-94cbfcfe1058.jpg.jpg"},{"english_word":"Draw","bangla_word":"আঁকা","original_name":"Draw.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679257/words/dc33ebf0-d96c-4b94-b53b-7f0dcc0e942d/1787679256921_words_dc33ebf0-d96c-4b94-b53b-7f0dcc0e942d.jpg.jpg"},{"english_word":"Drink","bangla_word":"পান করা","original_name":"Drink.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679258/words/80f83d4d-8706-4fa2-ba94-807750735b75/1787679257196_words_80f83d4d-8706-4fa2-ba94-807750735b75.png.png"},{"english_word":"Drive","bangla_word":"গাড়ি চালানো","original_name":"Drive.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679258/words/6a08e919-1d71-4c78-a0ab-72090578b0e7/1787679257271_words_6a08e919-1d71-4c78-a0ab-72090578b0e7.jpg.jpg"},{"english_word":"Duck","bangla_word":"হাঁস","original_name":"Duck.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679258/words/5d8fbbc7-2b61-4ff2-a378-7e6c584e74b6/1787679257584_words_5d8fbbc7-2b61-4ff2-a378-7e6c584e74b6.jpg.jpg"},{"english_word":"Each","bangla_word":"প্রত্যেক","original_name":"Each.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679259/words/168870ce-b98d-4f82-97b6-c7e5198cd63b/1787679258422_words_168870ce-b98d-4f82-97b6-c7e5198cd63b.png.png"},{"english_word":"ear","bangla_word":"কান","original_name":"Ear.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679259/words/371e93c6-2a73-4d4f-af4f-ec03dd4b8899/1787679258584_words_371e93c6-2a73-4d4f-af4f-ec03dd4b8899.png.png"},{"english_word":"Eat","bangla_word":"খাওয়া","original_name":"Eat.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679259/words/ae3998bd-16db-4a77-b433-35c2385be30a/1787679258705_words_ae3998bd-16db-4a77-b433-35c2385be30a.png.png"},{"english_word":"Egg","bangla_word":"ডিম","original_name":"Egg.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679259/words/5c1d6a5c-0207-42e5-9efd-494aa69ce3d2/1787679258811_words_5c1d6a5c-0207-42e5-9efd-494aa69ce3d2.jpg.jpg"},{"english_word":"End","bangla_word":"শেষ","original_name":"End.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678763/words/f6a65b98-ef5a-4d80-a9ff-84aa6902c29f/1787678761254_words_f6a65b98-ef5a-4d80-a9ff-84aa6902c29f.jpg.jpg"},{"english_word":"evening","bangla_word":"সন্ধ্যা","original_name":"Evening.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678763/words/281c6130-94da-4e39-bff1-e99e83a0f1df/1787678761438_words_281c6130-94da-4e39-bff1-e99e83a0f1df.jpg.jpg"},{"english_word":"Everyday","bangla_word":"প্রতিদিন","original_name":"Everyday.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678764/words/68749cf4-279d-47dc-bffe-3ab5233340d2/1787678761442_words_68749cf4-279d-47dc-bffe-3ab5233340d2.jpg.jpg"},{"english_word":"Exercise","bangla_word":"ব্যায়াম / অনুশীলন","original_name":"Exercise.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679260/words/ef3a6901-7077-46be-9201-f8986fc40600/1787679259964_words_ef3a6901-7077-46be-9201-f8986fc40600.jpg.jpg"},{"english_word":"FALSE","bangla_word":"মিথ্যা / ভুল","original_name":"False.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679260/words/90e21294-8b64-4cf9-9628-bb9bd2b22be9/1787679260022_words_90e21294-8b64-4cf9-9628-bb9bd2b22be9.jpg.jpg"},{"english_word":"Family","bangla_word":"পরিবার","original_name":"Family.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679261/words/6f216210-d063-419f-8c62-eb9de42a91be/1787679260144_words_6f216210-d063-419f-8c62-eb9de42a91be.jpg.jpg"},{"english_word":"far away","bangla_word":"দূরে","original_name":"Far away.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679261/words/00d3ec8e-b9d2-43a8-97c3-580379bdb132/1787679260207_words_00d3ec8e-b9d2-43a8-97c3-580379bdb132.png.png"},{"english_word":"farewell","bangla_word":"বিদায়","original_name":"Farewell.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679262/words/3829dede-3474-4faa-80eb-1f664bc85be3/1787679261186_words_3829dede-3474-4faa-80eb-1f664bc85be3.png.png"},{"english_word":"Farmer","bangla_word":"কৃষক","original_name":"farmer.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678763/words/b2181e49-4895-4fe8-bfa2-9a660ddf9c8b/1787678761445_words_b2181e49-4895-4fe8-bfa2-9a660ddf9c8b.jpg.jpg"},{"english_word":"Father","bangla_word":"বাবা / পিতা","original_name":"Father.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678764/words/8e666d1f-4678-4394-8dee-3b8c0aa7a722/1787678763880_words_8e666d1f-4678-4394-8dee-3b8c0aa7a722.jpg.jpg"},{"english_word":"Favourite","bangla_word":"প্রিয়","original_name":"Favourite.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679262/words/287811d0-237b-42fb-ae60-4efbe0f77e47/1787679261356_words_287811d0-237b-42fb-ae60-4efbe0f77e47.png.png"},{"english_word":"February","bangla_word":"ফেব্রুয়ারি","original_name":"february.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678764/words/bdc0f433-9041-4b0b-beec-10e7bd7d8661/1787678763956_words_bdc0f433-9041-4b0b-beec-10e7bd7d8661.jpg.jpg"},{"english_word":"Fig","bangla_word":"ডুমুর","original_name":"fig.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678765/words/03ec83e8-7e98-411c-8b84-8d79083da3fb/1787678764125_words_03ec83e8-7e98-411c-8b84-8d79083da3fb.jpg.jpg"},{"english_word":"Fin","bangla_word":"মাছের পাখনা","original_name":"fin.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678765/words/4573f28a-156d-4587-8fad-341ebade1f4d/1787678765064_words_4573f28a-156d-4587-8fad-341ebade1f4d.jpg.jpg"},{"english_word":"Find","bangla_word":"খুঁজে পাওয়া","original_name":"find.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678766/words/dec4ff9b-47ee-4c29-81f6-bb3711fc1e8d/1787678765254_words_dec4ff9b-47ee-4c29-81f6-bb3711fc1e8d.jpg.jpg"},{"english_word":"Fine","bangla_word":"ভালো / সুস্থ","original_name":"fine.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678766/words/0cbc62de-7d1f-45c6-9bef-ab94c220d693/1787678765406_words_0cbc62de-7d1f-45c6-9bef-ab94c220d693.jpg.jpg"},{"english_word":"Fish","bangla_word":"মাছ","original_name":"fish.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678766/words/a6796b4e-aabf-4787-9b0c-87990bd09045/1787678765687_words_a6796b4e-aabf-4787-9b0c-87990bd09045.jpg.jpg"},{"english_word":"Flag","bangla_word":"পতাকা","original_name":"Flag.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679262/words/fc70ccf6-3233-422f-ba6a-109176565355/1787679261483_words_fc70ccf6-3233-422f-ba6a-109176565355.png.png"},{"english_word":"Fly","bangla_word":"উড়া","original_name":"fly.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678767/words/0b3273b1-90e3-41cc-a926-35bebf606cfc/1787678766125_words_0b3273b1-90e3-41cc-a926-35bebf606cfc.jpg.jpg"},{"english_word":"Food","bangla_word":"খাবার","original_name":"food.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678767/words/46b85e6c-b249-40c6-93ae-0a05083216e9/1787678766342_words_46b85e6c-b249-40c6-93ae-0a05083216e9.jpg.jpg"},{"english_word":"football","bangla_word":"ফুটবল","original_name":"football.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678767/words/b1f242e3-3f9a-4b8e-b77f-88efbd52f2b1/1787678766629_words_b1f242e3-3f9a-4b8e-b77f-88efbd52f2b1.jpg.jpg"},{"english_word":"footpath","bangla_word":"ফুটপাত","original_name":"Footpath.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679262/words/b8621c58-5b32-4f0f-bf78-50259b4ddf4a/1787679261566_words_b8621c58-5b32-4f0f-bf78-50259b4ddf4a.jpg.jpg"},{"english_word":"Fox","bangla_word":"শেয়াল","original_name":"fox.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678767/words/94fbd548-0bd5-4a09-b269-0c213f134c3b/1787678766885_words_94fbd548-0bd5-4a09-b269-0c213f134c3b.jpg.jpg"},{"english_word":"Friday","bangla_word":"শুক্রবার","original_name":"Friday.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679263/words/4f1732f3-a1de-463b-9ce3-c37aebe4b21b/1787679262344_words_4f1732f3-a1de-463b-9ce3-c37aebe4b21b.jpg.jpg"},{"english_word":"Friend","bangla_word":"বন্ধু","original_name":"Friend.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679263/words/4403bbec-403c-476c-a158-1e44ce87a4e0/1787679262513_words_4403bbec-403c-476c-a158-1e44ce87a4e0.jpg.jpg"},{"english_word":"frog","bangla_word":"ব্যাঙ","original_name":"frog.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678768/words/d7781f43-856b-4c3c-85fc-8e6b39d4f37e/1787678767539_words_d7781f43-856b-4c3c-85fc-8e6b39d4f37e.jpg.jpg"},{"english_word":"Fruit","bangla_word":"ফল","original_name":"fruit.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678768/words/39f615d2-5675-4bbe-b003-b89931b8558c/1787678767697_words_39f615d2-5675-4bbe-b003-b89931b8558c.jpg.jpg"},{"english_word":"Fun","bangla_word":"মজা; আমোদ","original_name":"fun.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678768/words/691e6c9b-085e-4b9a-804d-a03c40afe335/1787678767803_words_691e6c9b-085e-4b9a-804d-a03c40afe335.jpg.jpg"},{"english_word":"garlic","bangla_word":"রসুন","original_name":"garlic.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678769/words/46e07270-59b4-4ee4-beea-8150b0812260/1787678768102_words_46e07270-59b4-4ee4-beea-8150b0812260.jpg.jpg"},{"english_word":"Gas","bangla_word":"গ্যাস; বায়বীয় পদার্থ","original_name":"gas.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678769/words/123bcc1f-b313-42d5-84a0-65526555868f/1787678768612_words_123bcc1f-b313-42d5-84a0-65526555868f.jpg.jpg"},{"english_word":"get up","bangla_word":"ঘুম থেকে ওঠা","original_name":"Get Up.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679263/words/8693d0e2-7cf1-4767-a003-a677ed0e4f1e/1787679262628_words_8693d0e2-7cf1-4767-a003-a677ed0e4f1e.jpg.jpg"},{"english_word":"Girl","bangla_word":"মেয়ে","original_name":"girl.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678769/words/b78cadc3-ce09-4dce-b934-6bebd0e4f31d/1787678768800_words_b78cadc3-ce09-4dce-b934-6bebd0e4f31d.jpg.jpg"},{"english_word":"Give","bangla_word":"দেওয়া","original_name":"Give.JPG","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679263/words/611ff847-d218-4bbe-9b52-2410eb1e663f/1787679262799_words_611ff847-d218-4bbe-9b52-2410eb1e663f.jpg.jpg"},{"english_word":"Go","bangla_word":"যাওয়া","original_name":"go.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678769/words/3bf02ea5-a0ba-4186-b4b7-8491851c630f/1787678769038_words_3bf02ea5-a0ba-4186-b4b7-8491851c630f.jpg.jpg"},{"english_word":"Goat","bangla_word":"ছাগল","original_name":"goat.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678770/words/c41739d2-ffaf-4604-bb4b-a27a4576526a/1787678769208_words_c41739d2-ffaf-4604-bb4b-a27a4576526a.jpg.jpg"},{"english_word":"good","bangla_word":"ভাল","original_name":"good.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678770/words/8875ac50-4f2d-41e1-8e14-8cfb825af972/1787678769547_words_8875ac50-4f2d-41e1-8e14-8cfb825af972.jpg.jpg"},{"english_word":"Grass","bangla_word":"ঘাস","original_name":"grass.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678770/words/68db00bb-240d-4046-a8b4-2c6e972b4707/1787678769920_words_68db00bb-240d-4046-a8b4-2c6e972b4707.jpg.jpg"},{"english_word":"great","bangla_word":"দারুণ/বড়","original_name":"great.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678771/words/4dbf7c70-77b6-48e5-8ac6-35689d815325/1787678770156_words_4dbf7c70-77b6-48e5-8ac6-35689d815325.jpg.jpg"},{"english_word":"greeting","bangla_word":"অভিবাদন","original_name":"greeting.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678771/words/ff1fd414-70e2-4abb-a053-da45ce7e811e/1787678770420_words_ff1fd414-70e2-4abb-a053-da45ce7e811e.jpg.jpg"},{"english_word":"Group","bangla_word":"দল","original_name":"Group.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679264/words/3f20df66-a3ab-4b8b-8f21-a4a2d4965337/1787679263662_words_3f20df66-a3ab-4b8b-8f21-a4a2d4965337.png.png"},{"english_word":"Grow","bangla_word":"বড় হওয়া","original_name":"grow.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678771/words/993ba4b3-6134-4cdb-8ab7-8c26f3a3ef20/1787678770610_words_993ba4b3-6134-4cdb-8ab7-8c26f3a3ef20.jpg.jpg"},{"english_word":"guava","bangla_word":"পেয়ারা","original_name":"Guava.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679264/words/9f93a7d5-3c02-40f7-8ab3-e56a5bff8134/1787679263717_words_9f93a7d5-3c02-40f7-8ab3-e56a5bff8134.jpg.jpg"},{"english_word":"Hand","bangla_word":"হাত","original_name":"Hand.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678771/words/90790299-16f9-4553-8efb-c549ffeb7f1e/1787678771034_words_90790299-16f9-4553-8efb-c549ffeb7f1e.jpg.jpg"},{"english_word":"Happy","bangla_word":"খুশি","original_name":"Happy.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678772/words/c6d73835-4666-4209-a243-50a15371d825/1787678771401_words_c6d73835-4666-4209-a243-50a15371d825.jpg.jpg"},{"english_word":"Head","bangla_word":"মাথা","original_name":"Head.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679264/words/2385fdce-69de-4a2b-896c-6f53f876391e/1787679263882_words_2385fdce-69de-4a2b-896c-6f53f876391e.jpg.jpg"},{"english_word":"Help","bangla_word":"সাহায্য করা","original_name":"Help.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679264/words/7ae30079-22f3-425b-bac7-fc86ccef83fc/1787679263990_words_7ae30079-22f3-425b-bac7-fc86ccef83fc.jpg.webp"},{"english_word":"Hen","bangla_word":"মুরগি","original_name":"Hen.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679265/words/0a8c7570-908b-4a28-9340-7a451a407920/1787679264704_words_0a8c7570-908b-4a28-9340-7a451a407920.jpg.jpg"},{"english_word":"Home","bangla_word":"বাড়ি","original_name":"Home.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679265/words/f3aba3af-c634-4558-99ea-34328ebc4759/1787679264811_words_f3aba3af-c634-4558-99ea-34328ebc4759.jpg.jpg"},{"english_word":"Homework","bangla_word":"বাড়ির কাজ","original_name":"Homework.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679265/words/21e4da24-99c3-4ad9-afa7-0e0662a4812b/1787679265088_words_21e4da24-99c3-4ad9-afa7-0e0662a4812b.jpg.jpg"},{"english_word":"honey","bangla_word":"মধু","original_name":"Honey.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679266/words/d5fe5806-f927-4ecc-9019-e6781863fdd6/1787679265142_words_d5fe5806-f927-4ecc-9019-e6781863fdd6.jpg.jpg"},{"english_word":"Horse","bangla_word":"ঘোড়া","original_name":"Horse.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678772/words/8bf40bf2-804b-443b-a869-d1a21f477f3e/1787678771560_words_8bf40bf2-804b-443b-a869-d1a21f477f3e.jpg.jpg"},{"english_word":"Hot","bangla_word":"গরম","original_name":"Hot.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678772/words/5fba96df-0601-4aeb-8fdc-3b4ec0a6bacc/1787678771825_words_5fba96df-0601-4aeb-8fdc-3b4ec0a6bacc.jpeg.jpg"},{"english_word":"House","bangla_word":"বাড়ি","original_name":"House.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679266/words/213b3aef-e921-473a-a1a5-1528f02b46c6/1787679265852_words_213b3aef-e921-473a-a1a5-1528f02b46c6.jfif.jpg"},{"english_word":"island","bangla_word":"দ্বীপ","original_name":"Island.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678773/words/06790b64-e7c9-49a0-8bdb-d9b48492706b/1787678772277_words_06790b64-e7c9-49a0-8bdb-d9b48492706b.jpg.jpg"},{"english_word":"Jar","bangla_word":"জার","original_name":"Jar.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679266/words/76ff45c3-7eb5-433c-9eac-fd0fd2c0e4b0/1787679265913_words_76ff45c3-7eb5-433c-9eac-fd0fd2c0e4b0.jpg.jpg"},{"english_word":"jute","bangla_word":"পাট","original_name":"Jute.JPG","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679267/words/8a5a33bf-9a39-45b0-9a74-1b6b383aca6f/1787679266165_words_8a5a33bf-9a39-45b0-9a74-1b6b383aca6f.jpg.jpg"},{"english_word":"Kite","bangla_word":"ঘুড়ি","original_name":"Kite.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679267/words/3206089b-a1c2-4f1d-ba15-82e21a40e978/1787679266329_words_3206089b-a1c2-4f1d-ba15-82e21a40e978.jpg.jpg"},{"english_word":"kitten","bangla_word":"বিড়ালছানা","original_name":"Kitten.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679267/words/74bbfe65-ec06-4513-8b77-0b261ecb606a/1787679266830_words_74bbfe65-ec06-4513-8b77-0b261ecb606a.jpg.jpg"},{"english_word":"ladder","bangla_word":"সিঁড়ি","original_name":"Ladder.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678773/words/e28ccf75-6e0b-4c0e-b01a-26ae78afe2ca/1787678772760_words_e28ccf75-6e0b-4c0e-b01a-26ae78afe2ca.jpg.jpg"},{"english_word":"Lamp","bangla_word":"বাতি","original_name":"Lamp.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678773/words/57e0c296-a8b0-4492-8223-20621590a4c9/1787678772892_words_57e0c296-a8b0-4492-8223-20621590a4c9.jpg.jpg"},{"english_word":"leaf","bangla_word":"পাতা","original_name":"Leaf.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679268/words/14993980-f435-494b-bdb9-8952a02ba706/1787679267268_words_14993980-f435-494b-bdb9-8952a02ba706.jpg.jpg"},{"english_word":"Letter","bangla_word":"চিঠি/অক্ষর","original_name":"Letter.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679268/words/35c3d508-2a96-4403-8e51-11acd11aa059/1787679267378_words_35c3d508-2a96-4403-8e51-11acd11aa059.jpg.jpg"},{"english_word":"Library","bangla_word":"লাইব্রেরি; পাঠাগার","original_name":"Library.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679268/words/186b97a2-c2b8-438f-b658-a634254cb55e/1787679267490_words_186b97a2-c2b8-438f-b658-a634254cb55e.jpg.jpg"},{"english_word":"Line","bangla_word":"লাইন","original_name":"Line.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679268/words/094cdd28-8ece-4e63-a51b-7ff30161170e/1787679267794_words_094cdd28-8ece-4e63-a51b-7ff30161170e.png.png"},{"english_word":"Lion","bangla_word":"সিংহ","original_name":"Lion.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678774/words/40a0e052-2436-4e91-bcc6-cfda831637e0/1787678773031_words_40a0e052-2436-4e91-bcc6-cfda831637e0.jpg.jpg"},{"english_word":"Man","bangla_word":"মানুষ/পুরুষ","original_name":"Man.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679269/words/9bd69391-f25d-450b-82bf-11f51ba85ce6/1787679268509_words_9bd69391-f25d-450b-82bf-11f51ba85ce6.jpg.jpg"},{"english_word":"mango","bangla_word":"আম","original_name":"Mango.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679269/words/00385889-183a-461d-b23a-79d11f21d826/1787679268560_words_00385889-183a-461d-b23a-79d11f21d826.jpg.jpg"},{"english_word":"Milk","bangla_word":"দুধ","original_name":"Milk.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678774/words/3e58348a-5b99-4e27-802c-b2517dcec7e2/1787678773439_words_3e58348a-5b99-4e27-802c-b2517dcec7e2.jpg.jpg"},{"english_word":"Missing","bangla_word":"হারানো/অনুপস্থিত","original_name":"Missing.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679269/words/ebc07675-9acf-424a-bf2d-cd318850785d/1787679268781_words_ebc07675-9acf-424a-bf2d-cd318850785d.jpg.jpg"},{"english_word":"monkey","bangla_word":"বানর","original_name":"Monkey.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679269/words/5b8f6d40-b4e1-4888-8271-079a31d88180/1787679268902_words_5b8f6d40-b4e1-4888-8271-079a31d88180.jpg.jpg"},{"english_word":"Moo","bangla_word":"হাম্বা ডাকা","original_name":"Moo.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679270/words/9c560667-67da-43fc-810b-23eff825b202/1787679269672_words_9c560667-67da-43fc-810b-23eff825b202.jpg.jpg"},{"english_word":"Moon","bangla_word":"চাঁদ","original_name":"Moon.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678774/words/e1956d8d-5c0f-41be-9dd2-cb4fd66a3ee0/1787678773950_words_e1956d8d-5c0f-41be-9dd2-cb4fd66a3ee0.jpg.jpg"},{"english_word":"morning","bangla_word":"সকাল","original_name":"Morning.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679270/words/f3c42637-5226-469a-88fb-d8e2c3cf3f65/1787679269728_words_f3c42637-5226-469a-88fb-d8e2c3cf3f65.jpg.jpg"},{"english_word":"Mother","bangla_word":"মা","original_name":"Mother.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678775/words/d32c79b5-0592-48ef-aeeb-753c4248e2f3/1787678774511_words_d32c79b5-0592-48ef-aeeb-753c4248e2f3.jpg.jpg"},{"english_word":"Mouth","bangla_word":"মুখ","original_name":"Mouth.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678776/words/0157743d-89a9-4db5-9273-2ba311a3b027/1787678774756_words_0157743d-89a9-4db5-9273-2ba311a3b027.jfif.jpg"},{"english_word":"Nail","bangla_word":"নখ","original_name":"Nail.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679270/words/eb64499b-b789-41d2-9be2-ae96c8f7f54a/1787679269901_words_eb64499b-b789-41d2-9be2-ae96c8f7f54a.jpg.jpg"},{"english_word":"nest","bangla_word":"বাসা","original_name":"Nest.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679270/words/db5c825d-5577-4671-8cfd-13e1cbf10867/1787679270081_words_db5c825d-5577-4671-8cfd-13e1cbf10867.jpg.jpg"},{"english_word":"Net","bangla_word":"জাল","original_name":"Net.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679271/words/85149b8a-38a5-4fb5-b9ac-7feb6845d37f/1787679270627_words_85149b8a-38a5-4fb5-b9ac-7feb6845d37f.jpg.jpg"},{"english_word":"Night","bangla_word":"রাত","original_name":"Night.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678775/words/e72626f7-652d-4254-a06e-842316c4b15c/1787678774874_words_e72626f7-652d-4254-a06e-842316c4b15c.jpg.jpg"},{"english_word":"Notebook","bangla_word":"খাতা","original_name":"Notebook.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678776/words/aae8f356-facd-44d3-bab6-19a4ca969ae4/1787678775115_words_aae8f356-facd-44d3-bab6-19a4ca969ae4.jpg.jpg"},{"english_word":"number","bangla_word":"সংখ্যা","original_name":"Number.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679271/words/8a767a70-3e48-4f5d-a799-ab33970fa67f/1787679270980_words_8a767a70-3e48-4f5d-a799-ab33970fa67f.jpg.jpg"},{"english_word":"Old","bangla_word":"বুড়ো; পুরোনো","original_name":"Old.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678776/words/f9af7495-09ea-4ce9-b821-4c3b3ac62f59/1787678775670_words_f9af7495-09ea-4ce9-b821-4c3b3ac62f59.jpg.jpg"},{"english_word":"open","bangla_word":"খোলা; খোলা করা","original_name":"Open.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679271/words/56ba3a7b-25fc-468f-ad80-998e5490bae2/1787679271047_words_56ba3a7b-25fc-468f-ad80-998e5490bae2.jpg.jpg"},{"english_word":"orange","bangla_word":"কমলা","original_name":"Orange.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678776/words/4bf4e5c4-e2f7-4d16-a8f1-ffee097b2c3a/1787678775865_words_4bf4e5c4-e2f7-4d16-a8f1-ffee097b2c3a.jpg.jpg"},{"english_word":"overbridge","bangla_word":"ওভারব্রিজ","original_name":"Overbridge.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679272/words/52404019-4aa4-4140-96d3-373f18813309/1787679271211_words_52404019-4aa4-4140-96d3-373f18813309.jpg.jpg"},{"english_word":"papaya","bangla_word":"পেপে","original_name":"Papaya.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679272/words/084197a9-7f9e-4fe2-b70e-57ca92bfcec4/1787679271887_words_084197a9-7f9e-4fe2-b70e-57ca92bfcec4.png.png"},{"english_word":"Partner","bangla_word":"সঙ্গী; অংশীদার","original_name":"Partner .jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679273/words/af4aee88-a923-46bd-af46-eba1d0dddfcf/1787679272233_words_af4aee88-a923-46bd-af46-eba1d0dddfcf.jpg.jpg"},{"english_word":"Pencil","bangla_word":"পেন্সিল","original_name":"Pencil.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678777/words/3c100f0f-cd01-408b-90c1-fb0b7e971d01/1787678776258_words_3c100f0f-cd01-408b-90c1-fb0b7e971d01.jpg.png"},{"english_word":"Person","bangla_word":"ব্যক্তি","original_name":"Person.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679273/words/730efb71-4a88-4172-8cc6-190cc3ef690d/1787679272292_words_730efb71-4a88-4172-8cc6-190cc3ef690d.png.png"},{"english_word":"Peruse","bangla_word":"মনোযোগ দিয়ে পড়া বা পরীক্ষা করা","original_name":"1.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1784815955/words/1/1784815953572_words_1.jpg.jpg"},{"english_word":"picnic","bangla_word":"বনভোজন","original_name":"Picnic.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679273/words/183e285f-45d1-473a-b6d7-c0d6845724ab/1787679272405_words_183e285f-45d1-473a-b6d7-c0d6845724ab.png.png"},{"english_word":"Pineapple","bangla_word":"আনারস","original_name":"Pineapple.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678777/words/af3e7887-517d-4269-8449-a111e3c76e7c/1787678776370_words_af3e7887-517d-4269-8449-a111e3c76e7c.jpg.jpg"},{"english_word":"plant","bangla_word":"গাছ; রোপণ করা","original_name":"Plant.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679274/words/4161f6e3-3d3b-4363-ad10-25db8e136630/1787679273097_words_4161f6e3-3d3b-4363-ad10-25db8e136630.png.png"},{"english_word":"Play","bangla_word":"খেলা; খেলতে","original_name":"Play.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678777/words/816c3af0-9cbb-4db6-a4a5-d03be477c4d3/1787678776675_words_816c3af0-9cbb-4db6-a4a5-d03be477c4d3.jpg.jpg"},{"english_word":"Please","bangla_word":"অনুগ্রহ করে","original_name":"Please.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679274/words/7617d18d-d9f7-4550-8076-b8b9f677f96f/1787679273399_words_7617d18d-d9f7-4550-8076-b8b9f677f96f.jpg.jpg"},{"english_word":"Pond","bangla_word":"পুকুর","original_name":"Pond.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679274/words/fee3faef-da24-4846-913c-7f8a07ed5588/1787679273456_words_fee3faef-da24-4846-913c-7f8a07ed5588.png.png"},{"english_word":"Pot","bangla_word":"হাঁড়ি; পাত্র","original_name":"Pot.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679274/words/d14b46ea-dac6-4851-b498-d4c9489faf42/1787679273656_words_d14b46ea-dac6-4851-b498-d4c9489faf42.png.png"},{"english_word":"Put","bangla_word":"রাখা; রাখা/দেওয়া","original_name":"Put.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679275/words/e8d22116-dacf-4e79-945e-72a03af79cd7/1787679274239_words_e8d22116-dacf-4e79-945e-72a03af79cd7.png.png"},{"english_word":"Quack","bangla_word":"হাঁসের ডাক","original_name":"Quack.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679275/words/9afa1392-56eb-479d-99bc-f60a788abe49/1787679274548_words_9afa1392-56eb-479d-99bc-f60a788abe49.jpg.png"},{"english_word":"Quilt","bangla_word":"লেপ; কাঁথা","original_name":"Quilt .jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679275/words/fb6e0973-678a-454c-8d61-1a20a6880875/1787679274716_words_fb6e0973-678a-454c-8d61-1a20a6880875.jpg.jpg"},{"english_word":"Rain","bangla_word":"বৃষ্টি","original_name":"Rain .jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679276/words/f32ab8c3-80df-4914-9bf2-231913a76e4e/1787679275146_words_f32ab8c3-80df-4914-9bf2-231913a76e4e.jpg.jpg"},{"english_word":"Raise","bangla_word":"উঠানো","original_name":"Raise.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679276/words/869876bd-9247-43cb-902d-4f11650481d2/1787679275399_words_869876bd-9247-43cb-902d-4f11650481d2.jfif.jpg"},{"english_word":"Rat","bangla_word":"ইঁদুর","original_name":"Rat.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679276/words/7e2ae00c-dcad-4bb3-b2d9-670af9b4a4fe/1787679275556_words_7e2ae00c-dcad-4bb3-b2d9-670af9b4a4fe.jfif.jpg"},{"english_word":"Read","bangla_word":"পড়া","original_name":"Read.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679276/words/f9f7d9ec-4579-44cd-bfee-c91de603b1cf/1787679275720_words_f9f7d9ec-4579-44cd-bfee-c91de603b1cf.jfif.jpg"},{"english_word":"request","bangla_word":"অনুরোধ","original_name":"Request.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679277/words/cbfae4b0-c648-4bed-91a2-34c99f9c3379/1787679276517_words_cbfae4b0-c648-4bed-91a2-34c99f9c3379.jfif.jpg"},{"english_word":"Rhyme","bangla_word":"ছড়া; মিল","original_name":"Rhyme.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679277/words/959aa0a0-891a-44c7-83f5-5710a86c1605/1787679276741_words_959aa0a0-891a-44c7-83f5-5710a86c1605.jfif.jpg"},{"english_word":"Rice","bangla_word":"ভাত; চাল","original_name":"Rice.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678778/words/2a3a0384-6cec-4558-ade9-3422419e0806/1787678777148_words_2a3a0384-6cec-4558-ade9-3422419e0806.jpg.jpg"},{"english_word":"River","bangla_word":"নদী","original_name":"River.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679277/words/df4b90f7-8ad4-41c8-86da-6b97b0da125f/1787679276899_words_df4b90f7-8ad4-41c8-86da-6b97b0da125f.jpg.jpg"},{"english_word":"row","bangla_word":"সারি","original_name":"Row.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678778/words/fbccae77-43e9-424e-b849-2471ce4fcf00/1787678777348_words_fbccae77-43e9-424e-b849-2471ce4fcf00.png.png"},{"english_word":"Sad","bangla_word":"দুঃখিত","original_name":"Sad.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678778/words/30514af3-8fb6-467c-8e05-ffbfa22f78a1/1787678777567_words_30514af3-8fb6-467c-8e05-ffbfa22f78a1.png.png"},{"english_word":"Safe","bangla_word":"নিরাপদ","original_name":"Safe.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679277/words/a5a76865-a5ad-446d-adce-39d82d226805/1787679277007_words_a5a76865-a5ad-446d-adce-39d82d226805.jfif.jpg"},{"english_word":"Same","bangla_word":"একই","original_name":"Same.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678778/words/c257c379-149a-46e4-ba05-dab1bbd3350f/1787678777852_words_c257c379-149a-46e4-ba05-dab1bbd3350f.png.png"},{"english_word":"Saturday","bangla_word":"শনিবার","original_name":"Saturday.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678779/words/7d14882b-fee4-4f8a-9043-67635d78e55a/1787678778274_words_7d14882b-fee4-4f8a-9043-67635d78e55a.jpg.jpg"},{"english_word":"School","bangla_word":"বিদ্যালয়","original_name":"School.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678779/words/07493703-eff5-4ac5-a50e-f79da23d4ef1/1787678778459_words_07493703-eff5-4ac5-a50e-f79da23d4ef1.jpg.jpg"},{"english_word":"seat","bangla_word":"আসন; বসার জায়গা দেওয়া","original_name":"Seat.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679278/words/463c8517-2472-41a5-9a5c-6b23108fbe8e/1787679277598_words_463c8517-2472-41a5-9a5c-6b23108fbe8e.jfif.jpg"},{"english_word":"see","bangla_word":"দেখা","original_name":"See.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678779/words/9c068291-83b1-406d-a7a6-2a859305cb01/1787678778904_words_9c068291-83b1-406d-a7a6-2a859305cb01.jpg.jpg"},{"english_word":"seed","bangla_word":"বীজ","original_name":"Seed.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679278/words/207b1571-b6b3-436e-9428-6a5e1e8e6e93/1787679277773_words_207b1571-b6b3-436e-9428-6a5e1e8e6e93.jfif.jpg"},{"english_word":"Self","bangla_word":"নিজে; নিজস্ব","original_name":"Self.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679278/words/e819fe70-8a55-4270-a774-f1866d96231e/1787679278039_words_e819fe70-8a55-4270-a774-f1866d96231e.jpg.png"},{"english_word":"September","bangla_word":"সেপ্টেম্বর","original_name":"September.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678779/words/fb31c843-27ed-4497-8d7b-5887577af231/1787678779025_words_fb31c843-27ed-4497-8d7b-5887577af231.png.png"},{"english_word":"Shed","bangla_word":"ছাউনি; গোয়ালঘর","original_name":"Shed.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679278/words/d9172675-dbb6-41c6-a6c3-d550ee0a36dc/1787679278102_words_d9172675-dbb6-41c6-a6c3-d550ee0a36dc.jfif.jpg"},{"english_word":"Sheep","bangla_word":"ভেড়া","original_name":"Sheep.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678781/words/873c1a0f-cffe-4f8b-8503-59d9e5598954/1787678779457_words_873c1a0f-cffe-4f8b-8503-59d9e5598954.png.png"},{"english_word":"Ship","bangla_word":"জাহাজ","original_name":"Ship.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678780/words/ccb0f239-a119-4281-bf91-bbf54c95398d/1787678779657_words_ccb0f239-a119-4281-bf91-bbf54c95398d.png.png"},{"english_word":"Shoe","bangla_word":"জুতা","original_name":"Shoe.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678781/words/53e8e3a7-fb44-4dc2-9ff9-0d8dff3dd30b/1787678780105_words_53e8e3a7-fb44-4dc2-9ff9-0d8dff3dd30b.png.png"},{"english_word":"Show","bangla_word":"দেখানো","original_name":"Show.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679279/words/f845cb4c-7a11-43b4-99b5-a1e8acfd2d0b/1787679278526_words_f845cb4c-7a11-43b4-99b5-a1e8acfd2d0b.jfif.jpg"},{"english_word":"Sing","bangla_word":"গান গাওয়া","original_name":"Sing.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678781/words/cae1b657-5227-4544-b935-ae1770e095a1/1787678780579_words_cae1b657-5227-4544-b935-ae1770e095a1.png.png"},{"english_word":"singing","bangla_word":"গান","original_name":"Singing.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679279/words/25fb52a6-599b-40f6-b47e-f97bce51fd65/1787679278811_words_25fb52a6-599b-40f6-b47e-f97bce51fd65.jfif.jpg"},{"english_word":"Sister","bangla_word":"বোন","original_name":"Sister.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678781/words/baa11402-9820-4956-893b-8aeaed0fec1b/1787678780828_words_baa11402-9820-4956-893b-8aeaed0fec1b.jpg.jpg"},{"english_word":"Sit","bangla_word":"বসা","original_name":"Sit.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678782/words/c0c7448c-d486-4f68-b185-a498f112cf23/1787678781400_words_c0c7448c-d486-4f68-b185-a498f112cf23.png.png"},{"english_word":"Sky","bangla_word":"আকাশ","original_name":"Sky.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678782/words/8cb07739-281f-450a-b27b-e4c69cabc0fd/1787678781789_words_8cb07739-281f-450a-b27b-e4c69cabc0fd.png.png"},{"english_word":"Slow","bangla_word":"ধীর","original_name":"Slow.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678783/words/751a0b8d-fd86-463a-8dd8-79240e59bb51/1787678782264_words_751a0b8d-fd86-463a-8dd8-79240e59bb51.jpg.jpg"},{"english_word":"Small","bangla_word":"ছোট","original_name":"Small.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678783/words/0b26fd57-0281-4642-8316-c9ed6239c654/1787678782324_words_0b26fd57-0281-4642-8316-c9ed6239c654.jpg.jpg"},{"english_word":"soil","bangla_word":"মাটি","original_name":"Soil.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679280/words/ee4da8dc-749c-4627-b5d9-731ffd4dbb12/1787679279179_words_ee4da8dc-749c-4627-b5d9-731ffd4dbb12.jfif.jpg"},{"english_word":"Sorry","bangla_word":"দুঃখিত","original_name":"Sorry.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679280/words/47a6f0d6-664c-4ee8-b598-a7a28255e1ef/1787679279235_words_47a6f0d6-664c-4ee8-b598-a7a28255e1ef.png.png"},{"english_word":"Sound","bangla_word":"শব্দ","original_name":"Sound.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679280/words/df99d034-aff2-4d60-b61b-db39c9fbe9ef/1787679279531_words_df99d034-aff2-4d60-b61b-db39c9fbe9ef.jfif.jpg"},{"english_word":"Speak","bangla_word":"কথা বলা","original_name":"Speak.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679280/words/cd78df8e-86e6-478a-934a-f76709fc4d1c/1787679279838_words_cd78df8e-86e6-478a-934a-f76709fc4d1c.png.png"},{"english_word":"Square","bangla_word":"বর্গক্ষেত্র","original_name":"Square.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679281/words/45d582e3-de5e-4edf-b09d-ccd3bd3e44b6/1787679280234_words_45d582e3-de5e-4edf-b09d-ccd3bd3e44b6.png.png"},{"english_word":"Stand","bangla_word":"দাঁড়ানো","original_name":"Stand.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679281/words/d79eea64-0f29-4b77-988f-cb31f4591967/1787679280513_words_d79eea64-0f29-4b77-988f-cb31f4591967.png.png"},{"english_word":"star","bangla_word":"তারা","original_name":"Star.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679281/words/c5353ed6-fb43-4734-bf18-9a02b02fc89f/1787679280677_words_c5353ed6-fb43-4734-bf18-9a02b02fc89f.jfif.jpg"},{"english_word":"Stone","bangla_word":"পাথর","original_name":"Stone.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679281/words/423a4bb3-06f5-4e60-bc19-690f39f9d82c/1787679280844_words_423a4bb3-06f5-4e60-bc19-690f39f9d82c.jfif.jpg"},{"english_word":"Stop","bangla_word":"থামা; থামানো","original_name":"Stop.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679282/words/a8ee9c11-b02a-455c-80e9-b16e6d74b4d2/1787679281289_words_a8ee9c11-b02a-455c-80e9-b16e6d74b4d2.jfif.jpg"},{"english_word":"Story","bangla_word":"গল্প","original_name":"Story.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679282/words/1a17f8c1-c00a-4b26-98fa-87aa0db8a0a4/1787679281546_words_1a17f8c1-c00a-4b26-98fa-87aa0db8a0a4.jfif.jpg"},{"english_word":"straight","bangla_word":"সোজা","original_name":"Straight.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679282/words/02993e99-62a2-478e-b1d6-931573356b56/1787679281719_words_02993e99-62a2-478e-b1d6-931573356b56.png.png"},{"english_word":"Student","bangla_word":"ছাত্র; ছাত্রী","original_name":"Student.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679282/words/519c0863-e310-4ed7-a43e-feda6987bc64/1787679281968_words_519c0863-e310-4ed7-a43e-feda6987bc64.jfif.jpg"},{"english_word":"Summer","bangla_word":"গ্রীষ্মকাল","original_name":"Summer.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678783/words/cf590978-25c1-422d-9a0b-5f7ec556df29/1787678782617_words_cf590978-25c1-422d-9a0b-5f7ec556df29.jpg.jpg"},{"english_word":"sun","bangla_word":"সূর্য","original_name":"Sun.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679283/words/9eb46297-581e-4ace-98e2-2663a5b79da0/1787679282271_words_9eb46297-581e-4ace-98e2-2663a5b79da0.jfif.jpg"},{"english_word":"Take","bangla_word":"নেওয়া","original_name":"Take.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679283/words/fec66ded-7cb4-4d0a-a7cd-5e74f7209da8/1787679282544_words_fec66ded-7cb4-4d0a-a7cd-5e74f7209da8.jfif.jpg"},{"english_word":"Talk","bangla_word":"কথা বলা","original_name":"Talk.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679284/words/dd30ea9f-907f-41dc-b840-ec76bd36b160/1787679283138_words_dd30ea9f-907f-41dc-b840-ec76bd36b160.png.png"},{"english_word":"Teacher","bangla_word":"শিক্ষক; শিক্ষিকা","original_name":"Teacher.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679284/words/5c9dbf97-b654-4ac1-aec2-d218acaa3a9f/1787679283637_words_5c9dbf97-b654-4ac1-aec2-d218acaa3a9f.jfif.jpg"},{"english_word":"Teeth","bangla_word":"দাঁত","original_name":"Teeth.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679284/words/09a181b5-3845-442e-bacb-46503e424d86/1787679283691_words_09a181b5-3845-442e-bacb-46503e424d86.jfif.jpg"},{"english_word":"Throw","bangla_word":"ছোড়া; নিক্ষেপ করা","original_name":"Throw.jfif","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679284/words/7be57b60-5535-4b21-b403-3c30874c5d29/1787679283809_words_7be57b60-5535-4b21-b403-3c30874c5d29.jfif.jpg"},{"english_word":"Time","bangla_word":"সময়","original_name":"Time.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679285/words/e37de63e-8d28-4417-b9c4-4cf3818a148e/1787679284458_words_e37de63e-8d28-4417-b9c4-4cf3818a148e.png.png"},{"english_word":"Tomato","bangla_word":"টমেটো","original_name":"tomato.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678783/words/9dd826db-20c9-47a8-a9ee-af26d0539772/1787678783062_words_9dd826db-20c9-47a8-a9ee-af26d0539772.jpeg.jpg"},{"english_word":"Touch","bangla_word":"ছোঁয়া; স্পর্শ করা","original_name":"touch.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678784/words/2a934393-a148-480b-849e-52184be83c18/1787678783392_words_2a934393-a148-480b-849e-52184be83c18.jpeg.jpg"},{"english_word":"Trace","bangla_word":"চিহ্নিত করা; অনুসরণ করা","original_name":"Trace.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679285/words/8e82ea9c-927a-49b4-82ca-caccffaa7545/1787679284721_words_8e82ea9c-927a-49b4-82ca-caccffaa7545.jpg.jpg"},{"english_word":"Tree","bangla_word":"গাছ","original_name":"tree.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678784/words/822c5a81-f867-4582-bded-8c13b4524370/1787678783455_words_822c5a81-f867-4582-bded-8c13b4524370.jpeg.jpg"},{"english_word":"Triangle","bangla_word":"ত্রিভুজ","original_name":"Triangle.png","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679285/words/ee8efcfd-e9b4-4419-acbd-fc900f6692c3/1787679284829_words_ee8efcfd-e9b4-4419-acbd-fc900f6692c3.png.png"},{"english_word":"Tuesday","bangla_word":"মঙ্গলবার","original_name":"tuesday.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678784/words/797206a2-e6cb-46ac-b220-670994c2c744/1787678783807_words_797206a2-e6cb-46ac-b220-670994c2c744.jpeg.jpg"},{"english_word":"Umbrella","bangla_word":"ছাতা","original_name":"Umbrella.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678785/words/1c79e1e9-1b3c-47ac-bb53-c81293b3316f/1787678784117_words_1c79e1e9-1b3c-47ac-bb53-c81293b3316f.jpeg.jpg"},{"english_word":"Under","bangla_word":"নিচে","original_name":"under.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678785/words/dad350f2-fabd-43e1-9e1a-2603fea644b9/1787678784579_words_dad350f2-fabd-43e1-9e1a-2603fea644b9.jpeg.jpg"},{"english_word":"Uniform","bangla_word":"পোশাক; ইউনিফর্ম","original_name":"Uniform.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678785/words/4bb3bf1c-faa4-4ce0-9f09-40a546dd8466/1787678784673_words_4bb3bf1c-faa4-4ce0-9f09-40a546dd8466.jpeg.jpg"},{"english_word":"Use","bangla_word":"ব্যবহার করা","original_name":"use.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679286/words/407ca6b6-7f63-407f-854e-a88c313ac5b4/1787679285695_words_407ca6b6-7f63-407f-854e-a88c313ac5b4.jpg.jpg"},{"english_word":"Vase","bangla_word":"ফুলদানি","original_name":"vase.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678785/words/9906e8fa-8847-4dff-aaed-50f9b4fd8493/1787678784905_words_9906e8fa-8847-4dff-aaed-50f9b4fd8493.jpeg.jpg"},{"english_word":"Very","bangla_word":"খুব","original_name":"Very.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679287/words/ace20251-3262-43e2-9f88-3adbfe0a2d5b/1787679285755_words_ace20251-3262-43e2-9f88-3adbfe0a2d5b.jpg.jpg"},{"english_word":"Wait","bangla_word":"অপেক্ষা করা","original_name":"Wait.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678786/words/5ce4e5d8-8198-4c88-a1f0-22cd321fd247/1787678785343_words_5ce4e5d8-8198-4c88-a1f0-22cd321fd247.jpeg.jpg"},{"english_word":"Wash","bangla_word":"ধোয়া","original_name":"wash.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679286/words/047b840b-35da-42fd-b96d-6403f63a3692/1787679285914_words_047b840b-35da-42fd-b96d-6403f63a3692.jpg.jpg"},{"english_word":"Watch","bangla_word":"দেখা","original_name":"watch.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678786/words/afd19ed9-e93b-43da-8d17-2286714bad52/1787678785640_words_afd19ed9-e93b-43da-8d17-2286714bad52.jpeg.jpg"},{"english_word":"Water","bangla_word":"পানি","original_name":"Water.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678786/words/2376fc89-2ba8-4bdb-b219-0c26d3ddbe58/1787678785756_words_2376fc89-2ba8-4bdb-b219-0c26d3ddbe58.jpeg.jpg"},{"english_word":"water can","bangla_word":"পানি দেওয়ার পাত্র","original_name":"water can.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679286/words/539cb17b-5899-4239-9904-61a4423fa187/1787679286027_words_539cb17b-5899-4239-9904-61a4423fa187.jpg.jpg"},{"english_word":"Wednesday","bangla_word":"বুধবার","original_name":"Wednesday.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679287/words/1260d10c-eeb4-44a4-9fe4-a2cf289bd169/1787679286768_words_1260d10c-eeb4-44a4-9fe4-a2cf289bd169.jpg.jpg"},{"english_word":"week","bangla_word":"সপ্তাহ","original_name":"Week.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678787/words/e8d87b14-bb20-497e-bab5-3590d852c207/1787678786340_words_e8d87b14-bb20-497e-bab5-3590d852c207.jpeg.jpg"},{"english_word":"What","bangla_word":"কি","original_name":"What.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678787/words/abe06582-eeaf-479d-95a7-a7beb4dd8526/1787678786714_words_abe06582-eeaf-479d-95a7-a7beb4dd8526.jpeg.jpg"},{"english_word":"Where","bangla_word":"কোথায়","original_name":"where.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679287/words/00547dc4-ab99-41e2-97c1-fedc5eca9f8e/1787679286986_words_00547dc4-ab99-41e2-97c1-fedc5eca9f8e.jpg.jpg"},{"english_word":"Which","bangla_word":"কোনটি","original_name":"Which.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679287/words/71b90f40-a7fa-49e1-9111-034792f4f3a8/1787679287096_words_71b90f40-a7fa-49e1-9111-034792f4f3a8.jpg.jpg"},{"english_word":"while","bangla_word":"যখন; অল্প সময়","original_name":"while.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679288/words/b8d57374-ad38-4364-bd23-6edc9e06cfac/1787679287896_words_b8d57374-ad38-4364-bd23-6edc9e06cfac.jpg.jpg"},{"english_word":"Who","bangla_word":"কে","original_name":"who.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679288/words/2e6b97b7-4de5-4b54-9c7f-6100f5a278fb/1787679288057_words_2e6b97b7-4de5-4b54-9c7f-6100f5a278fb.jpg.jpg"},{"english_word":"Window","bangla_word":"জানালা","original_name":"window.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678787/words/267c01e5-7b2c-4358-9b8c-29114e7c9809/1787678786907_words_267c01e5-7b2c-4358-9b8c-29114e7c9809.jpeg.jpg"},{"english_word":"word","bangla_word":"শব্দ","original_name":"word.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678787/words/35873b32-7053-4da1-8364-54cc329bad7f/1787678787019_words_35873b32-7053-4da1-8364-54cc329bad7f.jpeg.jpg"},{"english_word":"Work","bangla_word":"কাজ","original_name":"work.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679289/words/a6a7489e-72e8-445a-984d-c673fb6b5a2a/1787679288330_words_a6a7489e-72e8-445a-984d-c673fb6b5a2a.jpg.jpg"},{"english_word":"write","bangla_word":"লেখা","original_name":"Write.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678788/words/78f3a17e-755e-45b9-a995-295c4377333c/1787678787325_words_78f3a17e-755e-45b9-a995-295c4377333c.jpeg.jpg"},{"english_word":"Year","bangla_word":"বছর","original_name":"year.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678788/words/c3856f2a-a489-4a9c-b57e-a982625f70c4/1787678787759_words_c3856f2a-a489-4a9c-b57e-a982625f70c4.jpeg.jpg"},{"english_word":"Young","bangla_word":"তরুণ / ছোট","original_name":"young.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678789/words/0db38339-e649-47bf-9d1d-bc209538b4ed/1787678788144_words_0db38339-e649-47bf-9d1d-bc209538b4ed.jpeg.jpg"},{"english_word":"Zebra","bangla_word":"জেব্রা","original_name":"Zebra.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678789/words/e17c04a9-7a7c-407c-a3da-a6893bf913cb/1787678788204_words_e17c04a9-7a7c-407c-a3da-a6893bf913cb.jpeg.jpg"},{"english_word":"zebra crossing","bangla_word":"জেব্রা ক্রসিং","original_name":"zebra crossing.jpg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787679289/words/17a2fbd8-c0d6-43d1-a1c9-98ae3a4c389d/1787679288388_words_17a2fbd8-c0d6-43d1-a1c9-98ae3a4c389d.jpg.jpg"},{"english_word":"Zoo","bangla_word":"চিড়িয়াখানা","original_name":"Zoo.jpeg","public_url":"https://res.cloudinary.com/ds8p3rvyx/image/upload/v1787678789/words/a4a0a6d3-b747-430a-9b85-9cd1a882da9d/1787678788423_words_a4a0a6d3-b747-430a-9b85-9cd1a882da9d.jpeg.jpg"}],"missing":[{"name":"About","files":["About.jpg"]},{"name":"Academic","files":["Academic.jpg"]},{"name":"According to","files":["According to.jpg"]},{"name":"Act","files":["Act.jpg"]},{"name":"Activities","files":["Activities.png"]},{"name":"Against","files":["Against.jpeg"]},{"name":"Ahed","files":["Ahed.png"]},{"name":"Along","files":["Along.jpg"]},{"name":"Aloud","files":["Aloud.jpg"]},{"name":"An","files":["An.jpg"]},{"name":"And","files":["And.png"]},{"name":"Answering","files":["Answering.jpg"]},{"name":"Appear","files":["Appear.png"]},{"name":"Apple","files":["Apple.jpg","Apple.png"]},{"name":"Are","files":["Are.png"]},{"name":"Arm","files":["Arm.jpg","Arm.png"]},{"name":"Around","files":["Around.png"]},{"name":"Arrow","files":["Arrow.png"]},{"name":"As","files":["As.jpg"]},{"name":"Ash","files":["Ash.jpg"]},{"name":"Ask","files":["Ask.jpg"]},{"name":"Asking","files":["Asking.jpg"]},{"name":"Aunt","files":["Aunt.jpg"]},{"name":"Away","files":["Away.png"]},{"name":"Baby","files":["Baby.jpg"]},{"name":"Bad","files":["Bad.png"]},{"name":"Bangladesh","files":["Bangladesh.jpg"]},{"name":"Basket","files":["Basket.png"]},{"name":"Bat","files":["Bat.jpg","Bat.png"]},{"name":"Be","files":["Be.jpg"]},{"name":"Beak","files":["Beak.jpg"]},{"name":"Become","files":["Become.png"]},{"name":"Begin","files":["Begin.png"]},{"name":"Bell","files":["Bell.jpg"]},{"name":"Beside","files":["Beside.png"]},{"name":"Best","files":["Best.jpg"]},{"name":"Bird","files":["Bird.png"]},{"name":"Black","files":["Black.jpg"]},{"name":"Blackbird","files":["Blackbird.jpg"]},{"name":"Blank","files":["Blank.png"]},{"name":"Blue","files":["Blue.png"]},{"name":"Body","files":["Body.png"]},{"name":"Bottom","files":["Bottom.png"]},{"name":"Bow","files":["Bow.png"]},{"name":"Box","files":["Box.jpg","Box.png"]},{"name":"Boy","files":["Boy.png"]},{"name":"Branch","files":["Branch.jpg"]},{"name":"Brave","files":["Brave.jpg"]},{"name":"Bright","files":["Bright.jpg"]},{"name":"Brim","files":["Brim.png"]},{"name":"Brown","files":["Brown.png"]},{"name":"Bus","files":["Bus.jpg"]},{"name":"By","files":["By.jpg"]},{"name":"Cabbage","files":["Cabbage.png"]},{"name":"Cage","files":["Cage.jpg"]},{"name":"Cake","files":["Cake.png"]},{"name":"Can","files":["Can.png"]},{"name":"Cap","files":["Cap.jpg"]},{"name":"Card","files":["Card.jpg"]},{"name":"Care","files":["Care.jpg"]},{"name":"Chain","files":["Chain.jpg"]},{"name":"Choose","files":["Choose.png"]},{"name":"Chores","files":["Chores.jpg"]},{"name":"Chorus","files":["Chorus.jpg"]},{"name":"Clap","files":["Clap.png"]},{"name":"Clapping","files":["Clapping.jpg"]},{"name":"Classroom","files":["Classroom.png"]},{"name":"Clean up","files":["Clean up.png"]},{"name":"Clock","files":["Clock.png"]},{"name":"Comma","files":["Comma.png"]},{"name":"Community","files":["Community.jpg"]},{"name":"Connect","files":["Connect.png"]},{"name":"Continue","files":["Continue.jpg"]},{"name":"Copy","files":["Copy.png"]},{"name":"Cot","files":["Cot.png"]},{"name":"Could","files":["Could.png"]},{"name":"Cousin","files":["Cousin.jpg"]},{"name":"Cowshed","files":["Cowshed.jpg"]},{"name":"Craft","files":["Craft.jpg"]},{"name":"Cricket","files":["Cricket.png"]},{"name":"Cries","files":["Cries.jpg"]},{"name":"Crocodile","files":["Crocodile.png"]},{"name":"Cross","files":["Cross.jpg"]},{"name":"Cruel","files":["Cruel.png"]},{"name":"Cultivate","files":["Cultivate.jpg"]},{"name":"Curriculum","files":["Curriculum.jpg"]},{"name":"Cut","files":["Cut.jpg"]},{"name":"Cutter","files":["Cutter.png"]},{"name":"Danced","files":["Danced.png"]},{"name":"Dead","files":["Dead.jpeg"]},{"name":"Dear","files":["Dear.jpg"]},{"name":"Death","files":["Death.png"]},{"name":"Den","files":["Den.jpg"]},{"name":"Diddle","files":["Diddle.jpg"]},{"name":"Difficult","files":["Difficult.png"]},{"name":"Dinosaur","files":["Dinosaur.png"]},{"name":"Discuss","files":["Discuss.png"]},{"name":"Display","files":["Display.jpg"]},{"name":"Distribute","files":["Distribute.png"]},{"name":"Distribution","files":["Distribution.jpg"]},{"name":"Divide","files":["Divide.png"]},{"name":"Do","files":["Do.jpg"]},{"name":"Does","files":["Does.png"]},{"name":"Dog house","files":["Dog house.png"]},{"name":"Doing","files":["Doing.jpg"]},{"name":"Domestic","files":["Domestic.png"]},{"name":"Done","files":["Done.png"]},{"name":"Dots","files":["Dots.png"]},{"name":"Drill","files":["Drill.jpg","Drill.png"]},{"name":"Drop","files":["Drop.png"]},{"name":"Eagle","files":["Eagle.jpg"]},{"name":"Eating","files":["Eating.jpeg"]},{"name":"Eggs","files":["Eggs.jpg"]},{"name":"Eight","files":["Eight.jpg"]},{"name":"Ending","files":["Ending.jpg"]},{"name":"Enjoy","files":["Enjoy.jpg"]},{"name":"Enter","files":["Enter.png"]},{"name":"Envelop","files":["Envelop.jpg"]},{"name":"Eraser","files":["Eraser.jpg"]},{"name":"Ever","files":["Ever.jpg"]},{"name":"Every","files":["Every.jpg"]},{"name":"Everyone","files":["Everyone.jpg"]},{"name":"Example","files":["Example.png"]},{"name":"Excuse","files":["Excuse.jpg"]},{"name":"Excuse me","files":["Excuse me.jpg"]},{"name":"Exit","files":["Exit.jpg"]},{"name":"Eye","files":["Eye.jpg"]},{"name":"Face","files":["Face.jpg"]},{"name":"fall","files":["fall.jpg"]},{"name":"Falling","files":["Falling.jpg"]},{"name":"fan","files":["fan.jpg","Fan.png"]},{"name":"far","files":["far.jpg"]},{"name":"fast","files":["fast.jpg"]},{"name":"Fast Foods","files":["Fast Foods.jpg"]},{"name":"Fat","files":["Fat.jpg"]},{"name":"feather","files":["feather.jpg"]},{"name":"Feet","files":["Feet.jpg"]},{"name":"female","files":["female.jpg"]},{"name":"fiday","files":["fiday.jpg"]},{"name":"Fiddle","files":["Fiddle.jpg"]},{"name":"fill","files":["fill.jpg","Fill.png"]},{"name":"Final","files":["Final.png"]},{"name":"finger","files":["finger.jpg"]},{"name":"fingers","files":["fingers.jpg"]},{"name":"fire","files":["fire.jpg"]},{"name":"First","files":["First.jpg"]},{"name":"Five","files":["Five.jpg"]},{"name":"fix","files":["fix.jpg"]},{"name":"flap","files":["flap.jpg"]},{"name":"Flash","files":["Flash.png"]},{"name":"Flew","files":["Flew.JPG"]},{"name":"Flies","files":["Flies.JPG"]},{"name":"floating","files":["floating.jpg"]},{"name":"Flower","files":["Flower.jpg"]},{"name":"fluency","files":["fluency.jpg"]},{"name":"Follow","files":["Follow.JPG"]},{"name":"Following","files":["Following.JPG"]},{"name":"foot","files":["foot.jpg","Foot.png"]},{"name":"for","files":["for.jpg"]},{"name":"Forest","files":["Forest.jpg"]},{"name":"forget","files":["forget.jpg"]},{"name":"fork","files":["fork.jpg"]},{"name":"forth","files":["forth.jpg"]},{"name":"four","files":["four.jpg","Four.png"]},{"name":"Free","files":["Free.jpg"]},{"name":"friends","files":["friends.jpg"]},{"name":"Game","files":["Game.jpg"]},{"name":"gate","files":["gate.jpg"]},{"name":"gently","files":["gently.jpg"]},{"name":"germs","files":["germs.jpg"]},{"name":"gib","files":["gib.jpg"]},{"name":"giraffe","files":["giraffe.jpg"]},{"name":"glass","files":["glass.jpg"]},{"name":"glove","files":["glove.jpg"]},{"name":"glue","files":["glue.jpg"]},{"name":"goes","files":["goes.jpg"]},{"name":"Golden","files":["Golden.jpeg"]},{"name":"got","files":["got.jpg"]},{"name":"Government","files":["Government.jpg"]},{"name":"Grain","files":["Grain.jpg"]},{"name":"grandfather","files":["grandfather.jpg"]},{"name":"Grandma","files":["Grandma.JPG"]},{"name":"grandmother","files":["grandmother.jpg"]},{"name":"Grandpa","files":["Grandpa.jpg"]},{"name":"grape","files":["grape.jpg"]},{"name":"grasshoper","files":["grasshoper.jpg"]},{"name":"gray","files":["gray.jpg"]},{"name":"greatful","files":["greatful.jpg"]},{"name":"Green","files":["Green.JPG"]},{"name":"Ground","files":["Ground.jpg"]},{"name":"growing","files":["growing.jpg"]},{"name":"guide","files":["guide.jpg"]},{"name":"gum","files":["gum.jpg"]},{"name":"gun","files":["gun.jpg"]},{"name":"gurgle","files":["gurgle.jpg"]},{"name":"gym","files":["gym.jpg"]},{"name":"hair","files":["hair.jpg"]},{"name":"hammer","files":["hammer.jpg"]},{"name":"Hanger","files":["Hanger.jpeg"]},{"name":"Hard","files":["Hard.jpg"]},{"name":"Hare","files":["Hare.jpg"]},{"name":"Has","files":["Has.jpg"]},{"name":"Hat","files":["Hat.JPG"]},{"name":"Hay","files":["Hay.jpg"]},{"name":"Heart","files":["Heart.jpg"]},{"name":"Helicopter","files":["Helicopter.jpg"]},{"name":"Hickory","files":["Hickory.jpeg","Hickory.jpg"]},{"name":"Hippo","files":["Hippo.jpg"]},{"name":"Hold","files":["Hold.jpg"]},{"name":"Hole","files":["Hole.jpg"]},{"name":"Hook","files":["Hook.jpg"]},{"name":"Hopped","files":["Hopped.jpg"]},{"name":"Horn","files":["Horn.JPG","Horn.png"]},{"name":"Hour","files":["Hour.jpg"]},{"name":"Hug","files":["Hug.jpg"]},{"name":"Humpty","files":["Humpty.jpg"]},{"name":"Hungry","files":["Hungry.jpg"]},{"name":"Hurray","files":["Hurray.jpg"]},{"name":"Hut","files":["Hut.jpg"]},{"name":"Ice","files":["Ice.jpg"]},{"name":"Ice Cream","files":["Ice Cream.jpg"]},{"name":"Infant","files":["Infant.jpg"]},{"name":"Ink","files":["Ink.jpg"]},{"name":"Inky","files":["Inky.jpg"]},{"name":"Insect","files":["Insect.jpg"]},{"name":"Iron","files":["Iron.jpg"]},{"name":"Jacket","files":["Jacket.jpg"]},{"name":"Jail","files":["Jail.jpg"]},{"name":"Jam","files":["Jam.jpg"]},{"name":"Jeans","files":["Jeans.jpg"]},{"name":"Jeep","files":["Jeep.jpg"]},{"name":"Jelly","files":["Jelly.jpg"]},{"name":"Jellyfish","files":["Jellyfish.jpg"]},{"name":"Jet","files":["Jet.jpg"]},{"name":"Jug","files":["Jug.jpg"]},{"name":"Juice","files":["Juice.jpg"]},{"name":"Juicy","files":["Juicy.jpg"]},{"name":"Jump","files":["Jump.jpg"]},{"name":"Kabaddi","files":["Kabaddi.JPG"]},{"name":"Kangaroo","files":["Kangaroo.jpg"]},{"name":"Kennel","files":["Kennel.jpg"]},{"name":"Kid","files":["Kid.jpg"]},{"name":"King","files":["King.jpg"]},{"name":"Kingfisher","files":["Kingfisher.jpg"]},{"name":"Kit","files":["Kit.jpg"]},{"name":"Kiwi","files":["Kiwi.jpg"]},{"name":"Knee","files":["Knee.jpg"]},{"name":"Knock","files":["Knock.jpg"]},{"name":"Koala","files":["Koala.jpg"]},{"name":"Ladybug","files":["Ladybug.jpg"]},{"name":"Lair","files":["Lair.JPG"]},{"name":"Land","files":["Land.jpg"]},{"name":"Late Autumn","files":["Late Autumn.jpg"]},{"name":"Leaves","files":["Leaves.jpg"]},{"name":"Leg","files":["Leg.jpg"]},{"name":"Lemon","files":["Lemon.jpg"]},{"name":"Lesson","files":["Lesson.jpg"]},{"name":"Library1","files":["Library1.jpg"]},{"name":"Lid","files":["Lid.jpg"]},{"name":"Light","files":["Light.jpg"]},{"name":"Lighthouse","files":["Lighthouse.jpg"]},{"name":"Lightning","files":["Lightning.jpg"]},{"name":"Lip","files":["Lip.jpg"]},{"name":"Lipstick","files":["Lipstick.jpg"]},{"name":"Lizard","files":["Lizard.jpg"]},{"name":"Log","files":["Log.jpg"]},{"name":"Lollipop","files":["Lollipop.jpg"]},{"name":"Lotus","files":["Lotus.jpg"]},{"name":"Lowercase","files":["Lowercase.jpg"]},{"name":"Map","files":["Map.png"]},{"name":"Mark","files":["Mark.jpg"]},{"name":"Mask","files":["Mask.jpg"]},{"name":"Mat","files":["Mat.jpg"]},{"name":"Match","files":["Match.jfif"]},{"name":"Meal","files":["Meal.jpg"]},{"name":"Meat","files":["Meat.jpg"]},{"name":"Member","files":["Member.jpg"]},{"name":"Meow.jgp","files":["Meow.jgp.jfif"]},{"name":"Mess","files":["Mess.jpg"]},{"name":"Mitten","files":["Mitten.jpg"]},{"name":"Mix","files":["Mix.jpg"]},{"name":"Model","files":["Model.jpg"]},{"name":"Money","files":["Money.JPG"]},{"name":"Mop","files":["Mop.jpg"]},{"name":"Moth","files":["Moth.jpg"]},{"name":"Motorbike","files":["Motorbike.jpg"]},{"name":"Mouse","files":["Mouse.jpg"]},{"name":"Move","files":["Move.jpg"]},{"name":"Mud","files":["Mud.jpg"]},{"name":"Muffin","files":["Muffin.jpg"]},{"name":"Mug","files":["Mug.jpg"]},{"name":"Mum","files":["Mum.jpg"]},{"name":"Mushroom","files":["Mushroom.jpg"]},{"name":"Music","files":["Music.jpg"]},{"name":"Muslim","files":["Muslim.jpg"]},{"name":"Nail1","files":["Nail1.jpg"]},{"name":"Nap","files":["Nap.jpg"]},{"name":"Neck","files":["Neck.jpg"]},{"name":"Necklace","files":["Necklace.jpg"]},{"name":"Needle","files":["Needle.jpg"]},{"name":"Nib","files":["Nib.jpg"]},{"name":"Nine","files":["Nine.jpg"]},{"name":"Nose","files":["Nose.jpg"]},{"name":"Note","files":["Note.jpg"]},{"name":"Nurse","files":["Nurse.jpg"]},{"name":"Nut","files":["Nut.jpg"]},{"name":"Object","files":["Object.jpg"]},{"name":"Octagon","files":["Octagon.jpg"]},{"name":"Octopus","files":["Octopus.jpg"]},{"name":"Oil","files":["Oil.jpg"]},{"name":"One","files":["One.jpg","One.png"]},{"name":"Onion","files":["Onion.jpg"]},{"name":"Orchid","files":["Orchid.jpg"]},{"name":"Ostrich","files":["Ostrich.jpg"]},{"name":"Oven","files":["Oven.jpg"]},{"name":"Owl","files":["Owl.png"]},{"name":"Ox","files":["Ox.jpg"]},{"name":"Paint","files":["Paint.jpg"]},{"name":"Pair","files":["Pair.jpg"]},{"name":"Pancake","files":["Pancake.jpg"]},{"name":"Pane","files":["Pane.jpg"]},{"name":"paper","files":["paper.png"]},{"name":"Park","files":["Park.jpg"]},{"name":"Parking","files":["Parking.jpg"]},{"name":"Parrot","files":["Parrot.png"]},{"name":"Passing","files":["Passing.png"]},{"name":"Path","files":["Path.jpg"]},{"name":"Pear","files":["Pear.jpg"]},{"name":"Peas","files":["Peas.jpg"]},{"name":"Pebble","files":["Pebble.png"]},{"name":"Penguin","files":["Penguin.jpg"]},{"name":"Pet","files":["Pet.png"]},{"name":"Petals","files":["Petals.jpg"]},{"name":"Phone","files":["Phone.png"]},{"name":"Pick","files":["Pick.png"]},{"name":"Pig","files":["Pig.jpg"]},{"name":"Pin","files":["Pin.jpg"]},{"name":"Pink","files":["Pink.jpg"]},{"name":"Pizza","files":["Pizza.jpg"]},{"name":"Place","files":["Place .jpg"]},{"name":"Plastic","files":["Plastic.png"]},{"name":"Plate","files":["Plate.jpg"]},{"name":"Plural","files":["Plural.jpg"]},{"name":"Point","files":["Point.jpg"]},{"name":"Polar Bear","files":["Polar Bear.png"]},{"name":"Police","files":["Police.jfif","Police.jpg"]},{"name":"Policy","files":["Policy .jpg"]},{"name":"Politely","files":["Politely.jpg"]},{"name":"Postman","files":["Postman.jpg"]},{"name":"Potato","files":["Potato.jpg"]},{"name":"Power","files":["Power .jpg"]},{"name":"Practice","files":["Practice.jpg"]},{"name":"pray","files":["pray.jpeg"]},{"name":"Pretend","files":["Pretend.jpg"]},{"name":"Pretty","files":["Pretty.jpg"]},{"name":"Profession","files":["Profession.jfif"]},{"name":"Project","files":["Project.jpg"]},{"name":"Properly","files":["Properly.png"]},{"name":"Pull","files":["Pull.jpg"]},{"name":"Pumpkin","files":["Pumpkin.jpg"]},{"name":"Punctuation","files":["Punctuation.png"]},{"name":"Puppy","files":["Puppy.jpg"]},{"name":"Purple","files":["Purple.jpg"]},{"name":"Puzzle","files":["Puzzle.jpg"]},{"name":"Quarter","files":["Quarter.jpg"]},{"name":"Queen","files":["Queen.png"]},{"name":"Quickly","files":["Quickly.png"]},{"name":"Quince","files":["Quince.jpg"]},{"name":"Quize","files":["Quize.jpg"]},{"name":"Quran","files":["Quran.jpg"]},{"name":"Rabbit","files":["Rabbit.jpg"]},{"name":"Rack","files":["Rack.jpg"]},{"name":"Raddish","files":["Raddish.jpg"]},{"name":"Rag","files":["Rag.jpg"]},{"name":"Rail","files":["Rail.jpg"]},{"name":"Rainbow","files":["Rainbow .jpg"]},{"name":"Raindrop","files":["Raindrop .jpg","Raindrop.jfif"]},{"name":"Rainy","files":["Rainy.jpg"]},{"name":"Ram","files":["Ram.jpg"]},{"name":"Ran","files":["Ran.jfif"]},{"name":"Ready","files":["Ready.jpg"]},{"name":"Real","files":["Real.png"]},{"name":"Rearrange","files":["Rearrange.png"]},{"name":"Recite","files":["Recite.png"]},{"name":"Rectangle","files":["Rectangle.png"]},{"name":"Red","files":["Red.jfif"]},{"name":"Repeat","files":["Repeat.jfif"]},{"name":"Reply","files":["Reply.jfif"]},{"name":"Represent","files":["Represent.jpg"]},{"name":"Review","files":["Review.jpg"]},{"name":"Rib","files":["Rib.jpg"]},{"name":"Ride","files":["Ride.jfif","Ride.jpg"]},{"name":"Right","files":["Right.jfif","Right.jpg"]},{"name":"Ring","files":["Ring.jpg"]},{"name":"Rip","files":["Rip.png"]},{"name":"Rise","files":["Rise.jfif"]},{"name":"Road","files":["Road.jfif"]},{"name":"Robot","files":["Robot.jfif"]},{"name":"Rocket","files":["Rocket.jfif"]},{"name":"Rod","files":["Rod.jfif"]},{"name":"Role","files":["Role.jpg"]},{"name":"Roleplay","files":["Roleplay.jfif"]},{"name":"Roof","files":["Roof.jpg"]},{"name":"Rooster","files":["Rooster.png"]},{"name":"Rose","files":["Rose.jpg"]},{"name":"Round","files":["Round.jfif","Round.png"]},{"name":"Rub","files":["Rub.png"]},{"name":"Rug","files":["Rug.jpg"]},{"name":"Rule","files":["Rule.png"]},{"name":"Ruler","files":["Ruler.jpg"]},{"name":"Run","files":["Run.png"]},{"name":"Sat","files":["Sat.png"]},{"name":"Saw","files":["Saw.png"]},{"name":"saw(1)","files":["saw(1).png"]},{"name":"Say","files":["Say.jpg","Say.png"]},{"name":"Sea","files":["Sea.jpg"]},{"name":"Seahorse","files":["Seahorse.jpg"]},{"name":"Second","files":["Second.jpg"]},{"name":"Seven","files":["Seven.jpg"]},{"name":"Shade","files":["Shade.png"]},{"name":"Shake","files":["Shake.jpg"]},{"name":"Shape","files":["Shape.jfif","Shape.png"]},{"name":"Share","files":["Share.jfif","Share.png"]},{"name":"Shark","files":["Shark.png"]},{"name":"Sharpener","files":["Sharpener.jpg"]},{"name":"She","files":["She.jfif","She.png"]},{"name":"Shop","files":["Shop.jfif"]},{"name":"Short","files":["Short.jfif","Short.jpg"]},{"name":"Shortest","files":["Shortest.png"]},{"name":"Shoulder","files":["Shoulder.jpg"]},{"name":"Shout","files":["Shout.jfif","Shout.png"]},{"name":"Shriek","files":["Shriek.png"]},{"name":"Side","files":["Side.jpg","Side.png"]},{"name":"Sign","files":["Sign.jfif"]},{"name":"Signal","files":["Signal.jfif"]},{"name":"Silent","files":["Silent.jfif","Silent.png"]},{"name":"Singular","files":["Singular.png"]},{"name":"Sip","files":["Sip.jpg"]},{"name":"Six","files":["Six.jpg","Six.png"]},{"name":"Size","files":["Size.jfif"]},{"name":"Skip","files":["Skip.jpg"]},{"name":"Skirt","files":["Skirt.png"]},{"name":"Slipac","files":["Slipac.jfif"]},{"name":"Smart","files":["Smart.jfif"]},{"name":"Smell","files":["Smell.png"]},{"name":"Snake","files":["Snake.jpg"]},{"name":"Snap","files":["Snap.png"]},{"name":"Sneaker","files":["Sneaker.png"]},{"name":"Snowball","files":["Snowball.jpg"]},{"name":"Soon","files":["Soon.jfif"]},{"name":"Spend","files":["Spend.png"]},{"name":"Spider","files":["Spider.jpg"]},{"name":"Spoon","files":["Spoon.jfif"]},{"name":"Sport","files":["Sport.jfif"]},{"name":"Squack","files":["Squack.jpg"]},{"name":"Stage","files":["Stage.jfif"]},{"name":"Strength","files":["Strength.jpg"]},{"name":"Strong","files":["Strong.png"]},{"name":"Study","files":["Study.jfif"]},{"name":"Sunlight","files":["Sunlight.jfif"]},{"name":"Survive","files":["Survive.jfif"]},{"name":"Table","files":["Table.jpg"]},{"name":"tall","files":["tall.jfif"]},{"name":"Tap","files":["Tap.jfif"]},{"name":"Telescop","files":["Telescop.jfif"]},{"name":"Ten","files":["Ten.jpg"]},{"name":"Textbook","files":["Textbook.jfif"]},{"name":"Thin","files":["Thin.jfif"]},{"name":"Thing","files":["Thing.png"]},{"name":"Third","files":["Third.jpg"]},{"name":"Thirsty","files":["Thirsty.jfif"]},{"name":"Three","files":["Three.jpg"]},{"name":"Ticket","files":["Ticket.jfif"]},{"name":"Tired","files":["Tired.jfif"]},{"name":"Toes","files":["Toes.jpg"]},{"name":"Together","files":["Together.jfif"]},{"name":"Too","files":["Too.png"]},{"name":"tooth","files":["tooth.jpeg"]},{"name":"Toothbrush","files":["Toothbrush.jpeg"]},{"name":"top","files":["top.jpeg"]},{"name":"tour","files":["tour.jfif"]},{"name":"Town","files":["Town.jfif"]},{"name":"track","files":["track.jpeg"]},{"name":"track 2","files":["track 2.jpeg"]},{"name":"traffic jam","files":["traffic jam.jpeg"]},{"name":"traffic light","files":["traffic light.jpeg"]},{"name":"traffic police","files":["traffic police.jpeg"]},{"name":"train","files":["train.jpeg"]},{"name":"Tree hole","files":["Tree hole.jfif"]},{"name":"truck","files":["truck.jpeg"]},{"name":"tub","files":["tub.jpeg"]},{"name":"tummy","files":["tummy .jpeg"]},{"name":"tune","files":["tune.jpeg"]},{"name":"turkey","files":["turkey.jpeg"]},{"name":"Turn","files":["Turn.jfif","turn.jpeg"]},{"name":"Turn left","files":["Turn left.jfif"]},{"name":"Turn off","files":["Turn off.png"]},{"name":"Turn right","files":["Turn right.png"]},{"name":"Turns","files":["Turns.png"]},{"name":"Turtle","files":["Turtle.jfif","Turtle.jpg"]},{"name":"turtle 2","files":["turtle 2.jpeg"]},{"name":"twinkle","files":["twinkle.jpeg"]},{"name":"Two","files":["Two.png"]},{"name":"U-Turn","files":["U-Turn.jfif"]},{"name":"Uncle","files":["Uncle.jfif"]},{"name":"Underline","files":["Underline.jpg"]},{"name":"Understand","files":["Understand.jpg"]},{"name":"Unicorn","files":["Unicorn.jpeg"]},{"name":"Unicycle","files":["Unicycle.jpeg"]},{"name":"Unique","files":["Unique.jpeg"]},{"name":"Unit","files":["Unit.png"]},{"name":"Unity","files":["Unity.jpeg","Unity.jpg"]},{"name":"university","files":["university.jpeg"]},{"name":"unscramble","files":["unscramble.jpeg"]},{"name":"Until","files":["Until.jpg"]},{"name":"Up","files":["Up.jpg","Up.png"]},{"name":"Us","files":["Us.jpg","Us.png"]},{"name":"used","files":["used.jpg"]},{"name":"using","files":["using.jpg"]},{"name":"van","files":["van.jpeg","Van.jpg","Van.png"]},{"name":"Various","files":["Various.jpg"]},{"name":"Vat","files":["Vat.jpg"]},{"name":"vegetable","files":["vegetable.jpeg","Vegetable.jpg"]},{"name":"vest","files":["vest.jpeg"]},{"name":"vet","files":["vet.jpeg"]},{"name":"village","files":["village .jpeg","Village.jpg"]},{"name":"vines","files":["vines.jpeg"]},{"name":"vines 2","files":["vines 2.jpeg"]},{"name":"violet","files":["violet.jpeg"]},{"name":"Violin","files":["Violin.jpeg"]},{"name":"vowel","files":["vowel.jpeg"]},{"name":"waifer","files":["waifer.jpeg"]},{"name":"waiter","files":["waiter.jpeg"]},{"name":"Wake up","files":["Wake up.jpeg"]},{"name":"Walk","files":["Walk.png"]},{"name":"Wall","files":["Wall .jpeg","wall.jpg","Wall.png"]},{"name":"wand","files":["wand.jpeg"]},{"name":"warm","files":["warm.jpeg"]},{"name":"Warm up","files":["Warm up.jpg"]},{"name":"Waterfall","files":["Waterfall .jpeg"]},{"name":"Watermelon","files":["Watermelon.jpeg"]},{"name":"wave","files":["wave.jpg"]},{"name":"Way","files":["Way.jpeg","way.jpg"]},{"name":"We","files":["We.jpg"]},{"name":"weather","files":["weather.jpeg"]},{"name":"Weave","files":["Weave.jpeg"]},{"name":"web","files":["web.jpeg","Web.png"]},{"name":"wed","files":["wed.jpeg"]},{"name":"welcome","files":["welcome.jpg"]},{"name":"well","files":["well.jpg"]},{"name":"well done","files":["well done.jpg"]},{"name":"wet","files":["wet.jpeg"]},{"name":"Whale","files":["Whale.jpeg","whale.jpg"]},{"name":"Wheel","files":["Wheel.jpeg"]},{"name":"when","files":["when.jpg"]},{"name":"whisker","files":["whisker.jpeg"]},{"name":"White","files":["White.jpg"]},{"name":"whole","files":["whole.jpg"]},{"name":"why","files":["why.jpg"]},{"name":"Wide","files":["Wide.jpg"]},{"name":"wig","files":["wig.jpeg"]},{"name":"wiggling 2","files":["wiggling 2.jpeg"]},{"name":"Will","files":["Will.jpg"]},{"name":"win","files":["win.jpeg"]},{"name":"wind","files":["wind.jpeg"]},{"name":"windy","files":["windy.jpeg"]},{"name":"wing","files":["wing.jpeg"]},{"name":"wink","files":["wink.jpeg"]},{"name":"Winner","files":["Winner.jpg"]},{"name":"winter","files":["winter .jpeg"]},{"name":"with","files":["with.jpg"]},{"name":"wobble","files":["wobble.jpeg"]},{"name":"wolf","files":["wolf.jpeg"]},{"name":"woman","files":["woman.jpeg"]},{"name":"women","files":["women.jpg"]},{"name":"wonder","files":["wonder.jpeg"]},{"name":"wonder - surprise","files":["wonder - surprise.jpeg"]},{"name":"wooden","files":["wooden.jpg"]},{"name":"Woof","files":["Woof.jpg"]},{"name":"woollen","files":["woollen.jpeg"]},{"name":"word 2","files":["word 2.jpeg"]},{"name":"worker","files":["worker.jpg"]},{"name":"world","files":["world.jpeg"]},{"name":"worm","files":["worm.jpeg"]},{"name":"wrong","files":["wrong.jpeg"]},{"name":"x ray","files":["x ray.jpeg"]},{"name":"X ray fish","files":["X ray fish.jpeg"]},{"name":"xray","files":["xray.jpg"]},{"name":"Xylophone","files":["Xylophone.jpeg"]},{"name":"Yacht","files":["Yacht.jpeg"]},{"name":"Yak","files":["Yak.jpeg"]},{"name":"Yam","files":["Yam.jpeg"]},{"name":"Yarn","files":["Yarn.jpeg"]},{"name":"Yawn","files":["Yawn.jpeg"]},{"name":"Yell","files":["Yell .jpeg"]},{"name":"Yellow","files":["Yellow.jpeg"]},{"name":"yes","files":["yes.jpg"]},{"name":"yo yo","files":["yo yo.jpg"]},{"name":"yogurt","files":["yogurt.jpeg"]},{"name":"yoke","files":["yoke.jpg"]},{"name":"Yolk","files":["Yolk.jpeg"]},{"name":"you","files":["you.jpg"]},{"name":"your","files":["your.jpg"]},{"name":"yourselves","files":["yourselves.jpg"]},{"name":"Yoyo","files":["Yoyo.jpeg"]},{"name":"yummy","files":["yummy.jpg"]},{"name":"Zero","files":["Zero.jpeg"]},{"name":"Zigzag","files":["Zigzag.jpeg"]},{"name":"Zinni","files":["Zinni.jpeg"]},{"name":"Zip","files":["Zip.jpeg"]},{"name":"Zipper","files":["Zipper.jpeg"]},{"name":"Zombie","files":["Zombie.jpeg"]},{"name":"Zuccine","files":["Zuccine.jpeg"]}],"wordsWithoutImage":[{"english_word":"Anthem","bangla_word":"জাতীয় গান","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Anything","bangla_word":"যেকোনো কিছু","part_of_speech":"Pronoun","status":"APPROVED"},{"english_word":"August","bangla_word":"আগস্ট","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Bark","bangla_word":"ঘেউ ঘেউ করা","part_of_speech":"Verb/Noun","status":"APPROVED"},{"english_word":"Bean","bangla_word":"শিম","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Behind","bangla_word":"পেছনে","part_of_speech":"Preposition/Adverb","status":"APPROVED"},{"english_word":"Bigger","bangla_word":"আরও বড়","part_of_speech":"Adjective","status":"APPROVED"},{"english_word":"Bin","bangla_word":"ময়লার পাত্র","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Biographies","bangla_word":"জীবনীমূলক বই","part_of_speech":"noun (plural)","status":"APPROVED"},{"english_word":"Blacksmith","bangla_word":"কামার","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Bleat","bangla_word":"মে মে করা","part_of_speech":"Verb/Noun","status":"APPROVED"},{"english_word":"Bookshelves","bangla_word":"বুকশেলভ্‌স; বইয়ের তাক","part_of_speech":"noun (plural)","status":"APPROVED"},{"english_word":"Borrowed","bangla_word":"ধার নিয়েছে","part_of_speech":"verb (past)","status":"APPROVED"},{"english_word":"Bread","bangla_word":"রুটি","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Burger","bangla_word":"বার্গার","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Busy","bangla_word":"ব্যস্ত","part_of_speech":"Adjective","status":"APPROVED"},{"english_word":"Catch","bangla_word":"ধরা","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Caw","bangla_word":"কা কা ডাক","part_of_speech":"Verb/Noun","status":"APPROVED"},{"english_word":"Change","bangla_word":"পরিবর্তন করা","part_of_speech":"Verb/Noun","status":"APPROVED"},{"english_word":"Check","bangla_word":"পরীক্ষা করা","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Chicken","bangla_word":"মুরগি","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Chips","bangla_word":"চিপস","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Chocolate","bangla_word":"চকলেট","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Choice","bangla_word":"পছন্দ; নির্বাচন","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Clip","bangla_word":"ছাঁটা","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Cloth","bangla_word":"কাপড়","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Cluck","bangla_word":"কক্ কক্ ডাক","part_of_speech":"Verb/Noun","status":"APPROVED"},{"english_word":"Cobbler","bangla_word":"মুচি","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Complete","bangla_word":"সম্পূর্ণ করা","part_of_speech":"Verb/Adjective","status":"APPROVED"},{"english_word":"Compost","bangla_word":"কম্পোস্ট; জৈব সার","part_of_speech":"noun/verb","status":"APPROVED"},{"english_word":"Coo","bangla_word":"কুউ কুউ ডাক","part_of_speech":"Verb/Noun","status":"APPROVED"},{"english_word":"Cook","bangla_word":"রান্না করা","part_of_speech":"Verb/Noun","status":"APPROVED"},{"english_word":"Corn","bangla_word":"ভুট্টা","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Corner","bangla_word":"কোণ","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Cornfield","bangla_word":"ভুট্টাক্ষেত","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Cough","bangla_word":"কাশি","part_of_speech":"Noun/Verb","status":"APPROVED"},{"english_word":"Country","bangla_word":"দেশ","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Cucumber","bangla_word":"শসা","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Cup","bangla_word":"কাপ","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Dab","bangla_word":"হালকা চাপ দিয়ে স্পর্শ করা","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Dad","bangla_word":"বাবা","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"December","bangla_word":"ডিসেম্বর","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Did","bangla_word":"করেছিল (অতীত)","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Dirty","bangla_word":"ময়লা","part_of_speech":"Adjective","status":"APPROVED"},{"english_word":"Ditch","bangla_word":"নালা/খাল; ফেলে দেওয়া","part_of_speech":"noun/verb","status":"APPROVED"},{"english_word":"Doctor","bangla_word":"ডাক্তার","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Dot","bangla_word":"ছোট গোল দাগ","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Driver","bangla_word":"চালক","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Duster","bangla_word":"ডাস্টার","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Elephant","bangla_word":"হাতি","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Elicit","bangla_word":"বের করে আনা","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Emphasis","bangla_word":"গুরুত্ব; জোর","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Encloses","bangla_word":"ঘিরে রাখে","part_of_speech":"verb (present)","status":"APPROVED"},{"english_word":"Example-word-2","bangla_word":"exmple-word","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Famous","bangla_word":"বিখ্যাত; সুপরিচিত","part_of_speech":"adjective","status":"APPROVED"},{"english_word":"Far from","bangla_word":"দূরে","part_of_speech":"Phrase","status":"APPROVED"},{"english_word":"Farm","bangla_word":"খামার","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Feel","bangla_word":"অনুভব করা","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Fence","bangla_word":"বেড়া; বেড়া দেওয়া","part_of_speech":"noun/verb","status":"APPROVED"},{"english_word":"Fertile","bangla_word":"উর্বর","part_of_speech":"adjective","status":"APPROVED"},{"english_word":"Field","bangla_word":"মাঠ / ক্ষেত","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Fit","bangla_word":"ফিট/সুস্থ; মাপসই; মানানসই হওয়া","part_of_speech":"adj/verb","status":"APPROVED"},{"english_word":"Flock","bangla_word":"ঝাঁক; দল বেঁধে আসা","part_of_speech":"noun/verb","status":"APPROVED"},{"english_word":"Fog","bangla_word":"কুয়াশা","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Fond of","bangla_word":"খুব পছন্দ করা","part_of_speech":"adjective phrase","status":"APPROVED"},{"english_word":"From","bangla_word":"থেকে","part_of_speech":"Preposition","status":"APPROVED"},{"english_word":"Front","bangla_word":"সামনে","part_of_speech":"Noun/Adjective","status":"APPROVED"},{"english_word":"Gap","bangla_word":"ফাঁক; ব্যবধান","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Gardening","bangla_word":"বাগান করা","part_of_speech":"noun/verb (gerund)","status":"APPROVED"},{"english_word":"Get","bangla_word":"পাওয়া","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Get out","bangla_word":"বের হওয়া","part_of_speech":"Phrasal verb","status":"APPROVED"},{"english_word":"Go Ahead","bangla_word":"এগিয়ে যাও","part_of_speech":"Phrase/Verb","status":"APPROVED"},{"english_word":"Happen","bangla_word":"ঘটা","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Happiness","bangla_word":"সুখ; আনন্দ","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Healthy","bangla_word":"স্বাস্থ্যবান","part_of_speech":"Adjective","status":"APPROVED"},{"english_word":"Hello","bangla_word":"হ্যালো","part_of_speech":"Interjection","status":"APPROVED"},{"english_word":"Here","bangla_word":"এখানে","part_of_speech":"Adverb","status":"APPROVED"},{"english_word":"Himself","bangla_word":"নিজেই","part_of_speech":"Pronoun","status":"APPROVED"},{"english_word":"Hopefully","bangla_word":"আশাবাদীভাবে; আশা করে","part_of_speech":"adverb","status":"APPROVED"},{"english_word":"Ice-cream","bangla_word":"আইসক্রিম","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Idea","bangla_word":"ধারণা","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Igloo","bangla_word":"ইগলু","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"In front of","bangla_word":"সামনে","part_of_speech":"Preposition phrase","status":"APPROVED"},{"english_word":"Interesting","bangla_word":"মজাদার; আকর্ষণীয়","part_of_speech":"adjective","status":"APPROVED"},{"english_word":"Introduce","bangla_word":"পরিচয় করানো","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Introduced","bangla_word":"পরিচিত করিয়ে দেওয়া; প্রবর্তন করা","part_of_speech":"verb (past)","status":"APPROVED"},{"english_word":"Invite","bangla_word":"আমন্ত্রণ করা","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Itself","bangla_word":"নিজে/নিজেই","part_of_speech":"Pronoun","status":"APPROVED"},{"english_word":"January","bangla_word":"জানুয়ারি","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Job","bangla_word":"কাজ","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"July","bangla_word":"জুলাই","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"June","bangla_word":"জুন","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Just","bangla_word":"শুধু/ঠিক","part_of_speech":"Adverb","status":"APPROVED"},{"english_word":"Keep","bangla_word":"রাখা","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Kettle","bangla_word":"কেটলি","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Kitchen","bangla_word":"রান্নাঘর","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Know","bangla_word":"জানা","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Late","bangla_word":"দেরি","part_of_speech":"Adjective/Adverb","status":"APPROVED"},{"english_word":"Lazy","bangla_word":"অলস","part_of_speech":"Adjective","status":"APPROVED"},{"english_word":"Leap year","bangla_word":"অধিবর্ষ","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Leave","bangla_word":"ছেড়ে যাওয়া","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Lentils","bangla_word":"ডাল","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Lettuce","bangla_word":"লেটুস পাতা","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Listen","bangla_word":"শোনা","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Look","bangla_word":"দেখা","part_of_speech":"Verb/Noun","status":"APPROVED"},{"english_word":"Lot","bangla_word":"অনেক পরিমাণ","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Lovely","bangla_word":"সুন্দর; মনোরম","part_of_speech":"adjective","status":"APPROVED"},{"english_word":"Machine","bangla_word":"যন্ত্র","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Make","bangla_word":"তৈরি করা","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Many","bangla_word":"অনেক","part_of_speech":"Determiner/Adjective","status":"APPROVED"},{"english_word":"March","bangla_word":"মার্চ","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Marigolds","bangla_word":"গাঁদা ফুল","part_of_speech":"noun (plural)","status":"APPROVED"},{"english_word":"May","bangla_word":"মে","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Meeting","bangla_word":"সভা; সাক্ষাৎ","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Men","bangla_word":"পুরুষেরা","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Mend","bangla_word":"মেরামত করা","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Metal","bangla_word":"ধাতু","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Mew","bangla_word":"মিউ মিউ করা","part_of_speech":"Verb/Noun","status":"APPROVED"},{"english_word":"Middle","bangla_word":"মাঝখান","part_of_speech":"Noun/Adjective","status":"APPROVED"},{"english_word":"Mollify","bangla_word":"শান্ত করা, প্রশমিত করা","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Monday","bangla_word":"সোমবার","part_of_speech":"n","status":"APPROVED"},{"english_word":"Month","bangla_word":"মাস","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"More","bangla_word":"আরও বেশি","part_of_speech":"Adjective/Adverb","status":"APPROVED"},{"english_word":"Must","bangla_word":"অবশ্যই","part_of_speech":"Modal Verb","status":"APPROVED"},{"english_word":"Myself","bangla_word":"নিজে","part_of_speech":"Pronoun","status":"APPROVED"},{"english_word":"National Anthem","bangla_word":"জাতীয় সংগীত","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Need","bangla_word":"প্রয়োজন","part_of_speech":"Verb/Noun","status":"APPROVED"},{"english_word":"Neigh","bangla_word":"হ্রেষাধ্বনি করা","part_of_speech":"Verb/Noun","status":"APPROVED"},{"english_word":"Neighbourhood","bangla_word":"পাড়া; প্রতিবেশি এলাকা","part_of_speech":"noun","status":"APPROVED"},{"english_word":"New","bangla_word":"নতুন","part_of_speech":"Adjective","status":"APPROVED"},{"english_word":"Next","bangla_word":"পরবর্তী; পাশের","part_of_speech":"adjective/adverb","status":"APPROVED"},{"english_word":"November","bangla_word":"নভেম্বর","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Now","bangla_word":"এখন","part_of_speech":"adverb","status":"APPROVED"},{"english_word":"Occupation","bangla_word":"পেশা","part_of_speech":"noun","status":"APPROVED"},{"english_word":"October","bangla_word":"অক্টোবর","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Of course","bangla_word":"অবশ্যই","part_of_speech":"phrase","status":"APPROVED"},{"english_word":"Office","bangla_word":"অফিস; কার্যালয়","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Order","bangla_word":"আদেশ; ক্রম","part_of_speech":"noun/verb","status":"APPROVED"},{"english_word":"Our","bangla_word":"আমাদের","part_of_speech":"determiner","status":"APPROVED"},{"english_word":"Pairwork","bangla_word":"জোড়ায় কাজ","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Paragraph","bangla_word":"অনুচ্ছেদ","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Peer","bangla_word":"সমবয়সী; সঙ্গী","part_of_speech":"noun","status":"APPROVED"},{"english_word":"People","bangla_word":"মানুষজন","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Picture","bangla_word":"ছবি","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Pigeon","bangla_word":"কবুতর","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Pilot","bangla_word":"পাইলট; বিমানচালক","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Plane","bangla_word":"বিমান","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Playground","bangla_word":"খেলার মাঠ","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Primary School","bangla_word":"প্রাথমিক বিদ্যালয়","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Pronunciation","bangla_word":"উচ্চারণ","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Public","bangla_word":"সার্বজনীন/জনসাধারণ","part_of_speech":"adjective/noun","status":"APPROVED"},{"english_word":"Question","bangla_word":"প্রশ্ন","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Quick","bangla_word":"দ্রুত","part_of_speech":"adjective","status":"APPROVED"},{"english_word":"Regularly","bangla_word":"নিয়মিতভাবে","part_of_speech":"adverb","status":"APPROVED"},{"english_word":"Remove","bangla_word":"সরিয়ে ফেলা; অপসারণ করা","part_of_speech":"verb","status":"APPROVED"},{"english_word":"Rest","bangla_word":"বিশ্রাম","part_of_speech":"noun/verb","status":"APPROVED"},{"english_word":"Ripe","bangla_word":"পাকা","part_of_speech":"adjective","status":"APPROVED"},{"english_word":"Roar","bangla_word":"গর্জন করা","part_of_speech":"verb/noun","status":"APPROVED"},{"english_word":"Science fiction","bangla_word":"সায়েন্স ফিকশন; কল্পবিজ্ঞান","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Selected","bangla_word":"নির্বাচিত; বাছাইকৃত","part_of_speech":"adjective/verb (past)","status":"APPROVED"},{"english_word":"Sentence","bangla_word":"বাক্য","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Sew","bangla_word":"সেলাই করা","part_of_speech":"verb","status":"APPROVED"},{"english_word":"Shower","bangla_word":"গোসল; ঝরনা","part_of_speech":"noun/verb","status":"APPROVED"},{"english_word":"Sickles","bangla_word":"কাস্তে","part_of_speech":"noun (plural)","status":"APPROVED"},{"english_word":"Sleep","bangla_word":"ঘুমানো","part_of_speech":"verb/noun","status":"APPROVED"},{"english_word":"Slip","bangla_word":"পিছলে পড়া","part_of_speech":"verb/noun","status":"APPROVED"},{"english_word":"Soap","bangla_word":"সাবান","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Some","bangla_word":"কিছু","part_of_speech":"determiner/pronoun","status":"APPROVED"},{"english_word":"Sometimes","bangla_word":"মাঝে মাঝে","part_of_speech":"adverb","status":"APPROVED"},{"english_word":"Song","bangla_word":"গান","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Spades","bangla_word":"কোদাল","part_of_speech":"noun (plural)","status":"APPROVED"},{"english_word":"Stick","bangla_word":"লাঠি; কাঠি","part_of_speech":"noun/verb","status":"APPROVED"},{"english_word":"Stitch","bangla_word":"সেলাই করা","part_of_speech":"verb/noun","status":"APPROVED"},{"english_word":"Strange","bangla_word":"অদ্ভুত","part_of_speech":"adjective","status":"APPROVED"},{"english_word":"Stream","bangla_word":"স্রোত; ঝরনা","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Stressed","bangla_word":"চাপগ্রস্ত; জোর দেওয়া হয়েছে","part_of_speech":"adjective/verb (past)","status":"APPROVED"},{"english_word":"Sunday","bangla_word":"রবিবার","part_of_speech":"n","status":"APPROVED"},{"english_word":"Swarm","bangla_word":"ঝাঁক; ঝাঁকে ঝাঁকে চলা","part_of_speech":"noun/verb","status":"APPROVED"},{"english_word":"Swim","bangla_word":"সাঁতার কাটা","part_of_speech":"verb","status":"APPROVED"},{"english_word":"Syllables","bangla_word":"শব্দাংশ","part_of_speech":"noun (plural)","status":"APPROVED"},{"english_word":"TRUE","bangla_word":"সত্য","part_of_speech":"adjective","status":"APPROVED"},{"english_word":"Tailor","bangla_word":"দর্জি","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Tea","bangla_word":"চা","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Tell","bangla_word":"বলা","part_of_speech":"verb","status":"APPROVED"},{"english_word":"Thanks","bangla_word":"ধন্যবাদ","part_of_speech":"noun/interjection","status":"APPROVED"},{"english_word":"That","bangla_word":"ওটা; যে","part_of_speech":"pronoun/determiner","status":"APPROVED"},{"english_word":"There","bangla_word":"সেখানে","part_of_speech":"adverb","status":"APPROVED"},{"english_word":"Things","bangla_word":"জিনিসপত্র","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Think","bangla_word":"চিন্তা করা","part_of_speech":"verb","status":"APPROVED"},{"english_word":"Thursday","bangla_word":"বৃহস্পতিবার","part_of_speech":"n","status":"APPROVED"},{"english_word":"Tiger","bangla_word":"বাঘ","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Toilet","bangla_word":"শৌচাগার","part_of_speech":"noun","status":"APPROVED"},{"english_word":"Tomorrow","bangla_word":"আগামীকাল","part_of_speech":"noun/adverb","status":"APPROVED"},{"english_word":"Tools","bangla_word":"যন্ত্রপাতি; সরঞ্জাম","part_of_speech":"noun (plural)","status":"APPROVED"},{"english_word":"Tube well","bangla_word":"নলকূপ","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Unhealthy","bangla_word":"অস্বাস্থ্যকর","part_of_speech":"adjective","status":"APPROVED"},{"english_word":"Vegetables","bangla_word":"শাকসবজি","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Want","bangla_word":"চাওয়া","part_of_speech":"Verb","status":"APPROVED"},{"english_word":"Weeds","bangla_word":"আগাছা","part_of_speech":"noun (plural)","status":"APPROVED"},{"english_word":"Wonderful","bangla_word":"চমৎকার; দারুণ","part_of_speech":"adjective","status":"APPROVED"},{"english_word":"Work place","bangla_word":"কর্মস্থল","part_of_speech":"Noun phrase","status":"APPROVED"},{"english_word":"X-ray","bangla_word":"এক্স-রে","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Yard","bangla_word":"আঙিনা / উঠান","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"Yesterday","bangla_word":"গতকাল","part_of_speech":"Adverb/Noun","status":"APPROVED"},{"english_word":"Yo-yo","bangla_word":"ইয়ো-ইয়ো","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"alphabet","bangla_word":"বর্ণমালা","part_of_speech":"n.","status":"APPROVED"},{"english_word":"be quiet","bangla_word":"চুপ থাকা","part_of_speech":"v phr","status":"APPROVED"},{"english_word":"brush teeth","bangla_word":"দাঁত মাজা","part_of_speech":"v. phrase","status":"APPROVED"},{"english_word":"building","bangla_word":"ভবন","part_of_speech":"Noun","status":"APPROVED"},{"english_word":"clap hands","bangla_word":"হাততালি দেওয়া","part_of_speech":"v phr","status":"APPROVED"},{"english_word":"come here","bangla_word":"এখানে আসো","part_of_speech":"v phr","status":"APPROVED"},{"english_word":"early","bangla_word":"ভোরে/আগে","part_of_speech":"adv./adj.","status":"APPROVED"},{"english_word":"flower pot","bangla_word":"ফুলের টব","part_of_speech":"n","status":"APPROVED"},{"english_word":"go back","bangla_word":"ফিরে যাওয়া","part_of_speech":"v phr","status":"APPROVED"},{"english_word":"go to bed","bangla_word":"বিছানায় যাওয়া","part_of_speech":"v. phrase","status":"APPROVED"},{"english_word":"habit","bangla_word":"অভ্যাস","part_of_speech":"n.","status":"APPROVED"},{"english_word":"have breakfast","bangla_word":"নাশতা করা","part_of_speech":"v. phrase","status":"APPROVED"},{"english_word":"how","bangla_word":"কিভাবে","part_of_speech":"adv.","status":"APPROVED"},{"english_word":"how many","bangla_word":"কতগুলো","part_of_speech":"phr","status":"APPROVED"},{"english_word":"instruction","bangla_word":"নির্দেশনা","part_of_speech":"n","status":"APPROVED"},{"english_word":"introduction","bangla_word":"পরিচয়","part_of_speech":"n.","status":"APPROVED"},{"english_word":"like","bangla_word":"পছন্দ করা","part_of_speech":"v.","status":"APPROVED"},{"english_word":"live","bangla_word":"বাস করা","part_of_speech":"v.","status":"APPROVED"},{"english_word":"long","bangla_word":"দীর্ঘ","part_of_speech":"adj.","status":"APPROVED"},{"english_word":"name","bangla_word":"নাম","part_of_speech":"n.","status":"APPROVED"},{"english_word":"near","bangla_word":"কাছের/কাছে","part_of_speech":"adj./prep.","status":"APPROVED"},{"english_word":"pen","bangla_word":"কলম","part_of_speech":"n.","status":"APPROVED"},{"english_word":"pleasure","bangla_word":"আনন্দ","part_of_speech":"n","status":"APPROVED"},{"english_word":"quite","bangla_word":"খুব/সম্পূর্ণ","part_of_speech":"adv.","status":"APPROVED"},{"english_word":"raise hand","bangla_word":"হাত তোলা","part_of_speech":"v phr","status":"APPROVED"},{"english_word":"sit down","bangla_word":"বসে পড়া","part_of_speech":"v phr","status":"APPROVED"},{"english_word":"stand up","bangla_word":"উঠে দাঁড়ানো","part_of_speech":"v phr","status":"APPROVED"},{"english_word":"study tour","bangla_word":"শিক্ষাসফর","part_of_speech":"n. phrase","status":"APPROVED"},{"english_word":"sure","bangla_word":"নিশ্চিত","part_of_speech":"adj","status":"APPROVED"},{"english_word":"take care","bangla_word":"খেয়াল রাখা","part_of_speech":"v. phrase","status":"APPROVED"},{"english_word":"today","bangla_word":"আজ","part_of_speech":"n./adv.","status":"APPROVED"},{"english_word":"tubewell","bangla_word":"নলকূপ","part_of_speech":"Noun","status":"APPROVED"}],"duplicates":[{"file":"Bag.png","english_word":"Bag","used_instead":"Bag.jpg"},{"file":"Book.png","english_word":"Book","used_instead":"Book.jpg"},{"file":"Down.png","english_word":"Down","used_instead":"Down.jpg"},{"file":"Family.png","english_word":"Family","used_instead":"Family.jpg"},{"file":"Friend.png","english_word":"Friend","used_instead":"Friend.jpg"},{"file":"House.jpg","english_word":"House","used_instead":"House.jfif"},{"file":"Trace.png","english_word":"Trace","used_instead":"Trace.jpg"}]};
+
+  const fmt = (n) => n.toLocaleString('en-US');
+  const letterOf = (s) => {
+    const c = (s || '?').trim().charAt(0).toUpperCase();
+    return c >= 'A' && c <= 'Z' ? c : '#';
+  };
+  const el = (id) => document.getElementById(id);
+
+  // --- summary ---------------------------------------------------------
+  const S = DATA.summary;
+  const pct = Math.round((S.words_with_image / S.words_total) * 100);
+
+  el('stamp').textContent = 'Generated ' + new Date(S.generated_at).toLocaleString('en-US', {
+    dateStyle: 'long', timeStyle: 'short',
+  });
+  el('cov-pct').textContent = pct + '%';
+  el('cov-fill').style.flex = String(S.words_with_image);
+  el('cov-rest').style.flex = String(S.words_without_image);
+  el('cov-bar-label').setAttribute(
+    'aria-label',
+    S.words_with_image + ' of ' + S.words_total + ' words have an image (' + pct + '%)',
+  );
+  el('k-have').textContent = fmt(S.words_with_image);
+  el('k-none').textContent = fmt(S.words_without_image);
+  el('k-total').textContent = fmt(S.words_total);
+
+  el('s-up').textContent = fmt(S.images_uploaded_this_run);
+  el('s-prev').textContent = fmt(S.images_already_linked);
+  el('s-fail').textContent = fmt(S.images_failed_this_run);
+  el('s-noword').textContent = fmt(S.images_without_word_unique_names);
+  el('s-noimg').textContent = fmt(S.words_without_image);
+  el('s-dup').textContent = fmt(S.images_duplicate_skipped);
+
+  el('c-linked').textContent = fmt(DATA.linked.length);
+  el('c-missing').textContent = fmt(DATA.missing.length);
+  el('c-words').textContent = fmt(DATA.wordsWithoutImage.length);
+  el('c-dups').textContent = fmt(DATA.duplicates.length);
+
+  // --- renderers -------------------------------------------------------
+  function renderGrouped(container, alphaNav, rows, keyOf, rowHtml, countEl, query) {
+    const q = query.trim().toLowerCase();
+    const shown = q ? rows.filter((r) => r.haystack.includes(q)) : rows;
+
+    countEl.textContent = shown.length === rows.length
+      ? fmt(rows.length) + ' entries'
+      : fmt(shown.length) + ' of ' + fmt(rows.length);
+
+    if (!shown.length) {
+      container.innerHTML = '<p class="empty">Nothing matches &ldquo;' + escapeHtml(query.trim()) + '&rdquo;.</p>';
+      if (alphaNav) [...alphaNav.querySelectorAll('button')].forEach((b) => (b.disabled = true));
+      return;
+    }
+
+    const groups = new Map();
+    for (const row of shown) {
+      const k = keyOf(row);
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(row);
+    }
+
+    const letters = [...groups.keys()].sort();
+    container.innerHTML = letters
+      .map((letter) =>
+        '<section class="group" id="' + container.id + '-' + letter.replace('#', 'sym') + '">' +
+        '<h3 class="group-letter">' + letter + '</h3>' +
+        '<ul class="entries">' + groups.get(letter).map(rowHtml).join('') + '</ul>' +
+        '</section>',
+      )
+      .join('');
+
+    if (alphaNav) {
+      const live = new Set(letters);
+      [...alphaNav.querySelectorAll('button')].forEach((b) => (b.disabled = !live.has(b.dataset.letter)));
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => (
+      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
+  }
+
+  function buildAlpha(nav, containerId) {
+    const letters = ['#'].concat([...Array(26)].map((_, i) => String.fromCharCode(65 + i)));
+    nav.innerHTML = letters
+      .map((l) => '<button type="button" data-letter="' + l + '" aria-label="Jump to ' + l + '">' + l + '</button>')
+      .join('');
+    nav.addEventListener('click', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn || btn.disabled) return;
+      const target = document.getElementById(containerId + '-' + btn.dataset.letter.replace('#', 'sym'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  // --- panel: words with an image ---------------------------------------
+  const linked = DATA.linked.map((r) => ({
+    ...r,
+    haystack: (r.english_word + ' ' + (r.bangla_word || '') + ' ' + (r.original_name || '')).toLowerCase(),
+  }));
+
+  const linkedRow = (r) =>
+    '<li class="entry">' +
+    '<span class="entry-word">' + escapeHtml(r.english_word) + '</span>' +
+    (r.bangla_word ? '<span class="entry-bn">' + escapeHtml(r.bangla_word) + '</span>' : '') +
+    '<a class="entry-link" href="' + escapeHtml(r.public_url) + '" target="_blank" rel="noopener noreferrer">' +
+    'open image &#8599;</a>' +
+    '<span class="entry-meta">' + escapeHtml(r.original_name || '') + '</span>' +
+    '</li>';
+
+  // --- panel: images with no word --------------------------------------
+  const missing = DATA.missing.map((m) => ({
+    ...m,
+    haystack: (m.name + ' ' + m.files.join(' ')).toLowerCase(),
+  }));
+
+  const missingRow = (m) =>
+    '<li class="entry">' +
+    '<span class="entry-word">' + escapeHtml(m.name) + '</span>' +
+    '<span class="entry-meta">' + escapeHtml(m.files.join(', ')) + '</span>' +
+    (m.files.length > 1 ? '<span class="flag is-multi">' + m.files.length + ' files</span>' : '') +
+    '</li>';
+
+  // --- panel: words with no image --------------------------------------
+  const bareWords = DATA.wordsWithoutImage.map((w) => ({
+    ...w,
+    haystack: (w.english_word + ' ' + (w.bangla_word || '') + ' ' + (w.part_of_speech || '')).toLowerCase(),
+  }));
+
+  const wordRow = (w) =>
+    '<li class="entry">' +
+    '<span class="entry-word">' + escapeHtml(w.english_word) + '</span>' +
+    (w.bangla_word ? '<span class="entry-bn">' + escapeHtml(w.bangla_word) + '</span>' : '') +
+    '<span class="entry-meta">' + escapeHtml(w.part_of_speech || 'no part of speech') + '</span>' +
+    (w.status && w.status !== 'APPROVED'
+      ? '<span class="flag is-status">' + escapeHtml(w.status.toLowerCase()) + '</span>'
+      : '') +
+    '</li>';
+
+  // --- panel: duplicates -----------------------------------------------
+  const dups = DATA.duplicates.map((d) => ({
+    ...d,
+    haystack: (d.english_word + ' ' + d.file + ' ' + d.used_instead).toLowerCase(),
+  }));
+
+  function renderDups(query) {
+    const q = query.trim().toLowerCase();
+    const shown = q ? dups.filter((d) => d.haystack.includes(q)) : dups;
+    el('n-dups').textContent = shown.length === dups.length
+      ? fmt(dups.length) + ' entries'
+      : fmt(shown.length) + ' of ' + fmt(dups.length);
+    el('body-dups').innerHTML = shown.length
+      ? '<ul class="entries">' + shown.map((d) =>
+          '<li class="entry">' +
+          '<span class="entry-word">' + escapeHtml(d.english_word) + '</span>' +
+          '<span class="entry-meta">kept ' + escapeHtml(d.used_instead) + '</span>' +
+          '<span class="flag is-dup">skipped ' + escapeHtml(d.file) + '</span>' +
+          '</li>').join('') + '</ul>'
+      : '<p class="empty">Nothing matches &ldquo;' + escapeHtml(query.trim()) + '&rdquo;.</p>';
+  }
+
+  // --- wire up ----------------------------------------------------------
+  buildAlpha(el('alpha-linked'), 'body-linked');
+  buildAlpha(el('alpha-missing'), 'body-missing');
+  buildAlpha(el('alpha-words'), 'body-words');
+
+  const drawLinked = () =>
+    renderGrouped(el('body-linked'), el('alpha-linked'), linked,
+      (r) => letterOf(r.english_word), linkedRow, el('n-linked'), el('q-linked').value);
+
+  const drawMissing = () =>
+    renderGrouped(el('body-missing'), el('alpha-missing'), missing,
+      (m) => letterOf(m.name), missingRow, el('n-missing'), el('q-missing').value);
+
+  const drawWords = () =>
+    renderGrouped(el('body-words'), el('alpha-words'), bareWords,
+      (w) => letterOf(w.english_word), wordRow, el('n-words'), el('q-words').value);
+
+  el('q-linked').addEventListener('input', drawLinked);
+  el('q-missing').addEventListener('input', drawMissing);
+  el('q-words').addEventListener('input', drawWords);
+  el('q-dups').addEventListener('input', () => renderDups(el('q-dups').value));
+
+  el('copy-linked').addEventListener('click', async (e) => {
+    const q = el('q-linked').value.trim().toLowerCase();
+    const rows = q ? linked.filter((r) => r.haystack.includes(q)) : linked;
+    const text = rows.map((r) => r.english_word + '\t' + r.public_url).join('\n');
+    const button = e.currentTarget;
+    try {
+      await navigator.clipboard.writeText(text);
+      button.textContent = 'Copied ' + rows.length;
+    } catch {
+      button.textContent = 'Clipboard blocked';
+    }
+    setTimeout(() => { button.textContent = 'Copy all URLs'; }, 2000);
+  });
+
+  drawLinked();
+  drawMissing();
+  drawWords();
+  renderDups('');
+
+  // --- tabs -------------------------------------------------------------
+  const tabs = [...document.querySelectorAll('.tab')];
+
+  function selectTab(tab) {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => selectTab(tab));
+    tab.addEventListener('keydown', (e) => {
+      const i = tabs.indexOf(tab);
+      const next = e.key === 'ArrowRight' ? tabs[(i + 1) % tabs.length]
+        : e.key === 'ArrowLeft' ? tabs[(i - 1 + tabs.length) % tabs.length]
+        : null;
+      if (next) { e.preventDefault(); next.focus(); selectTab(next); }
+    });
+  });
+</script>
