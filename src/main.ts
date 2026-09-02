@@ -3,14 +3,27 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { join } from 'path';
+import { delimiter, join } from 'path';
 import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 
-import { AppModule } from './app.module';
 import { JwtAuthOrPublicGuard } from './common/guards/jwt-auth-or-public.guard';
 import { Request, Response } from 'express';
 
 async function createApp(): Promise<NestExpressApplication> {
+  // TypeScript preserves the project's `src/...` imports in the emitted JavaScript.
+  // Add the source directory to Node's lookup path before loading AppModule.
+  const nodeModule = require('node:module') as {
+    Module: { _initPaths: () => void };
+  };
+  process.env.NODE_PATH = [
+    join(process.cwd(), 'src'),
+    process.env.NODE_PATH,
+  ]
+    .filter(Boolean)
+    .join(delimiter);
+  nodeModule.Module._initPaths();
+
+  const { AppModule } = await import('./app.module.js');
   console.log('🚀 Starting Dictionary API server...');
   console.log('📂 Environment:', process.env.NODE_ENV);
 
