@@ -423,7 +423,7 @@ export class FilesController {
         return res.status(404).json({ message: 'File not found' });
       }
 
-      // Generate presigned URL for S3 file access
+      // Generate the Cloudinary URL for file access
       const presignedUrl = await this.filesService.generateFileUrl(file, 3600);
 
       // Redirect to the presigned URL
@@ -466,7 +466,7 @@ export class FilesController {
         return res.status(404).json({ message: 'File not found' });
       }
 
-      // Generate presigned URL for S3 file download with proper headers
+      // Generate the Cloudinary URL for download with proper headers
       const presignedUrl = await this.filesService.generateFileUrl(file, 3600);
 
       // Set download headers and redirect
