@@ -67,7 +67,7 @@ export class AuthService {
     const user = await this.usersService.create(enity);
     const { password, ...result } = user;
 
-    this.sendEmailByExternalApi('/api/v1/email/send-welcome-email', {
+    await this.sendEmailByExternalApi('/api/v1/email/send-welcome-email', {
       email: user.email,
       name: user.name,
       verificationToken,
@@ -234,7 +234,7 @@ export class AuthService {
       verification_token_expires_at: verificationTokenExpiresAt,
     });
 
-    this.sendEmailByExternalApi('/api/v1/email/re-send-verificatio-email', {
+    await this.sendEmailByExternalApi('/api/v1/email/re-send-verificatio-email', {
       email: user.email,
       name: user.name,
       verificationToken,
@@ -264,10 +264,10 @@ export class AuthService {
     return new BaseResponseDto(null, 'Password has been reset successfully');
   }
 
-  private sendEmailByExternalApi(
+  private async sendEmailByExternalApi(
     endpoint: string,
     body: Record<string, unknown>,
-  ): void {
+  ): Promise<void> {
     const emailSendUrl = this.buildEmailSendUrl(endpoint);
     const emailSendHeaderKey = this.configService.get<string>('EMAIL_SEND_HEADER_KEY');
 
@@ -275,7 +275,7 @@ export class AuthService {
       throw new InternalServerErrorException('Email sending configuration is missing');
     }
     console.log('email sending by api..', emailSendUrl)
-    const response = fetch(emailSendUrl, {
+    const response = await fetch(emailSendUrl, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -283,6 +283,13 @@ export class AuthService {
       },
       body: JSON.stringify(body),
     });
+
+    if (!response.ok) {
+      const details = await response.text();
+      throw new InternalServerErrorException(
+        `Email service returned ${response.status}: ${details.slice(0, 300)}`,
+      );
+    }
   }
 
   private buildEmailSendUrl(endpoint: string): string {

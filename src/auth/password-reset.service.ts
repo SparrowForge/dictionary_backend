@@ -71,7 +71,7 @@ export class PasswordResetService {
     // Send verification code via email
     // await this.emailService.sendVerificationCode(email, code);
 
-    this.sendEmailByExternalApi('/api/v1/email/send-varificatio-code-email', {
+    await this.sendEmailByExternalApi('/api/v1/email/send-varificatio-code-email', {
       email,
       code
     });
@@ -151,10 +151,10 @@ export class PasswordResetService {
   }
 
 
-  private sendEmailByExternalApi(
+  private async sendEmailByExternalApi(
     endpoint: string,
     body: Record<string, unknown>,
-  ): void {
+  ): Promise<void> {
     const emailSendUrl = this.buildEmailSendUrl(endpoint);
     const emailSendHeaderKey = this.configService.get<string>('EMAIL_SEND_HEADER_KEY');
 
@@ -162,7 +162,7 @@ export class PasswordResetService {
       throw new InternalServerErrorException('Email sending configuration is missing');
     }
 
-    const response = fetch(emailSendUrl, {
+    const response = await fetch(emailSendUrl, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -170,6 +170,13 @@ export class PasswordResetService {
       },
       body: JSON.stringify(body),
     });
+
+    if (!response.ok) {
+      const details = await response.text();
+      throw new InternalServerErrorException(
+        `Email service returned ${response.status}: ${details.slice(0, 300)}`,
+      );
+    }
   }
 
 

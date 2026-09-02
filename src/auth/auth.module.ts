@@ -34,19 +34,8 @@ import { RefreshTokenService } from './refresh-token.service';
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => {
-        // Determine templates directory based on environment
-        // In production (Vercel, Docker, etc.), templates are in dist/auth/templates
-        // In development, templates are in src/auth/templates
-        let templatesDir: string;
-
-        if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
-          // For Vercel and other serverless/container deployments
-          // Try multiple possible paths to handle different deployment scenarios
-          templatesDir = join(__dirname, '..', 'auth', 'templates');
-        } else {
-          // For local development
-          templatesDir = join(process.cwd(), 'src', 'auth', 'templates');
-        }
+        // The module directory is src/auth in development and dist/auth after build.
+        const templatesDir = join(__dirname, 'templates');
 
         return {
           transport: {

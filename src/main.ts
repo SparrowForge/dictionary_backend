@@ -8,9 +8,9 @@ import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 
 import { AppModule } from './app.module';
 import { JwtAuthOrPublicGuard } from './common/guards/jwt-auth-or-public.guard';
-import * as express from 'express';
+import { Request, Response } from 'express';
 
-async function bootstrap() {
+async function createApp(): Promise<NestExpressApplication> {
   console.log('🚀 Starting Dictionary API server...');
   console.log('📂 Environment:', process.env.NODE_ENV);
 
@@ -84,7 +84,22 @@ async function bootstrap() {
     customfavIcon: '/favicon.ico',
   });
 
-  console.log('App listining to port:', process.env.PORT ?? 3000);
-  await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
+  await app.init();
+  return app;
 }
-void bootstrap();
+
+// Vercel invokes the exported handler; the droplet starts the HTTP listener below.
+let appPromise: Promise<NestExpressApplication> | undefined;
+
+export default async function handler(req: Request, res: Response): Promise<void> {
+  appPromise ??= createApp();
+  const app = await appPromise;
+  app.getHttpAdapter().getInstance()(req, res);
+}
+
+if (!process.env.VERCEL) {
+  void createApp().then((app) => {
+    console.log('App listening on port:', process.env.PORT ?? 3000);
+    return app.listen(process.env.PORT ?? 3000, '0.0.0.0');
+  });
+}
