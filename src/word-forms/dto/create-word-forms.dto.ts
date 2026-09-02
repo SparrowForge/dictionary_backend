@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsOptional, IsString, } from 'class-validator';
-import { VerbFormTypeEnum } from 'src/common/enums/verb-form-type.enum';
+import { VerbFormTypeEnum } from '../../common/enums/verb-form-type.enum';
 
 export class CreateWordFormsDto {
   @ApiProperty({ description: 'Word id', example: 'class1' })

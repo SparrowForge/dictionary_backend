@@ -3,13 +3,13 @@ import { WordsController } from './words.controller';
 import { WordsService } from './words.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Words } from './entities/words.entity';
-import { Classes } from 'src/classes/entities/classes.entity';
+import { Classes } from '../classes/entities/classes.entity';
 import { WordDetails } from './entities/word-details.entity';
 import { WordView } from './entities/word-view.entity';
-import { WordSentences } from 'src/word-sentences/entities/word-sentences.entity';
-import { WordSynonyms } from 'src/word-synonyms/entities/word-synonyms.entity';
-import { WordAntonyms } from 'src/word-antonyms/entities/word-antonyms.entity';
-import { WordForms } from 'src/word-forms/entities/word-forms.entity';
+import { WordSentences } from '../word-sentences/entities/word-sentences.entity';
+import { WordSynonyms } from '../word-synonyms/entities/word-synonyms.entity';
+import { WordAntonyms } from '../word-antonyms/entities/word-antonyms.entity';
+import { WordForms } from '../word-forms/entities/word-forms.entity';
 
 @Module({
   imports: [

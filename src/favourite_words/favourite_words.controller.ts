@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { BaseResponseDto } from 'src/common/dto/base-response.dto';
+import { BaseResponseDto } from '../common/dto/base-response.dto';
 import { CurrentUser } from './../common/decorators/current-user.decorator';
-import type AuthUser from 'src/auth/dto/auth-user';
-import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import type AuthUser from '../auth/dto/auth-user';
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 import { FavouriteWords } from './entities/favourite_words.entity';
 import { CreateFavouriteWordsDto } from './dto/create-favourite_words.dto';
 import { FavouriteWordsService } from './favourite_words.service';

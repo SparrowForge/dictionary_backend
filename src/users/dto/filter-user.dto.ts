@@ -3,7 +3,7 @@ import { IsEnum, IsOptional, IsString } from 'class-validator';
 
 import { PaginationDto } from '../../common/dto/pagination.dto';
 import { Status } from '../../common/enums';
-import { RolesEnum } from 'src/common/enums/role.enum';
+import { RolesEnum } from '../../common/enums/role.enum';
 
 export class FilterUserDto extends PaginationDto {
   @ApiProperty({ description: 'User Roles', example: 'STUDENT', enum: RolesEnum, required: false, })

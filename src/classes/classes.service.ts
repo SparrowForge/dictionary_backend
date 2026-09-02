@@ -3,9 +3,9 @@ import { Classes } from './entities/classes.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateClassesDto } from './dto/create-classes.dto';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
 import { FilterClassesDto } from './dto/filter-classes.dto';
-import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 import { UpdateClassesDto } from './dto/update-classes.dto';
 
 @Injectable()

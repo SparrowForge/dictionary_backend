@@ -6,6 +6,10 @@
     "deleteOutDir": true,
     "assets": [
       {
+        "include": "**/*.hbs",
+        "outDir": "dist"
+      },
+      {
         "include": "../public/**/*",
         "outDir": "dist/public"
       }

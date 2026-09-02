@@ -12,8 +12,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import sharp = require('sharp');
-import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
 import { Repository } from 'typeorm';
 
 import { FileResponseDto } from './dto/file-response.dto';

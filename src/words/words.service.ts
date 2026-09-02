@@ -4,23 +4,23 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ObjectLiteral, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 import { Words } from './entities/words.entity';
 import { CreateWordsDto } from './dto/create-words.dto';
 import { FilterWordsDto } from './dto/filter-words.dto';
 import { UpdateWordsDto } from './dto/update-words.dto';
-import { WordStatusEnum } from 'src/common/enums/word-status.enum';
-import { Classes } from 'src/classes/entities/classes.entity';
+import { WordStatusEnum } from '../common/enums/word-status.enum';
+import { Classes } from '../classes/entities/classes.entity';
 import { WordUploadTemplateDto } from './dto/word-upload-template.dto';
 import * as XLSX from 'xlsx';
 import { UploadedWordFile } from './dto/UploadedWordFile.type';
 import { WordDetails } from './entities/word-details.entity';
 import { WordView } from './entities/word-view.entity';
-import { WordSentences } from 'src/word-sentences/entities/word-sentences.entity';
-import { WordSynonyms } from 'src/word-synonyms/entities/word-synonyms.entity';
-import { WordAntonyms } from 'src/word-antonyms/entities/word-antonyms.entity';
-import { WordForms } from 'src/word-forms/entities/word-forms.entity';
+import { WordSentences } from '../word-sentences/entities/word-sentences.entity';
+import { WordSynonyms } from '../word-synonyms/entities/word-synonyms.entity';
+import { WordAntonyms } from '../word-antonyms/entities/word-antonyms.entity';
+import { WordForms } from '../word-forms/entities/word-forms.entity';
 import { WordFormEntryDto } from './dto/word-form-entry.dto';
 
 type TrimmedWordUploadRow = {

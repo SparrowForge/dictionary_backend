@@ -10,7 +10,7 @@ import {
 
 import { Status } from '../../common/enums';
 import { CreateUserDto } from './create-user.dto';
-import { RolesEnum } from 'src/common/enums/role.enum';
+import { RolesEnum } from '../../common/enums/role.enum';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
 

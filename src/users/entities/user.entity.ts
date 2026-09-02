@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Status } from 'src/common/enums';
+import { Status } from '../../common/enums';
 import { RolesEnum } from '../../common/enums/role.enum';
 import {
   Column,
@@ -11,8 +11,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Files } from 'src/files/entities/file.entity';
-import { Classes } from 'src/classes/entities/classes.entity';
+import { Files } from '../../files/entities/file.entity';
+import { Classes } from '../../classes/entities/classes.entity';
 
 @Entity('dc_users')
 export class User {

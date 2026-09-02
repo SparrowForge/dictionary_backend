@@ -11,7 +11,7 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { WordStatusEnum } from 'src/common/enums/word-status.enum';
+import { WordStatusEnum } from '../../common/enums/word-status.enum';
 import { WordFormEntryDto } from './word-form-entry.dto';
 
 export class CreateWordsDto {

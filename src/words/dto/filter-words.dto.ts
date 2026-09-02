@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 
 import { PaginationDto } from '../../common/dto/pagination.dto';
-import { WordStatusEnum } from 'src/common/enums/word-status.enum';
+import { WordStatusEnum } from '../../common/enums/word-status.enum';
 import { Transform } from 'class-transformer';
 
 export class FilterWordsDto extends PaginationDto {

@@ -24,7 +24,7 @@ import { VerifyEmailDto } from './dto/verify-email.dto';
 import { PasswordResetService } from './password-reset.service';
 import { RefreshTokenService } from './refresh-token.service';
 import { EmailService } from './email.service';
-import { RolesEnum } from 'src/common/enums/role.enum';
+import { RolesEnum } from '../common/enums/role.enum';
 // Import UserStatus enum (adjust the path as needed)
 
 @Injectable()

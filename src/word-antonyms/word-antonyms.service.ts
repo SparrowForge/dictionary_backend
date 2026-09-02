@@ -3,8 +3,8 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 import { WordAntonyms } from './entities/word-antonyms.entity';
 import { CreateWordAntonymsDto } from './dto/create-word-antonyms.dto';
 import { FilterWordAntonymsDto } from './dto/filter-word-antonyms.dto';

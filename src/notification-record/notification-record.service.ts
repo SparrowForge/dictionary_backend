@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EmailService } from 'src/auth/email.service';
-import { NotificationService } from 'src/notifications/notifications.service';
-import { UsersService } from 'src/users/users.service';
+import { EmailService } from '../auth/email.service';
+import { NotificationService } from '../notifications/notifications.service';
+import { UsersService } from '../users/users.service';
 import { Repository } from 'typeorm';
 
 import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';

@@ -9,9 +9,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { Classes } from 'src/classes/entities/classes.entity';
-import { Files } from 'src/files/entities/file.entity';
+import { User } from '../../users/entities/user.entity';
+import { Classes } from '../../classes/entities/classes.entity';
+import { Files } from '../../files/entities/file.entity';
 
 @Entity('dc_students')
 export class Students {

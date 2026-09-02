@@ -10,11 +10,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { WordStatusEnum } from 'src/common/enums/word-status.enum';
+import { User } from '../../users/entities/user.entity';
+import { WordStatusEnum } from '../../common/enums/word-status.enum';
 import { WordDetails } from './word-details.entity';
 import { WordView } from './word-view.entity';
-import { WordForms } from 'src/word-forms/entities/word-forms.entity';
+import { WordForms } from '../../word-forms/entities/word-forms.entity';
 
 @Entity('dc_words')
 export class Words {

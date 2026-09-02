@@ -9,9 +9,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { Words } from 'src/words/entities/words.entity';
-import { Students } from 'src/students/entities/students.entity';
+import { User } from '../../users/entities/user.entity';
+import { Words } from '../../words/entities/words.entity';
+import { Students } from '../../students/entities/students.entity';
 import { ActivityType } from './../../common/enums/action-type.enum';
 
 @Entity('dc_student_activity')

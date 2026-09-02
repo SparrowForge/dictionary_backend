@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, } from 'class-validator';
-import { Status } from 'src/common/enums';
+import { Status } from '../../common/enums';
 
 export class CreateClassesDto {
   @ApiProperty({ description: 'Class name', example: 'class1' })

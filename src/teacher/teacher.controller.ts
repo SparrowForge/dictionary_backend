@@ -1,16 +1,16 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { TeacherService } from './teacher.service';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { BaseResponseDto } from 'src/common/dto/base-response.dto';
+import { BaseResponseDto } from '../common/dto/base-response.dto';
 import { Teacher } from './entities/teacher.entity';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
-import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 import { FilterTeacherDto } from './dto/filter-teacher.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { RolesEnum } from 'src/common/enums/role.enum';
+import { Roles } from '../common/decorators/roles.decorator';
+import { RolesEnum } from '../common/enums/role.enum';
 import { CurrentUser } from './../common/decorators/current-user.decorator';
-import type AuthUser from 'src/auth/dto/auth-user';
+import type AuthUser from '../auth/dto/auth-user';
 
 @ApiTags('Teachers')
 @ApiBearerAuth()

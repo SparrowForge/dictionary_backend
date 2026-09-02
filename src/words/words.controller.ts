@@ -1,17 +1,17 @@
 import { BadRequestException, Body, Controller, Delete, FileTypeValidator, Get, MaxFileSizeValidator, Param, ParseEnumPipe, ParseFilePipe, Patch, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { WordsService } from './words.service';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { BaseResponseDto } from 'src/common/dto/base-response.dto';
+import { BaseResponseDto } from '../common/dto/base-response.dto';
 import { CurrentUser } from './../common/decorators/current-user.decorator';
-import type AuthUser from 'src/auth/dto/auth-user';
-import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { RolesEnum } from 'src/common/enums/role.enum';
+import type AuthUser from '../auth/dto/auth-user';
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
+import { Roles } from '../common/decorators/roles.decorator';
+import { RolesEnum } from '../common/enums/role.enum';
 import { Words } from './entities/words.entity';
 import { CreateWordsDto } from './dto/create-words.dto';
 import { FilterWordsDto } from './dto/filter-words.dto';
 import { UpdateWordsDto } from './dto/update-words.dto';
-import { WordStatusEnum } from 'src/common/enums';
+import { WordStatusEnum } from '../common/enums';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Words')

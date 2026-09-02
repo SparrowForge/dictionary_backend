@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 import { WordClasses } from './entities/word-classes.entity';
 import { CreateWordClassesDto } from './dto/create-word-classes.dto';
 import { FilterWordClassesDto } from './dto/filter-word-classes.dto';

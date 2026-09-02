@@ -9,8 +9,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { Words } from 'src/words/entities/words.entity';
+import { User } from '../../users/entities/user.entity';
+import { Words } from '../../words/entities/words.entity';
 
 @Entity('dc_word_antonyms')
 export class WordAntonyms {

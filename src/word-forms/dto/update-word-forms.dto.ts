@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 
 import { CreateWordFormsDto } from './create-word-forms.dto';
-import { VerbFormTypeEnum } from 'src/common/enums/verb-form-type.enum';
+import { VerbFormTypeEnum } from '../../common/enums/verb-form-type.enum';
 
 export class UpdateWordFormsDto extends PartialType(CreateWordFormsDto) {
   @ApiProperty({ description: 'Word id', example: 'class1' })

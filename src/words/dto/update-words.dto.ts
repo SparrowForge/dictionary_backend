@@ -13,7 +13,7 @@ import {
 } from 'class-validator';
 
 import { CreateWordsDto } from './create-words.dto';
-import { WordStatusEnum } from 'src/common/enums/word-status.enum';
+import { WordStatusEnum } from '../../common/enums/word-status.enum';
 import { WordFormEntryDto } from './word-form-entry.dto';
 
 export class UpdateWordsDto extends PartialType(CreateWordsDto) {

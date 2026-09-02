@@ -17,7 +17,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { BaseResponseDto } from 'src/common/dto/base-response.dto';
+import { BaseResponseDto } from '../common/dto/base-response.dto';
 
 import { SaveUsetToTokenMapDto } from './data/save-user-to-token-map';
 import { SendNotificationToDeviceDto } from './data/send-notifications-to-device.dto';
@@ -26,8 +26,8 @@ import { SendNotificationToUserDto } from './data/send-notifications-to-user.dto
 import { SubscribeToTopicDto } from './data/subscribe-to-topic.dto';
 import { UserToFirebaseTokenMap } from './entity/userToFirebaseTokenMap.entity';
 import { NotificationService } from './notifications.service';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
-import type AuthUser from 'src/auth/dto/auth-user';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
+import type AuthUser from '../auth/dto/auth-user';
 
 @ApiTags('Notifications')
 @Controller('api/v1/notifications')

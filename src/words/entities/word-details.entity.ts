@@ -9,9 +9,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 import { Words } from './words.entity';
-import { Classes } from 'src/classes/entities/classes.entity';
+import { Classes } from '../../classes/entities/classes.entity';
 
 @Entity('dc_word_details')
 export class WordDetails {

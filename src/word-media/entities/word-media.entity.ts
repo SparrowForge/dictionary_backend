@@ -9,9 +9,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { Words } from 'src/words/entities/words.entity';
-import { Files } from 'src/files/entities/file.entity';
+import { User } from '../../users/entities/user.entity';
+import { Words } from '../../words/entities/words.entity';
+import { Files } from '../../files/entities/file.entity';
 
 @Entity('dc_word_media')
 export class WordMedia {

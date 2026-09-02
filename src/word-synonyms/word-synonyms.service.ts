@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 import { WordSynonyms } from './entities/word-synonyms.entity';
 import { CreateWordSynonymsDto } from './dto/create-word-synonyms.dto';
 import { FilterWordSynonymsDto } from './dto/filter-word-synonyms.dto';

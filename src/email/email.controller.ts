@@ -1,10 +1,10 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BaseResponseDto } from '../common/dto/base-response.dto';
-import { EmailService } from 'src/auth/email.service';
+import { EmailService } from '../auth/email.service';
 import { SendWelcomeEmailDto } from './dto/send-welcome-email.dto';
 import { SendVarificationEmailDto } from './dto/send-verification-email.dto';
-import { Public } from 'src/common/decorators/public.decorator';
+import { Public } from '../common/decorators/public.decorator';
 import { EmailHeaderKeyGuard } from './email-header-key.guard';
 
 @ApiTags('Email')

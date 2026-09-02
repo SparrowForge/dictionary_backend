@@ -10,7 +10,7 @@ import {
 } from 'class-validator';
 
 import { Status } from '../../common/enums';
-import { RolesEnum } from 'src/common/enums/role.enum';
+import { RolesEnum } from '../../common/enums/role.enum';
 
 export class CreateUserDto {
   @ApiProperty({ description: 'User email', example: 'admin@solocrest.com', })

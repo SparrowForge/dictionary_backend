@@ -1,12 +1,12 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { BaseResponseDto } from 'src/common/dto/base-response.dto';
+import { BaseResponseDto } from '../common/dto/base-response.dto';
 import { CurrentUser } from './../common/decorators/current-user.decorator';
-import type AuthUser from 'src/auth/dto/auth-user';
-import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { RolesEnum } from 'src/common/enums/role.enum';
+import type AuthUser from '../auth/dto/auth-user';
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
+import { Roles } from '../common/decorators/roles.decorator';
+import { RolesEnum } from '../common/enums/role.enum';
 import { Students } from './entities/students.entity';
 import { CreateStudentsDto } from './dto/create-students.dto';
 import { FilterStudentsDto } from './dto/filter-students.dto';

@@ -9,8 +9,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { Status } from 'src/common/enums';
+import { User } from '../../users/entities/user.entity';
+import { Status } from '../../common/enums';
 
 @Entity('dc_catagory')
 export class Catagory {

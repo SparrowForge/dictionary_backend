@@ -9,9 +9,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { Words } from 'src/words/entities/words.entity';
-import { VerbFormTypeEnum } from 'src/common/enums/verb-form-type.enum';
+import { User } from '../../users/entities/user.entity';
+import { Words } from '../../words/entities/words.entity';
+import { VerbFormTypeEnum } from '../../common/enums/verb-form-type.enum';
 
 @Entity('dc_word_forms')
 export class WordForms {

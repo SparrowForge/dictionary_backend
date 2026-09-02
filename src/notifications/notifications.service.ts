@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-// import { admin } from 'src/firebase.config';
+// import { admin } from '../firebase.config';
 import * as admin from 'firebase-admin';
 import { In, MoreThan, Repository } from 'typeorm';
 
 import { FireBaseTopicsEnum } from './data/fire-base-topics.data';
 import { UserToFirebaseTokenMap } from './entity/userToFirebaseTokenMap.entity';
 import { NotificationRecord } from '../notification-record/entities/notification-record.entity';
-import { NotificationDeliveryStatusType } from 'src/notification-record/data/notification-delivery-status-type.data';
+import { NotificationDeliveryStatusType } from '../notification-record/data/notification-delivery-status-type.data';
 
 
 @Injectable()

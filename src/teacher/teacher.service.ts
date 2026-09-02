@@ -3,9 +3,9 @@ import { Teacher } from './entities/teacher.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTeacherDto } from './dto/create-teacher.dto';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
 import { FilterTeacherDto } from './dto/filter-teacher.dto';
-import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 import { UpdateTeacherDto } from './dto/update-teacher.dto';
 
 @Injectable()

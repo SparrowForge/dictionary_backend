@@ -1,11 +1,11 @@
 import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { BaseResponseDto } from 'src/common/dto/base-response.dto';
+import { BaseResponseDto } from '../common/dto/base-response.dto';
 import { CurrentUser } from './../common/decorators/current-user.decorator';
-import type AuthUser from 'src/auth/dto/auth-user';
-import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { RolesEnum } from 'src/common/enums/role.enum';
+import type AuthUser from '../auth/dto/auth-user';
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
+import { Roles } from '../common/decorators/roles.decorator';
+import { RolesEnum } from '../common/enums/role.enum';
 import { WordForms } from './entities/word-forms.entity';
 import { CreateWordFormsDto } from './dto/create-word-forms.dto';
 import { WordFormsService } from './word-forms.service';

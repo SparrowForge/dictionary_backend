@@ -7,7 +7,7 @@ import {
   IsString,
 } from 'class-validator';
 
-import { Status } from 'src/common/enums';
+import { Status } from '../../common/enums';
 import { CreateClassesDto } from './create-classes.dto';
 
 export class UpdateClassesDto extends PartialType(CreateClassesDto) {

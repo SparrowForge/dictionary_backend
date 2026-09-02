@@ -39,8 +39,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { type Response } from 'express';
-import { BaseResponseDto } from 'src/common/dto/base-response.dto';
-import { PaginatedResponseDto } from 'src/common/dto/paginated-response.dto';
+import { BaseResponseDto } from '../common/dto/base-response.dto';
+import { PaginatedResponseDto } from '../common/dto/paginated-response.dto';
 
 import { Public } from '../common/decorators/public.decorator';
 import { FileResponseDto } from './dto/file-response.dto';

@@ -26,7 +26,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { CurrentUser } from './../common/decorators/current-user.decorator';
-import type AuthUser from 'src/auth/dto/auth-user';
+import type AuthUser from '../auth/dto/auth-user';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @ApiTags('Users')
